@@ -81,17 +81,69 @@ CMakeFiles/DBMS.dir/dbms.cpp.o.provides: CMakeFiles/DBMS.dir/dbms.cpp.o.requires
 CMakeFiles/DBMS.dir/dbms.cpp.o.provides.build: CMakeFiles/DBMS.dir/dbms.cpp.o
 
 
+CMakeFiles/DBMS.dir/commandLine.cpp.o: CMakeFiles/DBMS.dir/flags.make
+CMakeFiles/DBMS.dir/commandLine.cpp.o: ../commandLine.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/DBMS.dir/commandLine.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/DBMS.dir/commandLine.cpp.o -c /Users/amirreza/CLionProjects/git1/cosc6340-Project-2/commandLine.cpp
+
+CMakeFiles/DBMS.dir/commandLine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DBMS.dir/commandLine.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/amirreza/CLionProjects/git1/cosc6340-Project-2/commandLine.cpp > CMakeFiles/DBMS.dir/commandLine.cpp.i
+
+CMakeFiles/DBMS.dir/commandLine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DBMS.dir/commandLine.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/amirreza/CLionProjects/git1/cosc6340-Project-2/commandLine.cpp -o CMakeFiles/DBMS.dir/commandLine.cpp.s
+
+CMakeFiles/DBMS.dir/commandLine.cpp.o.requires:
+
+.PHONY : CMakeFiles/DBMS.dir/commandLine.cpp.o.requires
+
+CMakeFiles/DBMS.dir/commandLine.cpp.o.provides: CMakeFiles/DBMS.dir/commandLine.cpp.o.requires
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/commandLine.cpp.o.provides.build
+.PHONY : CMakeFiles/DBMS.dir/commandLine.cpp.o.provides
+
+CMakeFiles/DBMS.dir/commandLine.cpp.o.provides.build: CMakeFiles/DBMS.dir/commandLine.cpp.o
+
+
+CMakeFiles/DBMS.dir/parser.cpp.o: CMakeFiles/DBMS.dir/flags.make
+CMakeFiles/DBMS.dir/parser.cpp.o: ../parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/DBMS.dir/parser.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/DBMS.dir/parser.cpp.o -c /Users/amirreza/CLionProjects/git1/cosc6340-Project-2/parser.cpp
+
+CMakeFiles/DBMS.dir/parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DBMS.dir/parser.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/amirreza/CLionProjects/git1/cosc6340-Project-2/parser.cpp > CMakeFiles/DBMS.dir/parser.cpp.i
+
+CMakeFiles/DBMS.dir/parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DBMS.dir/parser.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/amirreza/CLionProjects/git1/cosc6340-Project-2/parser.cpp -o CMakeFiles/DBMS.dir/parser.cpp.s
+
+CMakeFiles/DBMS.dir/parser.cpp.o.requires:
+
+.PHONY : CMakeFiles/DBMS.dir/parser.cpp.o.requires
+
+CMakeFiles/DBMS.dir/parser.cpp.o.provides: CMakeFiles/DBMS.dir/parser.cpp.o.requires
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/parser.cpp.o.provides.build
+.PHONY : CMakeFiles/DBMS.dir/parser.cpp.o.provides
+
+CMakeFiles/DBMS.dir/parser.cpp.o.provides.build: CMakeFiles/DBMS.dir/parser.cpp.o
+
+
 # Object files for target DBMS
 DBMS_OBJECTS = \
-"CMakeFiles/DBMS.dir/dbms.cpp.o"
+"CMakeFiles/DBMS.dir/dbms.cpp.o" \
+"CMakeFiles/DBMS.dir/commandLine.cpp.o" \
+"CMakeFiles/DBMS.dir/parser.cpp.o"
 
 # External object files for target DBMS
 DBMS_EXTERNAL_OBJECTS =
 
 DBMS: CMakeFiles/DBMS.dir/dbms.cpp.o
+DBMS: CMakeFiles/DBMS.dir/commandLine.cpp.o
+DBMS: CMakeFiles/DBMS.dir/parser.cpp.o
 DBMS: CMakeFiles/DBMS.dir/build.make
 DBMS: CMakeFiles/DBMS.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable DBMS"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable DBMS"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/DBMS.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -100,6 +152,8 @@ CMakeFiles/DBMS.dir/build: DBMS
 .PHONY : CMakeFiles/DBMS.dir/build
 
 CMakeFiles/DBMS.dir/requires: CMakeFiles/DBMS.dir/dbms.cpp.o.requires
+CMakeFiles/DBMS.dir/requires: CMakeFiles/DBMS.dir/commandLine.cpp.o.requires
+CMakeFiles/DBMS.dir/requires: CMakeFiles/DBMS.dir/parser.cpp.o.requires
 
 .PHONY : CMakeFiles/DBMS.dir/requires
 

@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/DBMS.dir/dbms.cpp.o"
+  "CMakeFiles/DBMS.dir/commandLine.cpp.o"
+  "CMakeFiles/DBMS.dir/parser.cpp.o"
   "DBMS.pdb"
   "DBMS"
 )

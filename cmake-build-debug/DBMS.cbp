@@ -78,7 +78,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/commandLine.cpp">
+			<Option target="DBMS"/>
+		</Unit>
 		<Unit filename="/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/dbms.cpp">
+			<Option target="DBMS"/>
+		</Unit>
+		<Unit filename="/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/parser.cpp">
+			<Option target="DBMS"/>
+		</Unit>
+		<Unit filename="/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/parser.h">
 			<Option target="DBMS"/>
 		</Unit>
 		<Unit filename="/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/CMakeLists.txt">

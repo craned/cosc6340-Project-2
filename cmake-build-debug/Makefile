@@ -123,6 +123,33 @@ DBMS/fast:
 	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/build
 .PHONY : DBMS/fast
 
+commandLine.o: commandLine.cpp.o
+
+.PHONY : commandLine.o
+
+# target to build an object file
+commandLine.cpp.o:
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/commandLine.cpp.o
+.PHONY : commandLine.cpp.o
+
+commandLine.i: commandLine.cpp.i
+
+.PHONY : commandLine.i
+
+# target to preprocess a source file
+commandLine.cpp.i:
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/commandLine.cpp.i
+.PHONY : commandLine.cpp.i
+
+commandLine.s: commandLine.cpp.s
+
+.PHONY : commandLine.s
+
+# target to generate assembly for a file
+commandLine.cpp.s:
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/commandLine.cpp.s
+.PHONY : commandLine.cpp.s
+
 dbms.o: dbms.cpp.o
 
 .PHONY : dbms.o
@@ -150,6 +177,33 @@ dbms.cpp.s:
 	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/dbms.cpp.s
 .PHONY : dbms.cpp.s
 
+parser.o: parser.cpp.o
+
+.PHONY : parser.o
+
+# target to build an object file
+parser.cpp.o:
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/parser.cpp.o
+.PHONY : parser.cpp.o
+
+parser.i: parser.cpp.i
+
+.PHONY : parser.i
+
+# target to preprocess a source file
+parser.cpp.i:
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/parser.cpp.i
+.PHONY : parser.cpp.i
+
+parser.s: parser.cpp.s
+
+.PHONY : parser.s
+
+# target to generate assembly for a file
+parser.cpp.s:
+	$(MAKE) -f CMakeFiles/DBMS.dir/build.make CMakeFiles/DBMS.dir/parser.cpp.s
+.PHONY : parser.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -159,9 +213,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... DBMS"
+	@echo "... commandLine.o"
+	@echo "... commandLine.i"
+	@echo "... commandLine.s"
 	@echo "... dbms.o"
 	@echo "... dbms.i"
 	@echo "... dbms.s"
+	@echo "... parser.o"
+	@echo "... parser.i"
+	@echo "... parser.s"
 .PHONY : help
 
 
