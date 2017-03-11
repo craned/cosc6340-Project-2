@@ -1,3 +1,0 @@
-/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug/CMakeFiles/DBMS.dir

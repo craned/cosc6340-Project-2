@@ -1,1 +1,0 @@
-CMake: 3.6.3@/private/var/folders/nj/7v5qwjkn137gnyml8cf8jm900000gn/T/AppTranslocation/83554044-84C0-4C5E-B73E-5BD663EA8D2B/d/CLion.app/Contents/bin/cmake/bin/cmake
