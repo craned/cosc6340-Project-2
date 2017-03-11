@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /private/var/folders/nj/7v5qwjkn137gnyml8cf8jm900000gn/T/AppTranslocation/83554044-84C0-4C5E-B73E-5BD663EA8D2B/d/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/amirreza/CLionProjects/git1/cosc6340-Project-2
+=======
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/devincrane/CLionProjects/DBMS
+>>>>>>> master
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /Users/amirreza/CLionProjects/git1/cosc6340-Project-2/cmake-build-debug
