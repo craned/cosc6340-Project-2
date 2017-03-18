@@ -13,46 +13,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6edad320-1b21-4f4e-9f9a-c40936ec8244" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/progress.make~HEAD" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/progress.make~HEAD_0" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/progress.make~master" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/dbms.cpp.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/dbms.cpp.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/engine.cpp.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/engine.cpp.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/parser.cpp.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/parser.cpp.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/table.cpp.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/table.cpp.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/DBMS" afterPath="$PROJECT_DIR$/cmake-build-debug/DBMS" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/dbms.cpp.o" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/parser.cpp.o" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser.cpp" afterPath="$PROJECT_DIR$/Parser.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser.h" afterPath="$PROJECT_DIR$/Parser.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CMakeCCompiler.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CMakeCCompiler.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CMakeCXXCompiler.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CMakeCXXCompiler.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CMakeSystem.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CMakeSystem.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CompilerIdC/CMakeCCompilerId.c" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CompilerIdC/CMakeCCompilerId.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.6.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/CXX.includecache" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/CXX.includecache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/DependInfo.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/DependInfo.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/build.make" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/build.make" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/cmake_clean.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/cmake_clean.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/depend.internal" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/depend.internal" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/depend.make" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/depend.make" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/flags.make" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/flags.make" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/link.txt" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DBMS.dir/link.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cmake.check_cache" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cmake.check_cache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.c" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.cxx" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.cxx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/DBMS.cbp" afterPath="$PROJECT_DIR$/cmake-build-debug/DBMS.cbp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbms.cpp" afterPath="$PROJECT_DIR$/dbms.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Table.h" afterPath="$PROJECT_DIR$/Table.h" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -97,29 +61,21 @@
               <caret line="85" column="56" lean-forward="false" selection-start-line="84" selection-start-column="3" selection-end-line="85" selection-end-column="56" />
               <folding>
                 <element signature="e#683#700#0" expanded="true" />
+                <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Parser.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Parser.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Parser.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="696" column="39" lean-forward="false" selection-start-line="696" selection-start-column="39" selection-end-line="696" selection-end-column="39" />
+            <state relative-caret-position="-521">
+              <caret line="280" column="21" lean-forward="false" selection-start-line="280" selection-start-column="13" selection-end-line="280" selection-end-column="21" />
               <folding>
                 <element signature="e#658#677#0" expanded="true" />
+                <marker date="1489768933000" expanded="true" signature="22480:23310" ph="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Table.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Table.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="72" column="43" lean-forward="true" selection-start-line="72" selection-start-column="43" selection-end-line="72" selection-end-column="43" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -127,11 +83,33 @@
       <file leaf-file-name="engine.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/engine.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="17" />
+            <state relative-caret-position="244">
+              <caret line="33" column="1" lean-forward="true" selection-start-line="30" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
               <folding>
                 <element signature="e#656#673#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Table.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Table.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding>
+                <element signature="e#92#109#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Table.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Table.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="199">
+              <caret line="15" column="45" lean-forward="false" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="45" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -150,17 +128,14 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>findins</find>
       <find>addr</find>
       <find>insert</find>
       <find>creater</find>
       <find>add</find>
-      <find>addro</find>
       <find>addRow</find>
       <find>findin</find>
       <find>addrow</find>
       <find>createRowVector</find>
-      <find>finds</find>
       <find>writet</find>
       <find>findwr</find>
       <find>writeToFile</find>
@@ -169,17 +144,20 @@
       <find>findinsert</find>
       <find>readFromFile</find>
       <find>inserti</find>
-      <find>cre</find>
       <find>findcrea</find>
       <find>createColVector</find>
-      <find>Primary Key was not set</find>
-      <find>findcre</find>
-      <find>crea</find>
       <find>was not setfindcr</find>
       <find>findcr</find>
       <find>createVector</find>
       <find>findc</find>
       <find>I</find>
+      <find>finds</find>
+      <find>findsele</find>
+      <find>crea</find>
+      <find>findcre</find>
+      <find>Primary Key was not set</find>
+      <find>addro</find>
+      <find>cre</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -199,6 +177,7 @@
         <option value="$PROJECT_DIR$/Parser.h" />
         <option value="$PROJECT_DIR$/dbms.cpp" />
         <option value="$PROJECT_DIR$/Parser.cpp" />
+        <option value="$PROJECT_DIR$/Table.h" />
       </list>
     </option>
   </component>
@@ -424,12 +403,12 @@
       <workItem from="1489465587707" duration="1245000" />
       <workItem from="1489467682135" duration="4849000" />
       <workItem from="1489765572732" duration="468000" />
-      <workItem from="1489766200154" duration="2687000" />
+      <workItem from="1489766200154" duration="4894000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32016000" />
+    <option name="totallyTimeSpent" value="34223000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -442,7 +421,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24947146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -488,6 +467,7 @@
           <caret line="61" column="15" lean-forward="false" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="15" />
           <folding>
             <element signature="e#683#700#0" expanded="true" />
+            <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -498,6 +478,7 @@
           <caret line="264" column="0" lean-forward="false" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
           <folding>
             <element signature="e#658#677#0" expanded="true" />
+            <marker date="1489768933000" expanded="true" signature="22480:23310" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -550,6 +531,7 @@
           <caret line="61" column="15" lean-forward="false" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="15" />
           <folding>
             <element signature="e#683#700#0" expanded="true" />
+            <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -560,6 +542,7 @@
           <caret line="264" column="0" lean-forward="false" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
           <folding>
             <element signature="e#658#677#0" expanded="true" />
+            <marker date="1489768933000" expanded="true" signature="22480:23310" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -619,6 +602,7 @@
           <caret line="61" column="15" lean-forward="false" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="15" />
           <folding>
             <element signature="e#683#700#0" expanded="true" />
+            <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -629,6 +613,7 @@
           <caret line="428" column="21" lean-forward="false" selection-start-line="428" selection-start-column="18" selection-end-line="428" selection-end-column="24" />
           <folding>
             <element signature="e#658#677#0" expanded="true" />
+            <marker date="1489768933000" expanded="true" signature="22480:23310" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -688,6 +673,7 @@
           <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
             <element signature="e#683#700#0" expanded="true" />
+            <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -698,6 +684,7 @@
           <caret line="359" column="26" lean-forward="false" selection-start-line="359" selection-start-column="20" selection-end-line="359" selection-end-column="26" />
           <folding>
             <element signature="e#658#677#0" expanded="true" />
+            <marker date="1489768933000" expanded="true" signature="22480:23310" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -740,6 +727,7 @@
           <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
             <element signature="e#683#700#0" expanded="true" />
+            <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -750,6 +738,7 @@
           <caret line="245" column="78" lean-forward="false" selection-start-line="245" selection-start-column="21" selection-end-line="245" selection-end-column="78" />
           <folding>
             <element signature="e#658#677#0" expanded="true" />
+            <marker date="1489768933000" expanded="true" signature="22480:23310" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -793,6 +782,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#683#700#0" expanded="true" />
+            <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -837,42 +827,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dbms.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="34" column="16" lean-forward="false" selection-start-line="34" selection-start-column="16" selection-end-line="34" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Table.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="72" column="43" lean-forward="true" selection-start-line="72" selection-start-column="43" selection-end-line="72" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Table.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/engine.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="17" />
-          <folding>
-            <element signature="e#656#673#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/engine.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -887,16 +841,56 @@
           <caret line="85" column="56" lean-forward="false" selection-start-line="84" selection-start-column="3" selection-end-line="85" selection-end-column="56" />
           <folding>
             <element signature="e#683#700#0" expanded="true" />
+            <marker date="1489767006000" expanded="true" signature="956:2734" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Parser.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="696" column="39" lean-forward="false" selection-start-line="696" selection-start-column="39" selection-end-line="696" selection-end-column="39" />
+        <state relative-caret-position="-521">
+          <caret line="280" column="21" lean-forward="false" selection-start-line="280" selection-start-column="13" selection-end-line="280" selection-end-column="21" />
           <folding>
             <element signature="e#658#677#0" expanded="true" />
+            <marker date="1489768933000" expanded="true" signature="22480:23310" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbms.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="34" column="16" lean-forward="false" selection-start-line="34" selection-start-column="16" selection-end-line="34" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Table.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="15" column="45" lean-forward="false" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/engine.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="33" column="1" lean-forward="true" selection-start-line="30" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
+          <folding>
+            <element signature="e#656#673#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Table.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#92#109#0" expanded="true" />
           </folding>
         </state>
       </provider>
