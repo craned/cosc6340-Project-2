@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/DBMS.dir/dbms.cpp.o  -o DBMS 
+=======
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/DBMS.dir/dbms.cpp.o CMakeFiles/DBMS.dir/parser.cpp.o CMakeFiles/DBMS.dir/table.cpp.o CMakeFiles/DBMS.dir/engine.cpp.o  -o DBMS 
+>>>>>>> adding-engine

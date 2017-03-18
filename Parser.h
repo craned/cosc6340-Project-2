@@ -51,22 +51,22 @@ public:
     //Declare class methods
     Parser() {};
 
-    bool readFromFile(string sFileName);
-    bool writeToFile(string sFileName);
-    int parse(string sLineIn);
-    void validate();
+  bool readFromFile(string sFileName);
+  bool writeToFile(string sFileName);
+  int parse(string sLineIn);
+  void validate();
 
-    //Grammar functions
-    bool findCreateTable(string sLineIn);
-    bool findSelect(string sLineIn);
-    bool findInsertInto(string sLineIn);
-    bool findShowTable(string sLineIn);
-    bool findShowTables(string sLineIn);
-    bool findWrite(string sLineIn);
-    bool findOpen(string sLineIn);
-    bool findClose(string sLineIn);
-    bool findQuit(string sLineIn);
-    string getAfterArrow(string sLineIn);
+  //Grammar functions
+  bool findCreateTable(string sLineIn);
+  bool findSelect(string sLineIn);
+  bool findInsertInto(string sLineIn);
+  bool findShowTable(string sLineIn);
+  bool findShowTables(string sLineIn);
+  bool findWrite(string sLineIn);
+  bool findOpen(string sLineIn);
+  bool findClose(string sLineIn);
+  bool findQuit(string sLineIn);
+  string getAfterArrow(string sLineIn);
 
     //helper functions
   vector<tuple<string, string, bool> > createColVector(string sLineIn);

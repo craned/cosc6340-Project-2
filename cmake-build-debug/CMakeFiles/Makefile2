@@ -54,10 +54,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2
+CMAKE_SOURCE_DIR = /Users/devincrane/CLionProjects/DBMS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/devincrane/CLionProjects/DBMS/cmake-build-debug
 
 #=============================================================================
 # Target rules for target CMakeFiles/DBMS.dir
