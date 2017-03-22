@@ -63,7 +63,7 @@ void Table::displayTable()
     if (bPrimaryKey)
     {
       std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
-          << "*" + sColName + "*";
+                << "*" + sColName + "*";
     }
     else
     {
@@ -80,36 +80,37 @@ void Table::displayTable()
   }
   std::cout << "\n";
 
-  for (int i = 0; i < vRows.size(); ++i)
-  {
-    for (int a = 0; a < vColumnName.size(); ++a)
-    {
-      for (std::vector<std::tuple<int, std::string> >::iterator current =
-          vRows[i].begin(); current != vRows[i].end(); ++current)
-      {
-        if (std::get < 0 > (*current) == std::get < 0 > (vColumnName[a]))
-        {
-          std::string sCurrent = std::get < 1 > (*current);
-          if (sCurrent.size() > COLUMN_WIDTH)
-          {
-            sCurrent.resize(COLUMN_WIDTH);
-          }
-          std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
-              << sCurrent;
-
-          break;
-        }
-      }
-    }
-
-    std::cout << "\n ";
-    for (int y = 0; y < vColumnName.size(); ++y)
-    {
-      std::cout << "+----------------------";
-    }
-    std::cout << "\n";
-  }
-  std::cout << "\n";
+//  for (int i = 0; i < vRows.size(); ++i)
+//  {
+//
+//    for (int a = 0; a < vColumnName.size(); ++a)
+//    {
+//      for (std::vector<std::tuple<int, std::string> >::iterator current =
+//              vRows[i].begin(); current != vRows[i].end(); ++current)
+//      {
+//        if (std::get < 0 > (*current) == std::get < 0 > (vColumnName[a]))
+//        {
+//          std::string sCurrent = std::get < 1 > (*current);
+//          if (sCurrent.size() > COLUMN_WIDTH)
+//          {
+//            sCurrent.resize(COLUMN_WIDTH);
+//          }
+//          std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+//                    << sCurrent;
+//
+//          break;
+//        }
+//      }
+//    }
+//
+//    std::cout << "\n ";
+//    for (int y = 0; y < vColumnName.size(); ++y)
+//    {
+//      std::cout << "+----------------------";
+//    }
+//    std::cout << "\n";
+//  }
+//  std::cout << "\n";
 }
 
 /*******************************************************************************
@@ -117,7 +118,7 @@ void Table::displayTable()
  and the type of the column
  *******************************************************************************/
 std::tuple<int, std::string, bool, std::string> Table::getColumnIndex(
-    std::string sColumnNameIn)
+        std::string sColumnNameIn)
 {
   for (int i = 0; i < vColumnName.size(); ++i)
   {
@@ -140,41 +141,59 @@ std::tuple<int, std::string, bool, std::string> Table::getColumnIndex(
 /*******************************************************************************
  This function takes the index of a column and returns the values of the column
  *******************************************************************************/
-std::vector<std::string> Table::getColumnValues(int iIndex)
-{
-  //create a vector of strings to return column values
-  std::vector < std::string > vReturn;
-
-  for (int i = 0; i < vRows.size(); ++i)
-  {
-    for (std::vector<std::tuple<int, std::string> >::iterator current =
-        vRows[i].begin(); current != vRows[i].end(); ++current)
-    {
-      //Execute if the column is found
-      if (std::get < 0 > (*current) == std::get < 0 > (vColumnName[iIndex]))
-      {
-        vReturn.push_back(std::get < 1 > (*current));
-        break;
-      }
-    }
-  }
-
-  return vReturn;
-}
+//std::vector<std::string> Table::getColumnValues(int iIndex)
+//{
+//  //create a vector of strings to return column values
+//  std::vector < std::string > vReturn;
+//
+//  for (int i = 0; i < vRows.size(); ++i)
+//  {
+//    for (std::vector<std::tuple<int, std::string> >::iterator current =
+//            vRows[i].begin(); current != vRows[i].end(); ++current)
+//    {
+//      //Execute if the column is found
+//      if (std::get < 0 > (*current) == std::get < 0 > (vColumnName[iIndex]))
+//      {
+//        vReturn.push_back(std::get < 1 > (*current));
+//        break;
+//      }
+//    }
+//  }
+//
+//  return vReturn;
+//}
 
 /*******************************************************************************
  This function takes the index of a column and returns the values of the column
  *******************************************************************************/
 std::vector<std::tuple<int, std::string> > Table::getRow(int iIndex)
 {
-  std::vector < std::tuple<int, std::string> > vReturn;
+  ifstream infile;
+  streampos pos;
+  string fileName = sTableName + ".tbl";
+  infile.open(fileName, ios::binary | ios::in);
 
-  for (std::vector<std::tuple<int, std::string> >::iterator current =
-      vRows[iIndex].begin(); current != vRows[iIndex].end(); ++current)
-  {
-    vReturn.push_back(
-        std::make_tuple(std::get < 0 > (*current), std::get < 1 > (*current)));
-  }
+
+  std::vector < std::tuple<int, std::string> > vReturn;
+  if(iIndex*std::get<0>(vSpecs)< std::get<1>(vSpecs) and iIndex<std::get<2>(vSpecs)){
+
+    infile.seekg(iIndex*std::get<0>(vSpecs), ios::beg);
+    for (int i = 0; i< vColumnName.size()-1; ++i){
+      string sName = get < 1 > (vColumnName[i]);
+      int bSize= get < 4 > (vColumnName[i]);
+      infile.read((char *)&sName, bSize);
+      vReturn.push_back(std::make_tuple( i,sName));
+    }
+
+  }else cout<<"index is out of range"<<endl;
+
+
+//  for (std::vector<std::tuple<int, std::string> >::iterator current =
+//          vRows[iIndex].begin(); current != vRows[iIndex].end(); ++current)
+//  {
+//    vReturn.push_back(
+//            std::make_tuple(std::get < 0 > (*current), std::get < 1 > (*current)));
+//  }
 
   return vReturn;
 }

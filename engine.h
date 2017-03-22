@@ -38,7 +38,8 @@ public:
     };
 
     void createTable(std::string sTableNameIn,
-                     std::vector<std::tuple<std::string, std::string, bool> > vColumnNamesIn,
+                     std::vector<std::tuple<std::string, std::string, bool, int> > vColumnNamesIn,
+                     std::tuple<int, int, int > vSpecs,
                      std::vector<std::string> vKeys);
     void displayTable(string sTableNameIn);
     void addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn);

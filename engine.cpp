@@ -29,7 +29,8 @@ using namespace std;
 
 std::vector<Table> vTableList;
 void Engine::createTable(std::string sTableNameIn,
-                         std::vector<std::tuple<std::string, std::string, bool> > vColumnNamesIn,
+                         std::vector<std::tuple<std::string, std::string, bool, int> > vColumnNamesIn,
+                         std::tuple<int, int, int> specs,
                          std::vector<std::string> vKeys)
 {
 
@@ -40,9 +41,11 @@ void Engine::createTable(std::string sTableNameIn,
         string sName = get < 0 > (vColumnNamesIn[i]);
         string sType = get < 1 > (vColumnNamesIn[i]);
         bool bKey = get < 2 > (vColumnNamesIn[i]);
-
-        t.addColumn(make_tuple(i, sName, bKey, sType));
+        int bSize= get < 3 > (vColumnNamesIn[i]);
+        t.addColumn(make_tuple(i, sName, bKey, sType, bSize));
     }
+
+    t.addSpecs(specs);
 
     for (int i = 0; i < vKeys.size(); ++i)
     {
