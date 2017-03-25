@@ -14,24 +14,19 @@
  This file contains the implementation for the engine
  *******************************************************************************/
 
-#include <string>
-#include <vector>
-#include <cstdlib>
-#include <iostream>
-#include <iomanip>
-#include "engine.h"
-using namespace std;
+#include "Engine.h"
 
 /*******************************************************************************
  This function will take in a vector of column names and trailing primary keys,
  and an integer specifying how many columns are in the vector.
  *******************************************************************************/
 
-std::vector<Table> vTableList;
-void Engine::createTable(std::string sTableNameIn,
-                         std::vector<std::tuple<std::string, std::string, bool, int> > vColumnNamesIn,
-                         std::tuple<int, int, int> specs,
-                         std::vector<std::string> vKeys)
+vector<Table> vTableList;
+
+void Engine::createTable(string sTableNameIn,
+                         vector<tuple<string, string, int, bool> > vColumnNamesIn,
+        /*std::tuple<int, int, int> specs,*/
+                         vector<string> vKeys)
 {
 
     Table t(sTableNameIn);
@@ -40,12 +35,15 @@ void Engine::createTable(std::string sTableNameIn,
     {
         string sName = get < 0 > (vColumnNamesIn[i]);
         string sType = get < 1 > (vColumnNamesIn[i]);
-        bool bKey = get < 2 > (vColumnNamesIn[i]);
-        int bSize= get < 3 > (vColumnNamesIn[i]);
-        t.addColumn(make_tuple(i, sName, bKey, sType, bSize));
+        int length = get < 2 > (vColumnNamesIn[i]);
+        bool bKey = get < 3 > (vColumnNamesIn[i]);
+
+        if(get < 1 > (vColumnNamesIn[i])=="int") length=sizeof(int);
+
+        t.addColumn(make_tuple(i, sName, bKey, sType, length));
     }
 
-    t.addSpecs(specs);
+    //t.addSpecs(specs);
 
     for (int i = 0; i < vKeys.size(); ++i)
     {
@@ -55,6 +53,31 @@ void Engine::createTable(std::string sTableNameIn,
     //push table into the table list
 
     vTableList.push_back(t);
+}
+
+/****************************************************************************
+   Adds a row to the specified table
+   ****************************************************************************/
+void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
+    for (int i = 0; i < vTableList.size(); ++i) {
+        if (vTableList[i].getTableName() == sTableNameIn) {
+            vTableList[i].addRow(vRowIn);
+            return;
+
+        }
+    }
+}
+/****************************************************************************
+   get a row to the specified table
+   ****************************************************************************/
+void Engine::getRow(string sTableNameIn,int iIndex) {
+    for (int i = 0; i < vTableList.size(); ++i) {
+        if (vTableList[i].getTableName() == sTableNameIn) {
+            vTableList[i].getRow(iIndex);
+            return;
+
+        }
+    }
 }
 /*****************************************************************************
    Print out the table with the given name
@@ -71,17 +94,31 @@ void Engine::displayTable(string sTableNameIn)
     }
     printf("| The table was not found\n");
 }
-/****************************************************************************
-   Adds a row to the specified table
+
+/*****************************************************************************
+   Print out all table schemas
    ****************************************************************************/
-void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn)
+void Engine::displayTableSchemas()
 {
+    //cout << "Grab data from catalog" << endl;
     for (int i = 0; i < vTableList.size(); ++i)
     {
-        if (vTableList[i].getTableName() == sTableNameIn)
+        //if (vTableList[i].getTableName() == sTableNameIn)
         {
-            vTableList[i].addRow(vRowIn);
-            return;
+            vTableList[i].displayTable();
+            //return;
         }
     }
+}
+
+
+
+int Engine::convertCharToInt(char* val)
+{
+    string xStr;
+    for (int i = 0; i < strlen(val); i++) {
+        xStr[i] = val[i];
+        //cout << "xStr[i] " << xStr[i] << endl;
+    }
+    return stoi(xStr);
 }

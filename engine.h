@@ -22,32 +22,32 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
-#include "table.h"
+#include <string.h>
+#include "Table.h"
+
 using namespace std;
 
 class Engine {
 private:
     //Declare private variables
-    //std::vector<Table> vTableList;
 
 public:
 
     //Declare class methods
-    Engine() {
+    Engine() {};
 
-    };
-
-    void createTable(std::string sTableNameIn,
-                     std::vector<std::tuple<std::string, std::string, bool, int> > vColumnNamesIn,
-                     std::tuple<int, int, int > vSpecs,
-                     std::vector<std::string> vKeys);
+    void createTable(string sTableNameIn,
+                     vector<tuple<string, string, int, bool> > vColumnNamesIn,
+            /*tuple<int, int, int > vSpecs,*/
+                     vector<string> vKeys);
     void displayTable(string sTableNameIn);
+    void displayTableSchemas();
     void addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn);
+    void getRow(string sTableNameIn,int iIndex);
 
 
+    static int convertCharToInt(char* val);
 
 };
-
-
 
 #endif

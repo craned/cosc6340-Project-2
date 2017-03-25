@@ -163,29 +163,29 @@ std::tuple<int, std::string, bool, std::string> Table::getColumnIndex(
 //  return vReturn;
 //}
 
-/*******************************************************************************
- This function takes the index of a column and returns the values of the column
- *******************************************************************************/
-std::vector<std::tuple<int, std::string> > Table::getRow(int iIndex)
-{
-  ifstream infile;
-  streampos pos;
-  string fileName = sTableName + ".tbl";
-  infile.open(fileName, ios::binary | ios::in);
-
-
-  std::vector < std::tuple<int, std::string> > vReturn;
-  if(iIndex*std::get<0>(vSpecs)< std::get<1>(vSpecs) and iIndex<std::get<2>(vSpecs)){
-
-    infile.seekg(iIndex*std::get<0>(vSpecs), ios::beg);
-    for (int i = 0; i< vColumnName.size()-1; ++i){
-      string sName = get < 1 > (vColumnName[i]);
-      int bSize= get < 4 > (vColumnName[i]);
-      infile.read((char *)&sName, bSize);
-      vReturn.push_back(std::make_tuple( i,sName));
-    }
-
-  }else cout<<"index is out of range"<<endl;
+///*******************************************************************************
+// This function takes the index of a column and returns the values of the column
+// *******************************************************************************/
+//std::vector<std::tuple<int, std::string> > Table::getRow(int iIndex)
+//{
+//  ifstream infile;
+//  streampos pos;
+//  string fileName = sTableName + ".tbl";
+//  infile.open(fileName, ios::binary | ios::in);
+//
+//
+//  std::vector < std::tuple<int, std::string> > vReturn;
+//  if(iIndex*std::get<0>(vSpecs)< std::get<1>(vSpecs) and iIndex<std::get<2>(vSpecs)){
+//
+//    infile.seekg(iIndex*std::get<0>(vSpecs), ios::beg);
+//    for (int i = 0; i< vColumnName.size()-1; ++i){
+//      string sName = get < 1 > (vColumnName[i]);
+//      int bSize= get < 4 > (vColumnName[i]);
+//      infile.read((char *)&sName, bSize);
+//      vReturn.push_back(std::make_tuple( i,sName));
+//    }
+//
+//  }else cout<<"index is out of range"<<endl;
 
 
 //  for (std::vector<std::tuple<int, std::string> >::iterator current =
@@ -195,6 +195,6 @@ std::vector<std::tuple<int, std::string> > Table::getRow(int iIndex)
 //            std::make_tuple(std::get < 0 > (*current), std::get < 1 > (*current)));
 //  }
 
-  return vReturn;
-}
+//  return vReturn;
+//}
 

@@ -25,9 +25,10 @@
 #include <stdio.h>
 #include <cstring>
 #include <stack>
+#include <fstream>
 #include "Table.h"
-#include "engine.h"
-//#include "../../Downloads/DBMS-master/Engine.h"
+#include "Engine.h"
+
 using namespace std;
 
 class Parser
@@ -35,7 +36,7 @@ class Parser
 private:
     //Declare private variables
     vector<string> vValuesRead;
-  Engine e;
+    Engine e;
 
 public:
     //Tree data structure
@@ -69,12 +70,13 @@ public:
     string getAfterArrow(string sLineIn);
 
     //helper functions
-  vector<tuple<string, string, bool> > createColVector(string sLineIn);
-  vector<string> createVector(string sLineIn);
-  vector<tuple<int, string> > createRowVector(string sLineIn);
-    string cleanSpaces(string sLineIn);
+    vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
+    vector<string> createVector(string sLineIn);
+    vector<tuple<int, string> > createRowVector(string sLineIn);
+    static string cleanSpaces(string sLineIn);
     string removeSpaces(string sLineIn);
     bool checkParenthesis(string sLineIn);
+    bool semicolonExists(string sLineIn);
 //  vector<string> makeTokens(string sLineIn); //tokenizes some shit
 //    treeNode * createTree(string sLineIn);
     void projection(string sRestOfLine, string sTableNameOut);
