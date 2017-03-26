@@ -175,9 +175,11 @@ int Parser::parse(string sLineIn)
     origQuery = sLineIn;
     if (!checkParenthesis(sLineIn)) {
   		printf("ERROR: the parentheses do not match\n");
+  		return 0;
   	}
     if (!semicolonExists(sLineIn)) {
   		printf("ERROR: there is no semicolon\n");
+  		return 0;
   	}
   	
     cout << "parenthesis ok" << endl;
