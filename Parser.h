@@ -28,6 +28,7 @@
 #include <fstream>
 #include "Table.h"
 #include "Engine.h"
+#include "Utilities.h"
 
 using namespace std;
 

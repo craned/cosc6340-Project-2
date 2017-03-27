@@ -33,8 +33,8 @@ void Engine::createTable(string sTableNameIn,
 
     for (size_t i = 0; i < vColumnNamesIn.size()-1; ++i)
     {
-        string sName = get < 0 > (vColumnNamesIn[i]);
-        string sType = get < 1 > (vColumnNamesIn[i]);
+        string sName = Utilities::cleanSpaces(get < 0 > (vColumnNamesIn[i]));
+        string sType = Utilities::cleanSpaces(get < 1 > (vColumnNamesIn[i]));
         int length = get < 2 > (vColumnNamesIn[i]);
         bool bKey = get < 3 > (vColumnNamesIn[i]);
 

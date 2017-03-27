@@ -126,25 +126,6 @@ bool Parser::writeToFile(string sFilename)
 /*******************************************************************************
  Remove any additional spaces from the string
  *******************************************************************************/
-string Parser::cleanSpaces(string sLineIn)
-{
-  string sOut = "";
-  for (size_t i = 0; i < sLineIn.length(); ++i)
-  {
-    //Append the value from the string into the return string, if its alpha
-    if (isalnum(sLineIn[i]) || sLineIn[i] == '_' || sLineIn[i] == '/' ||
-    	sLineIn[i] == '*' || sLineIn[i] == '=' || sLineIn[i] == '.')
-    {
-      sOut += sLineIn[i];
-    }
-  }
-
-  return sOut;
-}
-
-/*******************************************************************************
- Remove any additional spaces from the string
- *******************************************************************************/
 string Parser::removeSpaces(string sLineIn)
 {
   string sOut = "";
@@ -265,7 +246,7 @@ bool Parser::findCreateTable(string sLineIn)
                     cout << "primary keys " << sPrimaryKeys << endl;
 
                     //remove the spaces from the name of the table
-                    sTableName = Parser::cleanSpaces(sTableName);
+                    sTableName = Utilities::cleanSpaces(sTableName);
 
                     //call the create table function after the helper functions
                     e.createTable(sTableName, createColVector(sColumns),
@@ -328,7 +309,7 @@ bool Parser::findSelect(string sLineIn)
                 {
                     string tableName = origQuery.substr(iPosStart,
                                                         iPosEnd1 - iPosStart);
-                    tableName = Parser::cleanSpaces(tableName);
+                    tableName = Utilities::cleanSpaces(tableName);
                     returningNestedLevel = iPosEnd1 - 1;
                     cout << "tableName " << tableName << endl;
                     cout << "colNames " << colNames << endl;
@@ -358,7 +339,7 @@ bool Parser::findSelect(string sLineIn)
 	             	if (iPosJoin != string::npos) {
 	             		iPosStart = iPosJoin + 4 + 1/*space after JOIN*/;
 		                size_t iPosSpace = sLineIn.find(" ", iPosStart);
-		                joinTable = cleanSpaces(sLineIn.substr(iPosStart, 
+		                joinTable = Utilities::cleanSpaces(sLineIn.substr(iPosStart, 
 		                							iPosSpace - iPosStart));
 		                cout << "joinTable " << joinTable << endl;
 		                
@@ -368,7 +349,7 @@ bool Parser::findSelect(string sLineIn)
 			                size_t iPosTableDotCol = sLineIn.find(".", iPosEqual);
 			                size_t iPosJoinEnd = sLineIn.find(" ", iPosTableDotCol);
 	             			iPosOn += 2;
-	             			joinFilter = cleanSpaces(sLineIn.substr(iPosOn,
+	             			joinFilter = Utilities::cleanSpaces(sLineIn.substr(iPosOn,
 	             											iPosJoinEnd - iPosOn));
 	             			cout << "joinFilter " << joinFilter << endl;
 	             		}
@@ -379,7 +360,7 @@ bool Parser::findSelect(string sLineIn)
 	                string whereFilter = "";
 	             	if (iPosWhere != string::npos) {
 	             		size_t iPosWhereFilter = iPosWhere + 5;
-		                string whereFilter = cleanSpaces(sLineIn.substr(iPosWhereFilter,
+		                string whereFilter = Utilities::cleanSpaces(sLineIn.substr(iPosWhereFilter,
 		                                            iPosSemiColon - iPosWhereFilter));
 		                cout << "where " << whereFilter << endl;
 	             	}
@@ -433,7 +414,7 @@ bool Parser::findInsertInto(string sLineIn)
             //Get the name of the table from the string
             string sTableNameOut = sLineIn.substr(iPosStart,
                                                   iPosEnd1 - iPosStart);
-            sTableNameOut = Parser::cleanSpaces(sTableNameOut);
+            sTableNameOut = Utilities::cleanSpaces(sTableNameOut);
             cout << sTableNameOut << endl;
 
             //reposition the iterators to get the row values
@@ -446,7 +427,7 @@ bool Parser::findInsertInto(string sLineIn)
                 string sRow = sLineIn.substr(iPosStart,
                                              iPosEnd1 - iPosStart);
                 cout << "values " << sRow << endl;
-                //values = cleanSpaces(values);
+                //values = Utilities::cleanSpaces(values);
                 //cout << "values " << values << endl;
 
                 iPosStart = iPosEnd1;
@@ -472,7 +453,7 @@ bool Parser::findInsertInto(string sLineIn)
             iPosEnd1 = sLineIn.find("FROM", iPosStart);
             string colNames = sLineIn.substr(iPosStart,
                                              iPosEnd1 - iPosStart);
-            //colNames = cleanSpaces(colNames);
+            //colNames = Utilities::cleanSpaces(colNames);
             cout << "from colNames " << colNames << endl;
 
             //reposition the iterators to get the row values
@@ -521,7 +502,7 @@ bool Parser::findShowTable(string sLineIn)
   {
     //Get the name of the table from the string
     string sTableName = sLineIn.substr(iPosStart + SHOW_TABLE_SIZE);
-    sTableName = Parser::cleanSpaces(sTableName);
+    sTableName = Utilities::cleanSpaces(sTableName);
     
     cout << "table name " << sTableName << endl;
 
@@ -624,7 +605,7 @@ void Parser::select(string sNewTableName, string sRestOfLine)
     size_t iParenth2 = sRestOfLine.find(")", iParenth1 + 1);
     string sValues = removeSpaces(
         sRestOfLine.substr(iParenth1 + 1, iParenth2 - iParenth1));
-    string sTableNameIn = Parser::cleanSpaces(sRestOfLine.substr(iParenth2 + 1));
+    string sTableNameIn = Utilities::cleanSpaces(sRestOfLine.substr(iParenth2 + 1));
 //    vector < string > vValues = makeTokens(sValues);
 
     if (sTableNameIn == sNewTableName)
@@ -687,7 +668,8 @@ vector<string> Parser::createVector(string sLineIn)
     while (iCount <= iAmountOfCommas)
     {
         iPosEnd = sLineIn.find(",", iPosStart + 1);
-        vReturn.push_back(sLineIn.substr(iPosStart, iPosEnd - iPosStart));
+        string value = sLineIn.substr(iPosStart, iPosEnd - iPosStart);
+        vReturn.push_back(value);
         iPosStart = iPosEnd + 1;
         iCount++;
     }
@@ -695,7 +677,7 @@ vector<string> Parser::createVector(string sLineIn)
     //clean up the words that were separated out
     //for (int i = 0; i < vReturn.size(); ++i)
     {
-        //vReturn[i] = cleanSpaces(vReturn[i]);
+        //vReturn[i] = Utilities::cleanSpaces(vReturn[i]);
         //cout<<"vReturn: "<<vReturn[i]<<endl;
     }
 

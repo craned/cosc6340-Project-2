@@ -4,6 +4,7 @@
 
 #ifndef GIT2_TABLE_H
 #define GIT2_TABLE_H
+
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -12,6 +13,8 @@
 #include <tuple>
 #include <fstream>
 #include "fstream"
+#include "Utilities.h"
+
 using namespace std;
 
 class Table

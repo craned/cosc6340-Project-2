@@ -24,6 +24,7 @@
 #include <iomanip>
 #include <string.h>
 #include "Table.h"
+#include "Utilities.h"
 
 using namespace std;
 

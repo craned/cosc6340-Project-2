@@ -172,8 +172,10 @@ vector<tuple<int, string> > Table::getRow(int iIndex)
     //Setters
     void Table::setPrimaryKey(string sKeyIn)
     {
+    	cout << "key " << sKeyIn << endl;
         for (size_t i = 0; i < vColumnNames.size(); ++i)
         {
+        	cout << "column name " << get < 1 > (vColumnNames[i]) << endl;
             //Execute if the column name is equal to the parameter name
             if (get < 1 > (vColumnNames[i]) == sKeyIn)
             {
@@ -183,7 +185,7 @@ vector<tuple<int, string> > Table::getRow(int iIndex)
             }
         }
 
-        printf("| Primary Key was not set\n");
+        printf("ERROR: Primary Key was not set\n");
     }
 
     //add a column to the class vector

@@ -85,7 +85,21 @@ void parseScriptFile(string scriptFile) {
                 string query = queries.substr(0, firstSemicolon);
                 cout << query << endl;
                 parser->parse(query);
-                queries = queries.substr(firstSemicolon, queries.length() - firstSemicolon);
+                queries = queries.substr(firstSemicolon,
+                						queries.length() - firstSemicolon);
+            }
+        }
+        
+        while (queries.length() > 0) {
+        	out << line;
+            cout << queries << endl;
+            size_t firstSemicolon = queries.find(";") + 1;
+            if (firstSemicolon != string::npos) {
+                string query = queries.substr(0, firstSemicolon);
+                cout << query << endl;
+                parser->parse(query);
+                queries = queries.substr(firstSemicolon,
+                						queries.length() - firstSemicolon);
             }
         }
 
@@ -110,21 +124,27 @@ void parseScriptFile(string scriptFile) {
 void commandLineSQLInput(string sqlQuery) {
     //cout << sqlQuery << endl;
     while (true) {
-        sqlQuery = toUpper(sqlQuery);
+        sqlQuery += toUpper(sqlQuery);
         // for production - don't -think- this is needed anymore
 //        SQL = "";
 //        cout << "SQL > ";
 //        getline(cin, SQL);
 //        SQL = toupper(SQL);
 
-		out << sqlQuery;
-        if (parser->parse(sqlQuery) == 0) {
-            return;
-        }
+		out << sqlQuery;    
+		size_t firstSemicolon = sqlQuery.find(";");
+		if (sqlQuery.find(";") != string::npos) {
+		    if (parser->parse(sqlQuery) == 0) {
+		        return;
+		    }
+		    
+		    firstSemicolon++;
+            string sqlQuery = sqlQuery.substr(0, firstSemicolon);
+		    sqlQuery = "";
+		    cout << "SQL > ";
+		}
 
         // for testing
-        sqlQuery = "";
-        cout << "SQL > ";
         getline(cin, sqlQuery);
     }
 }
