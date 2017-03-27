@@ -9,6 +9,10 @@ string sqlQuery = "CREATE TABLE T (C1 INT, C2 VARCHAR(5), C3 INT, PRIMARY KEY(C1
 string scriptFile = "";
 //string scriptFile = "file";
 
+const string OUTPUT_FILE = "output.txt";
+
+ofstream out;
+
 string const CREATE_TABLE = "CREATE TABLE ";
 string const INSERT_INTO = "INSERT INTO ";
 string const SELECT = "SELECT ";
@@ -73,11 +77,13 @@ void parseScriptFile(string scriptFile) {
     if (script.is_open()) {
         //cout << "open" << endl;
         while (getline(script, line)) {
+        	out << line;
             queries += toUpper(line);
             cout << queries << endl;
             size_t firstSemicolon = queries.find(";") + 1;
             if (firstSemicolon != string::npos) {
                 string query = queries.substr(0, firstSemicolon);
+                cout << query << endl;
                 parser->parse(query);
                 queries = queries.substr(firstSemicolon, queries.length() - firstSemicolon);
             }
@@ -111,6 +117,7 @@ void commandLineSQLInput(string sqlQuery) {
 //        getline(cin, SQL);
 //        SQL = toupper(SQL);
 
+		out << sqlQuery;
         if (parser->parse(sqlQuery) == 0) {
             return;
         }
@@ -134,6 +141,8 @@ int main(int argc, char *argv[]) {
         }
         return 0;
     }
+    
+    out.open(OUTPUT_FILE, ios::out);
 
     parser = new Parser();
 
@@ -143,6 +152,7 @@ int main(int argc, char *argv[]) {
         char* scriptFile = strtok((char*)firstArg.c_str(), "=");
         scriptFile = strtok(NULL, "="); // Advance to actual script file name
         if (scriptFile == NULL) {
+        	out << "ERROR: no sql script could be found";
             cout << "ERROR: no sql script could be found" << endl;
             return 0;
         }
@@ -152,6 +162,8 @@ int main(int argc, char *argv[]) {
     } else {
         commandLineSQLInput(firstArg);
     }
+    
+    out.close();
 
     return 0;
 }
