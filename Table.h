@@ -22,20 +22,34 @@ private:
 
     //std::vector<std::vector<std::tuple<int, std::string> > > ;
     std::vector<std::string> primaryKey;
-
-//    int tRecordSize=0;
-//    int tTotalSize=0;
-//    int tNumOfRecords=0;
-
-    tuple<int, int, int> vSpecs;
-    std::string sTableName;
+    int tRecordSize;
+    int tTotalSize;
+    int tNumOfRecords;
+    string sTableName;
 
 public:
+    int getTRecordSize() const;
+
+    void setTRecordSize(int tRecordSize);
+
+    int getTTotalSize() const;
+
+    void setTTotalSize(int tTotalSize);
+
+    int getTNumOfRecords() const;
+
+    void setTNumOfRecords(int tNumOfRecords);
     //constructors
     Table()
     {
     }
     ;
+    std::vector<std::tuple<int, std::string, bool, std::string, int> > getColumnNames()
+    {
+        return vColumnName;
+    }
+
+    void printOutTheWholeTable();
 
     //Constructor that takes in a name for the table
     Table(std::string sTableNameIn)
@@ -63,36 +77,12 @@ public:
         printf("| Primary Key was not set\n");
     }
 
-//    void removePrimaryKey(std::string sKeyIn)
-//    {
-//        for (int i = 0; i < vColumnName.size(); ++i)
-//        {
-//            //find the column that is the key and set the bool to false, remove key
-//            if (std::get < 1 > (vColumnName[i]) == sKeyIn)
-//            {
-//                std::get < 2 > (vColumnName[i]) = false;
-//                return;
-//            }
-//        }
-//
-//        printf("| Primary Key was not removed\n");
-//    }
-
-    //rename the class table to parameter name
-//    void rename(std::string sNewName)
-//    {
-//        sTableName = sNewName;
-//    }
 
     //add a column to the class vector
     void addColumn(std::tuple<int, std::string, bool, std::string, int> s)
     {
         vColumnName.push_back(s);
     }
-//    void addSpecs(std::tuple<int, int, int > d){
-//        vSpecs = d;
-//    }
-
 
     string delSpaces(string &str)
     {
@@ -112,26 +102,29 @@ public:
         for (int i = 0; i < vColumnName.size(); ++i) {
             if(get<3>(vColumnName[i])=="string") {
                 delSpaces(get<1>(v[i]));
-                cout<<"get<1>(v[i]): "<<get<1>(v[i])<<endl;
+                //cout<<"get<1>(v[i]): "<<get<1>(v[i])<<endl;
                 //cout<<"size of get<1>(v[i]): "<<sizeof(get<1>(v[i]))<<endl;
                 writeStringToFile(get<1>(v[i]), get<4>(vColumnName[i]), out);
-                cout << "v" << i << ":" << get<1>(v[i]) << endl;
+                //cout << "v" << i << ":" << get<1>(v[i]) << endl;
+
             }
             else if(get<3>(vColumnName[i])=="int"){
                 std::string::size_type sz;
                 //cout<<"sz: "<<sz<<endl;
                 int value= stol(get<1>(v[i]),&sz);
-                cout<<"size of this int: "<<sizeof(value)<<endl;
+                //cout<<"size of this int: "<<sizeof(value)<<endl;
                 writeIntToFile(value,out);
-                //writeStringToFile(get<1>(v[i]), sizeof(int), out);
+
             }
             else cout<<"type error! "<<endl;
         }
-
+        setTNumOfRecords(getTNumOfRecords()+1);
         out.close();
     }
-    void getRow(int iIndex) {
-        //std::vector<std::vector<std::tuple<int, std::string> > > vReturn;
+
+    //get a row by using index
+    vector < std::tuple<int, std::string> > getRow(int iIndex) {
+        std::vector < std::tuple<int, std::string> > vReturn;
         ifstream in;
         int recordSize=getRecordSize();
 //        if(iIndex>get<2>vSpecs){
@@ -146,26 +139,35 @@ public:
                 //cout<<"string block size "<<blockSize<<endl;
                 char *c1 = new char[blockSize];
                 in.read(c1, sizeof(char) * blockSize);
-                cout << "c1: " << c1 << endl;
+                //cout << "s1: " << c1 << endl;
+                vReturn.push_back(
+                        std::make_tuple(i, c1));
             } else if(get<3>(vColumnName[i])=="int") {
                 int c2;
                 char* pmemory = ( char* ) &c2;
                 //char *c2 = new char[sizeof(int)];
                 in.read(pmemory, sizeof(int));
-                cout << "c2: " << c2 << endl;
+                //cout << "i1: " << c2 << endl;
+                vReturn.push_back(
+                        std::make_tuple(i, to_string(c2)));
             }
 
         }
         in.close();
+
+        return vReturn;
     }
+
+
+
     int getRecordSize()
     {
         int recordSize=0;
         for (int i = 0; i < vColumnName.size(); ++i) {
-            cout<<"get<4>(vColumnName[i]: "<<get<4>(vColumnName[i])<<endl;
+            //cout<<"get<4>(vColumnName[i]: "<<get<4>(vColumnName[i])<<endl;
             recordSize=recordSize+get<4>(vColumnName[i]);
         }
-        cout<<"record size is: "<<recordSize<< endl;
+        //cout<<"record size is: "<<recordSize<< endl;
         return recordSize;
     }
 
@@ -218,6 +220,17 @@ public:
     //std::vector<std::tuple<int, std::string> > getRow(int iIndex);
 
     std::vector<std::string> getColumnValues(int iIndex);
+
+
+    void deleteATable(string tableName){
+        string name=tableName+".tbl";
+        //setTNumOfRecords(0);
+        const char* tName=name.c_str();
+        if( remove( tName ) != 0 )
+            perror( "Error deleting file" );
+        else
+            puts( "File successfully deleted" );
+    }
 
 };
 
