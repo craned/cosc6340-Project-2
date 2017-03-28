@@ -169,6 +169,7 @@ int Parser::parse(string sLineIn)
     } else if (findInsertInto(sLineIn)) {
         cout << "Insert Into found" << endl;
     } else if (findSelect(sLineIn)) {
+    	//selectQ = new SelectQ();
         cout << "Select found" << endl;
     } else if (findQuit(sLineIn)) {
         cout << "Finished" << endl;
@@ -277,6 +278,7 @@ bool Parser::findSelect(string sLineIn)
             string colNames = sLineIn.substr(iPosStart,
                                              iPosEnd1 - iPosStart);
             cout << "colNames " << colNames << endl;
+            selectQ.setSelectCols(colNames);
 
             iPosStart = iPosEnd1 + 4 + 1/*for the space*/;
 
@@ -294,6 +296,7 @@ bool Parser::findSelect(string sLineIn)
 
                 // recursion starts
                 this->findSelect(nestedSelect);
+                nestedLevel--;
                 cout << "returned from recursion" << endl;
                 // ok, now start using origQuery
 
@@ -307,12 +310,25 @@ bool Parser::findSelect(string sLineIn)
 
                 if (iPosEnd1 != string::npos)
                 {
-                    string tableName = origQuery.substr(iPosStart,
+                    string tempTableName = origQuery.substr(iPosStart,
                                                         iPosEnd1 - iPosStart);
-                    tableName = Utilities::cleanSpaces(tableName);
+                    tempTableName = Utilities::cleanSpaces(tempTableName);
+                    selectQ.setTempTable(tempTableName);
                     returningNestedLevel = iPosEnd1 - 1;
-                    cout << "tableName " << tableName << endl;
-                    cout << "colNames " << colNames << endl;
+                    cout << "tempTableName " << tempTableName << endl;
+                    //cout << "colNames 1" << colNames << endl;
+	          			
+          			selectQ.printAll();
+          			//e.executeSelect();
+          			
+                    selectQ.setFromTable(selectQ.getTempTable());
+                    selectQ.setTempTable("");
+                    selectQ.setSelectCols(colNames);
+                    cout << "nested level " << nestedLevel << endl;
+                    if (nestedLevel == 0) {
+                    	selectQ.printAll();
+                    }
+
                     return true;
                 }
             } else {
@@ -331,6 +347,7 @@ bool Parser::findSelect(string sLineIn)
 	             									iPosSemiColon - iPosStart);
 	                	cout << "semic tableName " << endl;
 	          		}
+	          		selectQ.setFromTable(tableName);
 	                cout << "tableName " << tableName << endl;
 	                
 	                size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
@@ -342,6 +359,7 @@ bool Parser::findSelect(string sLineIn)
 		                joinTable = Utilities::cleanSpaces(sLineIn.substr(iPosStart, 
 		                							iPosSpace - iPosStart));
 		                cout << "joinTable " << joinTable << endl;
+		                selectQ.setJoinTable(joinTable);
 		                
 		                size_t iPosOn = sLineIn.find("ON", iPosStart);
 	             		if (iPosOn != string::npos) {
@@ -352,6 +370,7 @@ bool Parser::findSelect(string sLineIn)
 	             			joinFilter = Utilities::cleanSpaces(sLineIn.substr(iPosOn,
 	             											iPosJoinEnd - iPosOn));
 	             			cout << "joinFilter " << joinFilter << endl;
+	             			selectQ.setJoinFilter(joinFilter);
 	             		}
 	             	}
 	             	
@@ -363,8 +382,10 @@ bool Parser::findSelect(string sLineIn)
 		                string whereFilter = Utilities::cleanSpaces(sLineIn.substr(iPosWhereFilter,
 		                                            iPosSemiColon - iPosWhereFilter));
 		                cout << "where " << whereFilter << endl;
+		                selectQ.setWhereFilter(whereFilter);
 	             	}
 	                
+	                selectQ.printAll();
 	                e.executeSelect(tableName, colNames, whereFilter,
 	                				joinTable, joinFilter);
 	                return true;
@@ -376,7 +397,9 @@ bool Parser::findSelect(string sLineIn)
                         //cout << sLineIn << endl;
                         string tableName = sLineIn.substr(iPosStart,
                                                           iPosEnd1 - iPosStart);
-                        cout << "tableName " << tableName << endl;
+                        cout << "deepest nested tableName " << tableName << endl;
+	          			selectQ.setFromTable(tableName);
+	          			
                         return true;
                     }
                 }

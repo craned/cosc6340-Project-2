@@ -15,6 +15,19 @@ void SelectQ::clearAll()
 	setOrderBy("");
 	setGroupBy("");
 }
+
+void SelectQ::printAll()
+{
+	cout << "printing all" << endl;
+	cout << "select cols " << getSelectCols() << endl;
+	cout << "from table " << getFromTable() << endl;
+	cout << "temp table " << getTempTable() << endl;
+	cout << "join table " << getJoinTable() << endl;
+	cout << "join filter " << getJoinFilter() << endl;
+	cout << "where filter " << getWhereFilter() << endl;
+	cout << "orderBy " << getOrderBy() << endl;
+	cout << "groupBy " << getGroupBy() << endl;
+}
 	   
 void SelectQ::setSelectCols(string cols)
 {

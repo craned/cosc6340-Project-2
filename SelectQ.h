@@ -2,10 +2,7 @@
 #ifndef SELECTQ_H
 #define SELECTQ_H
 
-#include <string>
-#include <cstdlib>
-#include <iomanip>
-#include <string.h>
+#include <iostream>
 
 using namespace std;
 
@@ -27,6 +24,7 @@ class SelectQ {
 	    SelectQ() {};
 	    
 	    void clearAll();
+	    void printAll();
 	    
 	    void setSelectCols(string cols);
 	    string getSelectCols();

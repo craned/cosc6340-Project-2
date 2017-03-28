@@ -28,6 +28,7 @@
 #include <fstream>
 #include "Table.h"
 #include "Engine.h"
+#include "SelectQ.h"
 #include "Utilities.h"
 
 using namespace std;
@@ -38,6 +39,7 @@ private:
     //Declare private variables
     vector<string> vValuesRead;
   Engine e;
+  SelectQ selectQ;
 
 public:
     //Tree data structure
