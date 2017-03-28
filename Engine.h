@@ -24,32 +24,34 @@
 #include <iomanip>
 #include <string.h>
 #include "Table.h"
+#include "Utilities.h"
 
 using namespace std;
 
 class Engine {
-private:
-    //Declare private variables
+	private:
+	    //Declare private variables
 
-public:
+	public:
 
-    //Declare class methods
+	    //Declare class methods
     Engine() {};
-
+    
     void createTable(string sTableNameIn,
                      vector<tuple<string, string, int, bool> > vColumnNamesIn,
-            /*tuple<int, int, int > vSpecs,*/
+                     /*tuple<int, int, int > vSpecs,*/
                      vector<string> vKeys);
     void displayTable(string sTableNameIn);
     void displayTableSchemas();
     void addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn);
     void getRow(string sTableNameIn,int iIndex);
     void executeSelect(string tableName, vector < string > colNames, string whereFilter,
-    	                				string joinTable, string joinFilter);
+                       string joinTable, string joinFilter);
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
     void deleteATable(Table table);
 
-};
+	};
 
 #endif
+

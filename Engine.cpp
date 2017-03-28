@@ -25,7 +25,7 @@ vector<Table> vTableList;
 
 void Engine::createTable(string sTableNameIn,
                          vector<tuple<string, string, int, bool> > vColumnNamesIn,
-        /*std::tuple<int, int, int> specs,*/
+                         /*std::tuple<int, int, int> specs,*/
                          vector<string> vKeys)
 {
     for(int i=0; i<vTableList.size();i++){
@@ -33,33 +33,33 @@ void Engine::createTable(string sTableNameIn,
             cout<<"this table already exist!"<<endl;
         }
     }
-
+    
     Table t(sTableNameIn);
-
+    
     for (int i = 0; i < vColumnNamesIn.size()-1; ++i)
     {
-        string sName = get < 0 > (vColumnNamesIn[i]);
-        string sType = get < 1 > (vColumnNamesIn[i]);
+        string sName = Utilities::cleanSpaces(get < 0 > (vColumnNamesIn[i]));
+        string sType = Utilities::cleanSpaces(get < 1 > (vColumnNamesIn[i]));
         int length = get < 2 > (vColumnNamesIn[i]);
         bool bKey = get < 3 > (vColumnNamesIn[i]);
-
+        
         if(get < 1 > (vColumnNamesIn[i])=="int") length=sizeof(int);
-
+        
         t.addColumn(make_tuple(i, sName, bKey, sType, length));
     }
-
+    
     //t.addSpecs(specs);
     t.setTNumOfRecords(0);
     t.setTRecordSize(t.getRecordSize());
     //t.setTTotalSize();
-
+    
     for (int i = 0; i < vKeys.size(); ++i)
     {
         t.setPrimaryKey(vKeys[i]);
     }
-
+    
     //push table into the table list
-
+    
     vTableList.push_back(t);
 }
 
@@ -71,29 +71,31 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
         if (vTableList[i].getTableName() == sTableNameIn) {
             vTableList[i].addRow(vRowIn);
             return;
-
+            
         }
         else{cout<<"this table does not exist!"<<endl;}
     }
 }
+
 /****************************************************************************
-   get a row to the specified table
-   ****************************************************************************/
+ get a row to the specified table
+ ****************************************************************************/
 void Engine::getRow(string sTableNameIn,int iIndex) {
     for (int i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
             vTableList[i].getRow(iIndex);
             return;
-
+            
         }
     }
 }
+
 /*****************************************************************************
    Print out the table with the given name
    ****************************************************************************/
 void Engine::displayTable(string sTableNameIn)
 {
-    for (int i = 0; i < vTableList.size(); ++i)
+    for (size_t i = 0; i < vTableList.size(); ++i)
     {
         if (vTableList[i].getTableName() == sTableNameIn)
         {
@@ -101,7 +103,7 @@ void Engine::displayTable(string sTableNameIn)
             return;
         }
     }
-    printf("| The table was not found\n");
+    printf("ERROR: The table was not found\n");
 }
 
 /*****************************************************************************
@@ -109,8 +111,8 @@ void Engine::displayTable(string sTableNameIn)
    ****************************************************************************/
 void Engine::displayTableSchemas()
 {
-    //cout << "Grab data from catalog" << endl;
-    for (int i = 0; i < vTableList.size(); ++i)
+	//cout << "Grab data from catalog" << endl;
+	for (size_t i = 0; i < vTableList.size(); ++i)
     {
         //if (vTableList[i].getTableName() == sTableNameIn)
         {
@@ -120,19 +122,15 @@ void Engine::displayTableSchemas()
     }
 }
 
-
-
 int Engine::convertCharToInt(char* val)
 {
-    string xStr;
-    for (int i = 0; i < strlen(val); i++) {
-        xStr[i] = val[i];
-        //cout << "xStr[i] " << xStr[i] << endl;
-    }
-    return stoi(xStr);
+	string xStr;
+	for (size_t i = 0; i < strlen(val); i++) {
+		xStr[i] = val[i];
+		//cout << "xStr[i] " << xStr[i] << endl;
+	}
+	return stoi(xStr);
 }
-
-/******************************************************************************/
 
 // If you don't understand these comments, run this query:
 // ./dbms "select a,b,k from t1 join t2 on t1.k = t2.kb where b=1;"
@@ -143,45 +141,45 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
 {
     cout<<"tableName: "<<sTableNameIn<<endl;
     for(int i=0;i<colNames.size();i++){
-
+        
         cout<<"colNames: "<<colNames[i]<<endl;
     }
-
+    
     cout<<"whereFilter: "<<whereFilter<<endl;
     cout<<"joinTable: "<<joinTable<<endl;
     cout<<"joinFilter: "<<joinFilter<<endl;
-
+    
     //spliting whereFilter
     string delimiter = "=";
     string leftSideCondition = whereFilter.substr(0, whereFilter.find(delimiter));
     string rightSideCondition = whereFilter.substr(whereFilter.find(delimiter) + delimiter.length(), whereFilter.length());
     cout<<"leftSideCondition "<<leftSideCondition<<endl;
     cout<<"rightSideCondition "<<rightSideCondition<<endl;
-
+    
     int iColumnIndex = -1;
     string sColumnType;
-
+    
     //make a temp table
     string sTableNameOut = sTableNameIn +"T2";
     Table tNewTable(sTableNameOut);
-
-
+    
+    
     std::vector < std::tuple<int, std::string> > vtest;
     cout<<"select from table: "<<vTableList[0].getTableName()<<endl;
-
+    
     for (int i = 0; i < vTableList.size(); ++i) {
         Table tCurrentTable = vTableList[i];
-
+        
         //Execute if the table is found in the list
         if (tCurrentTable.getTableName() == sTableNameIn) {
             //printout the current table
             tCurrentTable.printOutTheWholeTable();
-
+            
             //Input the column names and types into the new table, then determine
             //the rows to copy over
             vector<tuple<int, string, bool, string, int> > vNames =
-                    tCurrentTable.getColumnNames();
-
+            tCurrentTable.getColumnNames();
+            
             for (int a = 0; a < vNames.size(); ++a) {
                 if (a == get<0>(vNames[a])) {
                     //Add column to new table
@@ -202,26 +200,26 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 //*******need to be changed*******************************************
                 int numOfRows=tCurrentTable.getTNumOfRecords();
                 //int numOfRows= 3;
-
+                
                 for(int i=0; i<numOfRows; i++){
                     std::vector < std::tuple<int, std::string> > vtemp;
                     vtemp=tCurrentTable.getRow(i);
-                        if(get < 1 > (vtemp[iColumnIndex]).compare(rightSideCondition) == 0){
-                            tNewTable.addRow(tCurrentTable.getRow(i));
-                        }
+                    if(get < 1 > (vtemp[iColumnIndex]).compare(rightSideCondition) == 0){
+                        tNewTable.addRow(tCurrentTable.getRow(i));
+                    }
                 }
             }
-
+            
         }else{
             cout<<"You are selecting from a table that does not exist! "<<endl;
         }
     }
     vTableList.push_back(tNewTable);
     tNewTable.printOutTheWholeTable();
-
-
-
-
+    
+    
+    
+    
     //if there is no selection - select *
     if(colNames.size()==1 and colNames[0]=="*") {
         //printing out the whole table:
@@ -237,10 +235,10 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             for (int i = 0; i < tNewTable.getColumnNames().size(); i++) {
                 if (colNames[x] == get<1>(tNewTable.getColumnNames()[i])) {
                     tNewNewTable.addColumn(
-                            make_tuple(x, get<1>(tNewTable.getColumnNames()[i]), get<2>(tNewTable.getColumnNames()[i]),
-                                       get<3>(tNewTable.getColumnNames()[i]), get<4>(tNewTable.getColumnNames()[i])));
+                                           make_tuple(x, get<1>(tNewTable.getColumnNames()[i]), get<2>(tNewTable.getColumnNames()[i]),
+                                                      get<3>(tNewTable.getColumnNames()[i]), get<4>(tNewTable.getColumnNames()[i])));
                     indexes.push_back(get<0>(tNewTable.getColumnNames()[i]));
-
+                    
                 }
             }
         }
@@ -257,7 +255,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         }
         vTableList.push_back(tNewNewTable);
         tNewNewTable.printOutTheWholeTable();
-
+        
         deleteATable(tNewTable);
         deleteATable(tNewNewTable);
         tNewTable.setTNumOfRecords(0);
@@ -268,8 +266,8 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             cout<<"remaining tables: "<<vTableList[i].getTableName()<<endl;
         }
     }
-
-
+    
+    
 }
 void Engine::deleteATable(Table table){
     for(int i=0; i<vTableList.size(); i++){
@@ -279,5 +277,6 @@ void Engine::deleteATable(Table table){
             table.deleteATable(table.getTableName());
         }
     }
-
+    
 }
+

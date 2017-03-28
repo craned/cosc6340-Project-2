@@ -6,7 +6,18 @@
 
 #IncludeRegexTransform: 
 
+<<<<<<< HEAD
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
+=======
+<<<<<<< HEAD
+/Users/devincrane/CLionProjects/DBMS/dbms.cpp
+iostream
+-
+stdio.h
+-
+=======
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
+>>>>>>> master
 string
 -
 vector
@@ -96,3 +107,21 @@ fstream
 Table.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
 
+<<<<<<< HEAD
+=======
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.h
+string
+-
+vector
+-
+cstdlib
+-
+iostream
+-
+iomanip
+-
+tuple
+-
+>>>>>>> adding-engine
+
+>>>>>>> master

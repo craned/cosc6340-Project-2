@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2
+CMAKE_SOURCE_DIR = /Users/devincrane/CLionProjects/DBMS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/devincrane/CLionProjects/DBMS/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/devincrane/CLionProjects/DBMS/cmake-build-debug/CMakeFiles /Users/devincrane/CLionProjects/DBMS/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/devincrane/CLionProjects/DBMS/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

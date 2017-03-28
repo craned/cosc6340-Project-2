@@ -4,6 +4,7 @@
 
 #ifndef GIT2_TABLE_H
 #define GIT2_TABLE_H
+
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -12,13 +13,15 @@
 #include <tuple>
 #include <fstream>
 #include "fstream"
+#include "Utilities.h"
+
 using namespace std;
 
 class Table
 {
 private:
     //sequence num, column name, isPrimary, stype, block size,
-    std::vector<std::tuple<int, std::string, bool, std::string, int > > vColumnName;
+    vector<tuple<int, string, bool, string, int > > vColumnNames;
     std::vector<std::string> primaryKey;
     int tRecordSize;
     int tTotalSize;
@@ -114,7 +117,6 @@ public:
     //std::vector<std::tuple<int, std::string> > getRow(int iIndex);
 
     std::vector<std::string> getColumnValues(int iIndex);
-
 
     void deleteATable(string tableName);
 };

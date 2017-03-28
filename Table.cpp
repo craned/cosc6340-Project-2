@@ -28,7 +28,7 @@
 #include "Table.h"
 
 const int COLUMN_WIDTH = 20;
-std::fstream outputFile;
+fstream outputFile;
 
 /*******************************************************************************
  Display the table
@@ -36,66 +36,66 @@ std::fstream outputFile;
 void Table::displayTable()
 {
   // Print the lines of the table for a pretty output
-  std::cout << "\n ";
+  cout << "\n ";
 
-  for (int i = 0; i < vColumnName.size(); ++i)
+  for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
-    std::cout << "-----------------------";
+    cout << "-----------------------";
   }
-  std::cout << "\n";
+  cout << "\n";
 
-  std::cout << " | " << sTableName << "\n ";
+  cout << " | " << sTableName << "\n ";
 
-  for (int i = 0; i < vColumnName.size(); ++i)
+  for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
-    std::cout << "+----------------------";
+    cout << "+----------------------";
   }
-  std::cout << "\n";
+  cout << "\n";
 
   // Determine how far to space the column bars
-  for (int i = 0; i < vColumnName.size(); ++i)
+  for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
     //get the column values for printing
-    std::string sColName = std::get < 1 > (vColumnName[i]);
-    bool bPrimaryKey = std::get < 2 > (vColumnName[i]);
+    string sColName = get < 1 > (vColumnNames[i]);
+    bool bPrimaryKey = get < 2 > (vColumnNames[i]);
 
     //see if it is a primary key, for formatting
     if (bPrimaryKey)
     {
-      std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+      cout << " | " << setw(COLUMN_WIDTH) << left
                 << "*" + sColName + "*";
     }
     else
     {
-      std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left << sColName;
+      cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
     }
 
   }
-  std::cout << "\n ";
+  cout << "\n ";
 
   // Print the row dividers for the number of columns
-  for (int i = 0; i < vColumnName.size(); ++i)
+  for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
-    std::cout << "+----------------------";
+    cout << "+----------------------";
   }
-  std::cout << "\n";
+  cout << "\n";
 
-//  for (int i = 0; i < vRows.size(); ++i)
+//  for (size_t i = 0; i < vRows.size(); ++i)
 //  {
 //
-//    for (int a = 0; a < vColumnName.size(); ++a)
+//    for (size_t a = 0; a < vColumnNames.size(); ++a)
 //    {
-//      for (std::vector<std::tuple<int, std::string> >::iterator current =
+//      for (vector<tuple<int, string> >::iterator current =
 //              vRows[i].begin(); current != vRows[i].end(); ++current)
 //      {
-//        if (std::get < 0 > (*current) == std::get < 0 > (vColumnName[a]))
+//        if (get < 0 > (*current) == get < 0 > (vColumnNames[a]))
 //        {
-//          std::string sCurrent = std::get < 1 > (*current);
+//          string sCurrent = get < 1 > (*current);
 //          if (sCurrent.size() > COLUMN_WIDTH)
 //          {
 //            sCurrent.resize(COLUMN_WIDTH);
 //          }
-//          std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+//          cout << " | " << setw(COLUMN_WIDTH) << left
 //                    << sCurrent;
 //
 //          break;
@@ -103,42 +103,41 @@ void Table::displayTable()
 //      }
 //    }
 //
-//    std::cout << "\n ";
-//    for (int y = 0; y < vColumnName.size(); ++y)
+//    cout << "\n ";
+//    for (int y = 0; y < vColumnNames.size(); ++y)
 //    {
-//      std::cout << "+----------------------";
+//      cout << "+----------------------";
 //    }
-//    std::cout << "\n";
+//    cout << "\n";
 //  }
-//  std::cout<<"\n";
+//  cout << "\n";
 }
 
 /*******************************************************************************
  This function returns the index of the column or -1 if the column is not found
  and the type of the column
  *******************************************************************************/
-std::tuple<int, std::string, bool, std::string> Table::getColumnIndex(
-        std::string sColumnNameIn)
+
+tuple<int, string, bool, string> Table::getColumnIndex(
+        string sColumnNameIn)
 {
-  for (int i = 0; i < vColumnName.size(); ++i)
+  for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
     //Execute if the column was found
-    if (std::get < 1 > (vColumnName[i]) == sColumnNameIn)
+    if (get < 1 > (vColumnNames[i]) == sColumnNameIn)
     {
-      int iColumnIndex = std::get < 0 > (vColumnName[i]);
-      bool bColumnKey = std::get < 2 > (vColumnName[i]);
-      std::string sColumnType = std::get < 3 > (vColumnName[i]);
+      int iColumnIndex = get < 0 > (vColumnNames[i]);
+      bool bColumnKey = get < 2 > (vColumnNames[i]);
+      string sColumnType = get < 3 > (vColumnNames[i]);
 
-      return std::make_tuple(iColumnIndex, sColumnType, bColumnKey, sColumnType);
+      return make_tuple(iColumnIndex, sColumnType, bColumnKey, sColumnType);
     }
   }
 
   printf("| We didnt find it\n");
   //The column was not found
-  return std::make_tuple(-1, "n/a", false, "n/a");
+  return make_tuple(-1, "n/a", false, "n/a");
 }
-
-
 
 void Table::printOutTheWholeTable(){
     // Print the lines of the table for a pretty output
@@ -214,21 +213,6 @@ void Table::printOutTheWholeTable(){
         std::cout << "\n";
     }
     std::cout<<"\n";
-}
-void Table::setPrimaryKey(std::string sKeyIn)
-{
-    for (int i = 0; i < vColumnName.size(); ++i)
-    {
-        //Execute if the column name is equal to the parameter name
-        if (std::get < 1 > (vColumnName[i]) == sKeyIn)
-        {
-            //set the boolean value in the column tuple to true, to show it is key
-            std::get < 2 > (vColumnName[i]) = true;
-            return;
-        }
-    }
-
-    printf("| Primary Key was not set\n");
 }
 
 void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
@@ -326,6 +310,40 @@ void Table::writeIntToFile(int num, ofstream& out) {
 
 
 }
+
+    //Setters
+    void Table::setPrimaryKey(string sKeyIn)
+    {
+    	cout << "key " << sKeyIn << endl;
+        for (size_t i = 0; i < vColumnNames.size(); ++i)
+        {
+        	cout << "column name " << get < 1 > (vColumnNames[i]) << endl;
+            //Execute if the column name is equal to the parameter name
+            if (get < 1 > (vColumnNames[i]) == sKeyIn)
+            {
+                //set the boolean value in the column tuple to true, to show it is key
+                get < 2 > (vColumnNames[i]) = true;
+                return;
+            }
+        }
+
+        printf("ERROR: Primary Key was not set\n");
+    }
+
+    //add a column to the class vector
+    void Table::addColumn(tuple<int, string, bool, string, int> s)
+    {
+        vColumnNames.push_back(s);
+    }
+    void Table::addSpecs(tuple<int, int, int > d){
+        vSpecs = d;
+    }
+
+    //Getters
+    string Table::getTableName()
+    {
+        return sTableName;
+    }
 
 int Table::getTRecordSize() const {
     return tRecordSize;
