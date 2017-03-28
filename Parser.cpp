@@ -1,20 +1,16 @@
 /*******************************************************************************
  File: Parser.cpp
-
  Authors: Gustavo Pedroso UIN: 423002834
  Levi Clark      UIN: 520007880
  Terry Chen      UIN: 121007055
  Daniel He       UIN: 620006827
-
  Department of Computer Science
  Texas A&M University
  Date  : 2/2/2014
-
  Formatting: * 80 pt width is used for code, for the most part
  * Hungarian naming convention is used for variables
  * Comments are applied for explanations
  * Spacing and brackets are applied for readability
-
  This file contains the implementation for the parser
  *******************************************************************************/
 
@@ -251,7 +247,7 @@ bool Parser::findCreateTable(string sLineIn)
 
                     //call the create table function after the helper functions
                     e.createTable(sTableName, createColVector(sColumns),
-                      	createVector(sPrimaryKeys));
+                                    createVector(sPrimaryKeys));
 
                     return true;
                 }
@@ -312,6 +308,7 @@ bool Parser::findSelect(string sLineIn)
                 {
                     string tempTableName = origQuery.substr(iPosStart,
                                                         iPosEnd1 - iPosStart);
+
                     tempTableName = Utilities::cleanSpaces(tempTableName);
                     selectQ.setTempTable(tempTableName);
                     returningNestedLevel = iPosEnd1 - 1;
@@ -381,12 +378,20 @@ bool Parser::findSelect(string sLineIn)
 	             		size_t iPosWhereFilter = iPosWhere + 5;
 		                string whereFilter = Utilities::cleanSpaces(sLineIn.substr(iPosWhereFilter,
 		                                            iPosSemiColon - iPosWhereFilter));
+                        
+                        whereFilter = Utilities::cleanSpaces(whereFilter);
 		                cout << "where " << whereFilter << endl;
 		                selectQ.setWhereFilter(whereFilter);
-	             	}
+                    }
+                    
+                    vector <string> vColNames;
+                    vColNames=createVector(colNames);
+                    for(size_t j=0; j<vColNames.size();j++){
+                        vColNames[j]=Utilities::cleanSpaces(vColNames[j]);
+                    }
 	                
 	                selectQ.printAll();
-	                e.executeSelect(tableName, colNames, whereFilter,
+	                e.executeSelect(tableName, createVector(colNames), whereFilter,
 	                				joinTable, joinFilter);
 	                return true;
                 } else {
@@ -437,6 +442,7 @@ bool Parser::findInsertInto(string sLineIn)
             //Get the name of the table from the string
             string sTableNameOut = sLineIn.substr(iPosStart,
                                                   iPosEnd1 - iPosStart);
+
             sTableNameOut = Utilities::cleanSpaces(sTableNameOut);
             cout << sTableNameOut << endl;
 
@@ -484,7 +490,6 @@ bool Parser::findInsertInto(string sLineIn)
             
             // Group By isn't required for Phase 1, but this should work when it is
             /*if ((iPosEnd1 = sLineIn.find("ORDER BY", iPosStart)) != string::npos) {
-            
                 string tableName = sLineIn.substr(iPosStart,
                                              	iPosEnd1 - iPosStart);
                                              
@@ -519,47 +524,42 @@ bool Parser::findInsertInto(string sLineIn)
  *******************************************************************************/
 bool Parser::findShowTable(string sLineIn)
 {
-  size_t iPosStart = sLineIn.find("SHOW TABLE");
+	size_t iPosStart = sLineIn.find("SHOW TABLE");
 
-  if (iPosStart != string::npos)
-  {
-    //Get the name of the table from the string
-    string sTableName = sLineIn.substr(iPosStart + SHOW_TABLE_SIZE);
-    sTableName = Utilities::cleanSpaces(sTableName);
-    
-    cout << "table name " << sTableName << endl;
+    if (iPosStart != string::npos)
+    {
+        //Get the name of the table from the string
+        string sTableName = sLineIn.substr(iPosStart + SHOW_TABLE_SIZE);
+        sTableName = Utilities::cleanSpaces(sTableName);
 
         cout << "table name " << sTableName << endl;
 
-       // call the function to display table
-       e.displayTable(sTableName);
+        cout << "table name " << sTableName << endl;
 
-    return true;
-  }
-  else
-  {
-    return false;
-  }
+        // call the function to display table
+        e.displayTable(sTableName);
+
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /*******************************************************************************
- Function that sees if SHOW is in the string and executes the command
+ Function that sees if SHOW TABLES is in the string and executes the command
  *******************************************************************************/
 bool Parser::findShowTables(string sLineIn)
 {
-  size_t iPosStart = sLineIn.find("SHOW TABLES;");
+	size_t iPosStart = sLineIn.find("SHOW TABLES;");
 
-  if (iPosStart != string::npos)
-  {
-	cout << "found show table" << endl;
-	e.displayTableSchemas();
-
-    return true;
-  }
-  else
-  {
-    return false;
-  }
+    if (iPosStart != string::npos)
+    {
+        cout << "found show table" << endl;
+        e.displayTableSchemas();
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /*******************************************************************************
@@ -698,11 +698,11 @@ vector<string> Parser::createVector(string sLineIn)
     }
 
     //clean up the words that were separated out
-    //for (int i = 0; i < vReturn.size(); ++i)
-    {
-        //vReturn[i] = Utilities::cleanSpaces(vReturn[i]);
-        //cout<<"vReturn: "<<vReturn[i]<<endl;
-    }
+//    for (size_t i = 0; i < vReturn.size(); ++i)
+//    {
+//        vReturn[i] = Utilities::cleanSpaces(vReturn[i]);
+//        //cout<<"vReturn: "<<vReturn[i]<<endl;
+//    }
 
     return vReturn;
 }
@@ -745,7 +745,6 @@ vector<tuple<string, string, int, bool> > Parser::createColVector(string sLineIn
             sType = "string";
             string col = vCol[i];
             sName = col.substr(0, iVar);
-            
             size_t leftParen = col.find("(") + 1;
             size_t rightParen = col.find(")");
             length = stoi(col.substr(leftParen, rightParen - leftParen));
@@ -761,10 +760,11 @@ vector<tuple<string, string, int, bool> > Parser::createColVector(string sLineIn
         
         //cout << "colname " << sName << endl;
 
+        //cout << "colname " << sName << endl;
+        sName = Utilities::cleanSpaces(sName);
         //push the newly created column into the vector to send back
         vColVectorOut.push_back(make_tuple(sName, sType, length, false));
 
     }
     return vColVectorOut;
 }
-

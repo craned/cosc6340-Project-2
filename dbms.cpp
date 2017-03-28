@@ -4,7 +4,7 @@
 using namespace std;
 
 //string sqlQuery = "";
-string sqlQuery = "CREATE TABLE T (C1 INT, C2 VARCHAR(5), C3 INT, PRIMARY KEY(C1));";
+string sqlQuery = "CREATE TABLE T ( C1 INT, C2 CHAR(20), C3 INT, PRIMARY KEY(C1));";
 //string sqlQuery = "INSERT INTO T VALUES(1,'string',5);";
 string scriptFile = "";
 //string scriptFile = "file";

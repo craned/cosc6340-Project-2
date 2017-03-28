@@ -7,12 +7,32 @@
 #IncludeRegexTransform: 
 
 <<<<<<< HEAD
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
+=======
+<<<<<<< HEAD
 /Users/devincrane/CLionProjects/DBMS/dbms.cpp
 iostream
 -
 stdio.h
 -
 =======
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
+>>>>>>> master
+string
+-
+vector
+-
+cstdlib
+-
+iostream
+-
+iomanip
+-
+string.h
+-
+Table.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
+
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
 string
 -
@@ -30,10 +50,12 @@ cstring
 -
 stack
 -
+fstream
+-
 Table.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
-engine.h
-/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.h
+Engine.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
 
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
 string
@@ -48,6 +70,10 @@ iomanip
 -
 tuple
 -
+fstream
+-
+fstream
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/fstream
 
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/dbms.cpp
 fstream
@@ -56,50 +82,12 @@ Parser.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
 
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.cpp
-string
--
-vector
--
-cstdlib
--
-iostream
--
-iomanip
--
-engine.h
-/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.h
-
-/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.h
-string
--
-vector
--
-cstdlib
--
-iostream
--
-iomanip
--
-table.h
-/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.h
+Engine.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
 
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/parser.cpp
 Parser.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
-string
--
-vector
--
-cstdlib
--
-stdio.h
--
-fstream
--
-iostream
--
-iomanip
--
 
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.cpp
 string
@@ -119,6 +107,8 @@ fstream
 Table.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
 
+<<<<<<< HEAD
+=======
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.h
 string
 -
@@ -134,3 +124,4 @@ tuple
 -
 >>>>>>> adding-engine
 
+>>>>>>> master

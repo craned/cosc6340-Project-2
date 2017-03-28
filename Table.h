@@ -22,22 +22,38 @@ class Table
 private:
     //sequence num, column name, isPrimary, stype, block size,
     vector<tuple<int, string, bool, string, int > > vColumnNames;
-
-    //vector<vector<tuple<int, string> > > vRows;
-    //vector<string> primaryKey;
-
-    //recordSize, totalSize, numOfRecords
-    tuple<int, int, int> vSpecs;
-
+    std::vector<std::string> primaryKey;
+    int tRecordSize;
+    int tTotalSize;
+    int tNumOfRecords;
     string sTableName;
 
 public:
+    int getTRecordSize() const;
+
+    void setTRecordSize(int tRecordSize);
+
+    int getTTotalSize() const;
+
+    void setTTotalSize(int tTotalSize);
+
+    int getTNumOfRecords() const;
+
+    void setTNumOfRecords(int tNumOfRecords);
     //constructors
     Table()
-    {};
+    {
+    }
+    ;
+    std::vector<std::tuple<int, std::string, bool, std::string, int> > getColumnNames()
+    {
+        return vColumnNames;
+    }
+
+    void printOutTheWholeTable();
 
     //Constructor that takes in a name for the table
-    Table(string sTableNameIn)
+    Table(std::string sTableNameIn)
     {
         sTableName = sTableNameIn;
     }
@@ -46,24 +62,58 @@ public:
     void displayTable();
 
     //Setters
-    void setPrimaryKey(string sKeyIn);
+    void setPrimaryKey(std::string sKeyIn);
+
+
 
     //add a column to the class vector
-    void addColumn(tuple<int, string, bool, string, int> s);
+    void addColumn(std::tuple<int, std::string, bool, std::string, int> s);
     void addSpecs(tuple<int, int, int > d);
 
+    /*string delSpaces(string &str)
+    {
+        str.erase(remove(str.begin(), str.end(), ' '), str.end());
+        return str;
+    }*/
+
+
     //add a row to the row vector
-    void addRow(vector<tuple<int, string> > v);
+    void addRow( std::vector<std::tuple<int, std::string> > v);
+
+    //get a row by using index
+    vector < std::tuple<int, std::string> > getRow(int iIndex);
+
+
+
+    int getRecordSize()
+    {
+        int recordSize=0;
+        for (size_t i = 0; i < vColumnNames.size(); ++i) {
+            //cout<<"get<4>(vColumnName[i]: "<<get<4>(vColumnName[i])<<endl;
+            recordSize=recordSize+get<4>(vColumnNames[i]);
+        }
+        //cout<<"record size is: "<<recordSize<< endl;
+        return recordSize;
+    }
+
+
 
     //Getters
-    string getTableName();
+    std::string getTableName();
 
-    tuple<int, string, bool, string> getColumnIndex(string sColumnNameIn);
 
-    vector<tuple<int, string> > getRow(int iIndex);
 
-    vector<string> getColumnValues(int iIndex);
+    void writeStringToFile(string val,int blockSize, ofstream& out);
+    void writeIntToFile(int num, ofstream& out);
 
+    std::tuple<int, std::string, bool, std::string> getColumnIndex(
+            std::string sColumnNameIn);
+
+    //std::vector<std::tuple<int, std::string> > getRow(int iIndex);
+
+    std::vector<std::string> getColumnValues(int iIndex);
+
+    void deleteATable(string tableName);
 };
 
 #endif //GIT2_TABLE_H

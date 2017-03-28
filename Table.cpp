@@ -104,7 +104,7 @@ void Table::displayTable()
 //    }
 //
 //    cout << "\n ";
-//    for (int y = 0; y < vColumnNames.size(); ++y)
+//    for (size_t y = 0; y < vColumnNames.size(); ++y)
 //    {
 //      cout << "+----------------------";
 //    }
@@ -117,6 +117,7 @@ void Table::displayTable()
  This function returns the index of the column or -1 if the column is not found
  and the type of the column
  *******************************************************************************/
+
 tuple<int, string, bool, string> Table::getColumnIndex(
         string sColumnNameIn)
 {
@@ -138,36 +139,177 @@ tuple<int, string, bool, string> Table::getColumnIndex(
   return make_tuple(-1, "n/a", false, "n/a");
 }
 
+void Table::printOutTheWholeTable(){
+    // Print the lines of the table for a pretty output
+    std::cout << "\n ";
 
-/*******************************************************************************
- This function takes the index of a column and returns the values of the column
- *******************************************************************************/
-vector<tuple<int, string> > Table::getRow(int iIndex)
-{
-  ifstream infile;
-  streampos pos;
-  string fileName = sTableName + ".tbl";
-  infile.open(fileName, ios::binary | ios::in);
-
-
-  vector < tuple<int, string> > vReturn;
-  if(iIndex*get<0>(vSpecs)< get<1>(vSpecs) and iIndex<get<2>(vSpecs)){
-
-    infile.seekg(iIndex*get<0>(vSpecs), ios::beg);
-    for (size_t i = 0; i< vColumnNames.size()-1; ++i){
-      string sName = get < 1 > (vColumnNames[i]);
-      int bSize= get < 4 > (vColumnNames[i]);
-      infile.read((char *)&sName, bSize);
-      vReturn.push_back(make_tuple( i,sName));
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "-----------------------";
     }
+    std::cout << "\n";
 
-  }else cout<<"index is out of range"<<endl;
+    std::cout << " | " << sTableName << "\n ";
 
-  return vReturn;
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "+----------------------";
+    }
+    std::cout << "\n";
+
+    // Determine how far to space the column bars
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        //get the column values for printing
+        std::string sColName = std::get < 1 > (vColumnNames[i]);
+        bool bPrimaryKey = std::get < 2 > (vColumnNames[i]);
+
+        //see if it is a primary key, for formatting
+        if (bPrimaryKey)
+        {
+            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+                      << "*" + sColName + "*";
+        }
+        else
+        {
+            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left << sColName;
+        }
+
+    }
+    std::cout << "\n ";
+
+    // Print the row dividers for the number of columns
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "+----------------------";
+    }
+    std::cout << "\n";
+
+    for(size_t i=0; i<tNumOfRecords; i++) {
+        for (size_t a = 0; a < vColumnNames.size(); ++a){
+            std::vector < std::tuple<int, std::string> > row;
+            row =getRow(i);
+            for(size_t z=0;z<row.size();z++) {
+                if (get<0>(row[z]) == get<0>(vColumnNames[a])) {
+                    string sCurrent = get<1>(row[z]);
+                    //cout << "sCurrent " << sCurrent << endl;
+                    if (sCurrent.size() > COLUMN_WIDTH) {
+                        sCurrent.resize(COLUMN_WIDTH);
+                    }
+                    std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+                              << sCurrent;
+
+                    break;
+
+                }
+
+            }
+        }
+        std::cout << "\n ";
+        for (size_t y = 0; y < vColumnNames.size(); ++y)
+        {
+            std::cout << "+----------------------";
+        }
+        std::cout << "\n";
+    }
+    std::cout<<"\n";
 }
 
-    //Display function
-    void Table::displayTable();
+void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
+
+    cout << "adding Rows" << endl;
+    cout << "in table " << sTableName << endl;
+    string tableName = sTableName + ".tbl";
+    ofstream out;
+    out.open(tableName, ios::binary | ios::out | ios::app);
+    for (size_t i = 0; i < vColumnNames.size(); ++i) {
+        if(get<3>(vColumnNames[i])=="string") {
+            Utilities::cleanSpaces(get<1>(v[i]));
+            //cout<<"get<1>(v[i]): "<<get<1>(v[i])<<endl;
+            //cout<<"size of get<1>(v[i]): "<<sizeof(get<1>(v[i]))<<endl;
+            writeStringToFile(get<1>(v[i]), get<4>(vColumnNames[i]), out);
+            //cout << "v" << i << ":" << get<1>(v[i]) << endl;
+
+        }
+        else if(get<3>(vColumnNames[i])=="int"){
+            std::string::size_type sz;
+            //cout<<"sz: "<<sz<<endl;
+            int value= stol(get<1>(v[i]),&sz);
+            //cout<<"size of this int: "<<sizeof(value)<<endl;
+            writeIntToFile(value,out);
+
+        }
+        else cout<<"type error! "<<endl;
+    }
+    setTNumOfRecords(getTNumOfRecords()+1);
+    out.close();
+}
+
+
+//get a row by using index
+vector < std::tuple<int, std::string> > Table::getRow(int iIndex) {
+    std::vector < std::tuple<int, std::string> > vReturn;
+    ifstream in;
+    int recordSize=getRecordSize();
+//        if(iIndex>get<2>vSpecs){
+//            //error
+//        }else
+    string tableName = sTableName + ".tbl";
+    in.open(tableName, ios::binary | ios::in);
+    in.seekg(recordSize*iIndex, ios::beg);
+    for (size_t i = 0; i < vColumnNames.size(); ++i) {
+        if(get<3>(vColumnNames[i])=="string") {
+            int blockSize = get<4>(vColumnNames[i]);
+            //cout<<"string block size "<<blockSize<<endl;
+            char *c1 = new char[blockSize];
+            in.read(c1, sizeof(char) * blockSize);
+            //cout << "s1: " << c1 << endl;
+            vReturn.push_back(
+                    std::make_tuple(i, c1));
+        } else if(get<3>(vColumnNames[i])=="int") {
+            int c2;
+            char* pmemory = ( char* ) &c2;
+            //char *c2 = new char[sizeof(int)];
+            in.read(pmemory, sizeof(int));
+            //cout << "i1: " << c2 << endl;
+            vReturn.push_back(
+                    std::make_tuple(i, to_string(c2)));
+        }
+
+    }
+    in.close();
+
+    return vReturn;
+}
+
+void Table::deleteATable(string tableName){
+    string name=tableName+".tbl";
+    //setTNumOfRecords(0);
+    const char* tName=name.c_str();
+    if( remove( tName ) != 0 )
+        perror( "Error deleting file" );
+    else
+        puts( "File successfully deleted" );
+}
+
+void Table::writeStringToFile(string val,int blockSize, ofstream& out)
+{
+    char* valOut = new char[blockSize];
+    for (size_t i = 0; i < blockSize; i++) {
+        valOut[i] = val[i];
+    }
+    //valOut[val.length()] = '\0';
+
+    out.write(valOut, sizeof(char)*(blockSize));
+    //cout<<"write string.val.length(): "<<valO<<endl ;
+}
+
+void Table::writeIntToFile(int num, ofstream& out) {
+
+    out.write((char*) &num, sizeof(int));
+
+
+}
 
     //Setters
     void Table::setPrimaryKey(string sKeyIn)
@@ -193,28 +335,9 @@ vector<tuple<int, string> > Table::getRow(int iIndex)
     {
         vColumnNames.push_back(s);
     }
-    void Table::addSpecs(tuple<int, int, int > d){
+    /*void Table::addSpecs(tuple<int, int, int > d){
         vSpecs = d;
-    }
-
-    //add a row to the row vector
-    void Table::addRow(vector<tuple<int, string> > v)
-    {
-        ofstream outfile;
-        string fileName= sTableName +".tbl";
-        outfile.open(fileName, ios::binary | ios::out);
-
-        for (size_t i = 0; i < vColumnNames.size()-1; ++i)
-        {
-            //string sName = get < 0 > (vColumnNames[i]);
-            //string sType = get < 1 > (vColumnNames[i]);
-            int bSize= get < 4 > (vColumnNames[i]);
-            outfile.write((char*)&(get<1>(v[i])), bSize);
-        }
-
-        outfile.close();
-
-    }
+    }*/
 
     //Getters
     string Table::getTableName()
@@ -222,3 +345,26 @@ vector<tuple<int, string> > Table::getRow(int iIndex)
         return sTableName;
     }
 
+int Table::getTRecordSize() const {
+    return tRecordSize;
+}
+
+void Table::setTRecordSize(int tRecordSize) {
+    Table::tRecordSize = tRecordSize;
+}
+
+int Table::getTTotalSize() const {
+    return tTotalSize;
+}
+
+void Table::setTTotalSize(int tTotalSize) {
+    Table::tTotalSize = tTotalSize;
+}
+
+int Table::getTNumOfRecords() const {
+    return tNumOfRecords;
+}
+
+void Table::setTNumOfRecords(int tNumOfRecords) {
+    Table::tNumOfRecords = tNumOfRecords;
+}

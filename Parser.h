@@ -73,9 +73,9 @@ public:
   string getAfterArrow(string sLineIn);
 
     //helper functions
-  vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
-  vector<string> createVector(string sLineIn);
-  vector<tuple<int, string> > createRowVector(string sLineIn);
+    vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
+    vector<string> createVector(string sLineIn);
+    vector<tuple<int, string> > createRowVector(string sLineIn);
     static string cleanSpaces(string sLineIn);
     string removeSpaces(string sLineIn);
     bool checkParenthesis(string sLineIn);
