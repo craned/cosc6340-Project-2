@@ -35,21 +35,21 @@ class Engine {
 	public:
 
 	    //Declare class methods
-	    Engine() {};
-
-	    void createTable(string sTableNameIn,
-	                     vector<tuple<string, string, int, bool> > vColumnNamesIn,
-	                     /*tuple<int, int, int > vSpecs,*/
-	                     vector<string> vKeys);
-	    void displayTable(string sTableNameIn);
-	    void displayTableSchemas();
-	    void executeSelect(string tableName, string colNames, string whereFilter,
-	                				string joinTable, string joinFilter);
-	    void addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn);
-	    
-	    static void writeStringToFile(string val, ofstream& out);
-	    static void writeIntToFile(int val, ofstream& out);
-	    static int convertCharToInt(char* val);
+    Engine() {};
+    
+    void createTable(string sTableNameIn,
+                     vector<tuple<string, string, int, bool> > vColumnNamesIn,
+                     /*tuple<int, int, int > vSpecs,*/
+                     vector<string> vKeys);
+    void displayTable(string sTableNameIn);
+    void displayTableSchemas();
+    void addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn);
+    void getRow(string sTableNameIn,int iIndex);
+    void executeSelect(string tableName, vector < string > colNames, string whereFilter,
+                       string joinTable, string joinFilter);
+    void deleteATable(string tableName);
+    static int convertCharToInt(char* val);
+    void deleteATable(Table table);
 
 	};
 

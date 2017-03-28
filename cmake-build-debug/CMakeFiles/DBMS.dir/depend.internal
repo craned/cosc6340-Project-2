@@ -3,23 +3,24 @@
 
 CMakeFiles/DBMS.dir/dbms.cpp.o
 <<<<<<< HEAD
+ /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
+=======
+<<<<<<< HEAD
  /Users/devincrane/CLionProjects/DBMS/dbms.cpp
 =======
+>>>>>>> master
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/dbms.cpp
- /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.h
- /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.h
 CMakeFiles/DBMS.dir/engine.cpp.o
+ /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
+ /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.cpp
- /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.h
- /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.h
 CMakeFiles/DBMS.dir/parser.cpp.o
+ /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
- /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.h
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/parser.cpp
- /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.h
 CMakeFiles/DBMS.dir/table.cpp.o
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
  /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.cpp
