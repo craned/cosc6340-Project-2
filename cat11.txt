@@ -1,6 +1,6 @@
-tablename=T
-column=C1:int(4),C2:string(20),C3:int(4)
-primarykey=C1
+tablename=TAINTBCHAR5CINTPRIMARYKEYC
+column=A:int(4),B:string(5),C:int(4)
+primarykey=C
 recordsize=12
 totalsize=0
 records=0

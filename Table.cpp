@@ -311,40 +311,40 @@ void Table::writeIntToFile(int num, ofstream& out) {
 
 }
 
-    //Setters
-    void Table::setPrimaryKey(string sKeyIn)
+//Setters
+void Table::setPrimaryKey(string sKeyIn)
+{
+	cout << "key " << sKeyIn << endl;
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
     {
-    	cout << "key " << sKeyIn << endl;
-        for (size_t i = 0; i < vColumnNames.size(); ++i)
+    	cout << "column name " << get < 1 > (vColumnNames[i]) << endl;
+        //Execute if the column name is equal to the parameter name
+        if (get < 1 > (vColumnNames[i]) == sKeyIn)
         {
-        	cout << "column name " << get < 1 > (vColumnNames[i]) << endl;
-            //Execute if the column name is equal to the parameter name
-            if (get < 1 > (vColumnNames[i]) == sKeyIn)
-            {
-                //set the boolean value in the column tuple to true, to show it is key
-                get < 2 > (vColumnNames[i]) = true;
-                primaryKey.push_back(sKeyIn);
-                return;
-            }
+            //set the boolean value in the column tuple to true, to show it is key
+            get < 2 > (vColumnNames[i]) = true;
+            primaryKey.push_back(sKeyIn);
+            return;
         }
-		
-        printf("ERROR: Primary Key was not set\n");
     }
+	
+    printf("ERROR: Primary Key was not set\n");
+}
 
-    //add a column to the class vector
-    void Table::addColumn(tuple<int, string, bool, string, int> s)
-    {
-        vColumnNames.push_back(s);
-    }
-    /*void Table::addSpecs(tuple<int, int, int > d){
-        vSpecs = d;
-    }*/
+//add a column to the class vector
+void Table::addColumn(tuple<int, string, bool, string, int> s)
+{
+    vColumnNames.push_back(s);
+}
+/*void Table::addSpecs(tuple<int, int, int > d){
+    vSpecs = d;
+}*/
 
-    //Getters
-    string Table::getTableName()
-    {
-        return sTableName;
-    }
+//Getters
+string Table::getTableName()
+{
+    return sTableName;
+}
 
 int Table::getTRecordSize() const {
     return tRecordSize;

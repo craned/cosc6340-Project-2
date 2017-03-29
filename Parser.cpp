@@ -760,8 +760,6 @@ vector<tuple<string, string, int, bool> > Parser::createColVector(string sLineIn
         }
         
         //cout << "colname " << sName << endl;
-
-        //cout << "colname " << sName << endl;
         sName = Utilities::cleanSpaces(sName);
         //push the newly created column into the vector to send back
         vColVectorOut.push_back(make_tuple(sName, sType, length, false));
