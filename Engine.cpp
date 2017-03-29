@@ -25,7 +25,7 @@ vector<Table> vTableList;
 
 void Engine::createTable(string sTableNameIn,
                          vector<tuple<string, string, int, bool> > vColumnNamesIn,
-                         /*std::tuple<int, int, int> specs,*/
+                         /*tuple<int, int, int> specs,*/
                          vector<string> vKeys)
 {
     for (size_t i=0; i<vTableList.size();i++){
@@ -164,7 +164,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     Table tNewTable(sTableNameOut);
     
     
-    std::vector < std::tuple<int, std::string> > vtest;
+    vector < tuple<int, string> > vtest;
     cout<<"select from table: "<<vTableList[0].getTableName()<<endl;
     
     for (size_t i = 0; i < vTableList.size(); ++i) {
@@ -181,7 +181,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             tCurrentTable.getColumnNames();
             
             for (size_t a = 0; a < vNames.size(); ++a) {
-                if (a == get<0>(vNames[a])) {
+                if ((int)a == get<0>(vNames[a])) {
                     //Add column to new table
                     tNewTable.addColumn(vNames[a]);
                     //cout<<"get<1>(vNames[a])"<<get<1>(vNames[a])<<endl;
@@ -201,8 +201,8 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 int numOfRows=tCurrentTable.getTNumOfRecords();
                 //int numOfRows= 3;
                 
-                for (size_t i=0; i<numOfRows; i++){
-                    std::vector < std::tuple<int, std::string> > vtemp;
+                for (int i=0; i<numOfRows; i++){
+                    vector < tuple<int, string> > vtemp;
                     vtemp=tCurrentTable.getRow(i);
                     if(get < 1 > (vtemp[iColumnIndex]).compare(rightSideCondition) == 0){
                         tNewTable.addRow(tCurrentTable.getRow(i));
@@ -242,8 +242,8 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 }
             }
         }
-        for (size_t j=0;j<tNewTable.getTNumOfRecords();j++) {
-            vector<std::tuple<int, std::string> > row;
+        for (int j=0; j < tNewTable.getTNumOfRecords();j++) {
+            vector<tuple<int, string> > row;
             for (size_t l = 0; l < tNewTable.getColumnNames().size(); l++) {
                 for (size_t w = 0; w < indexes.size(); w++) {
                     if (indexes[w] == get<0>(tNewTable.getRow(j)[l])) {

@@ -12,9 +12,6 @@ Engine.o: Engine.h
 Parser.o: Parser.h
 	g++ -Wall -std=c++11 -c Parser.cpp
 
-Engine.o: Engine.h
-	g++ -Wall -std=c++11 -c Engine.cpp
-
 Table.o: Table.h
 	g++ -Wall -std=c++11 -c Table.cpp
 

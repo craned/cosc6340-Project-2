@@ -42,16 +42,6 @@ private:
   SelectQ selectQ;
 
 public:
-    //Tree data structure
-//    struct treeNode
-//    {
-//        string data;
-//        treeNode *leftChild;
-//        treeNode *rightChild;
-//    };
-
-    //Tree functions
-//    void traversal(treeNode *start); //In Order Traversal
     //Declare class methods
     Parser() {};
 
@@ -80,19 +70,9 @@ public:
     string removeSpaces(string sLineIn);
     bool checkParenthesis(string sLineIn);
     bool semicolonExists(string sLineIn);
-//  vector<string> makeTokens(string sLineIn); //tokenizes some shit
-//    treeNode * createTree(string sLineIn);
     void projection(string sRestOfLine, string sTableNameOut);
-//    void rename(string sRestOfLine, string sTableNameOut);
-//    void op(string sNewTableName, string sRestOfLine);
     void select(string sNewTableName, string sRestOfLine);
-//  void evalCondition(vector<string> vTokens, string relationName);
-//  void removeBlankTokens(vector<string> & vTokens);
 
-//  Engine getEngine()
-//  {
-//    return e;
-//  }
 };
 
 #endif
