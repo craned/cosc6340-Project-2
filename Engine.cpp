@@ -284,7 +284,7 @@ void Engine::read(){
     
     ifstream infile;
     //int present=0;
-    infile.open("cat11.txt",ios::in);
+    infile.open("catalog.txt",ios::in);
 
     Table ob;
     string line;
@@ -467,14 +467,13 @@ void Engine::read(){
 
 void Engine::writetofile()
 {
-    
+    remove("catalog.txt");
     ofstream outfile;
-	remove("cat11.txt");
     outfile.open("cat11.txt",ios::out|ios::app);
     for(size_t i=0; i<vTableList.size();++i){
         //string name=cataloglist[i].getTableName();
         outfile<<"tablename="<<vTableList[i].getTableName()<<'\n';
-        cout<<"table";
+        //cout<<"table";
         vector<tuple<int, string, bool, string, int > > col;
         col=vTableList[i].getColumnNames();
         outfile<<"column=";
