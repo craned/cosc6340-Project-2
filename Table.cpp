@@ -185,7 +185,7 @@ void Table::printOutTheWholeTable(){
     }
     std::cout << "\n";
 
-    for(int i=0; i<tNumOfRecords; i++) {
+    for(size_t i=0; i<tNumOfRecords; i++) {
         for (size_t a = 0; a < vColumnNames.size(); ++a){
             std::vector < std::tuple<int, std::string> > row;
             row =getRow(i);
@@ -295,7 +295,7 @@ void Table::deleteATable(string tableName){
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)
 {
     char* valOut = new char[blockSize];
-    for (int i = 0; i < blockSize; i++) {
+    for (size_t i = 0; i < blockSize; i++) {
         valOut[i] = val[i];
     }
     //valOut[val.length()] = '\0';
@@ -323,10 +323,11 @@ void Table::writeIntToFile(int num, ofstream& out) {
             {
                 //set the boolean value in the column tuple to true, to show it is key
                 get < 2 > (vColumnNames[i]) = true;
+                primaryKey.push_back(sKeyIn);
                 return;
             }
         }
-
+		
         printf("ERROR: Primary Key was not set\n");
     }
 

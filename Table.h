@@ -49,6 +49,22 @@ public:
     {
         return vColumnNames;
     }
+	    void calculateRecordSize()
+    {
+        int count=0;
+        for (size_t i = 0; i < vColumnNames.size(); ++i){
+            if ((std::get < 3 > (vColumnNames[i])).compare("INT"))
+                count=count+4;
+            else
+                count=count+std::get < 4 > (vColumnNames[i]);
+        }
+        tRecordSize=count;
+    }
+	void calculateTotalRecordSize()
+    {
+        tTotalSize=tRecordSize*tNumOfRecords;
+    }
+    void printOutTheWholeTable();
 
     void printOutTheWholeTable();
 
@@ -63,7 +79,11 @@ public:
 
     //Setters
     void setPrimaryKey(std::string sKeyIn);
-
+	std::vector<std::string> getPrimaryKey()
+	{
+	return primaryKey;
+	}
+	
 
 
     //add a column to the class vector
