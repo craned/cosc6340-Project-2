@@ -66,8 +66,6 @@ public:
     }
     void printOutTheWholeTable();
 
-    void printOutTheWholeTable();
-
     //Constructor that takes in a name for the table
     Table(std::string sTableNameIn)
     {

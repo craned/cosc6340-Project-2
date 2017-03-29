@@ -185,7 +185,7 @@ void Table::printOutTheWholeTable(){
     }
     std::cout << "\n";
 
-    for(size_t i=0; i<tNumOfRecords; i++) {
+    for(int i=0; i<tNumOfRecords; i++) {
         for (size_t a = 0; a < vColumnNames.size(); ++a){
             std::vector < std::tuple<int, std::string> > row;
             row =getRow(i);
@@ -295,7 +295,7 @@ void Table::deleteATable(string tableName){
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)
 {
     char* valOut = new char[blockSize];
-    for (size_t i = 0; i < blockSize; i++) {
+    for (int i = 0; i < blockSize; i++) {
         valOut[i] = val[i];
     }
     //valOut[val.length()] = '\0';
