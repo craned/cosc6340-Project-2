@@ -148,7 +148,6 @@ int Parser::parse(string sLineIn)
 
     //Output the line we are working with so we know we have the parsing correct
     //printf("\n%s\n", sLineIn.c_str());
-    cout << sLineIn << endl;
     origQuery = sLineIn;
     if (!checkParenthesis(sLineIn)) {
   		printf("ERROR: the parentheses do not match\n");
@@ -693,6 +692,9 @@ vector<string> Parser::createVector(string sLineIn)
     {
         iPosEnd = sLineIn.find(",", iPosStart + 1);
         string value = sLineIn.substr(iPosStart, iPosEnd - iPosStart);
+        if (value.find("\'") != string::npos) {
+        	value = Utilities::cleanSpaces(value);
+        }
         vReturn.push_back(value);
         iPosStart = iPosEnd + 1;
         iCount++;
@@ -720,6 +722,9 @@ vector<tuple<int, string> > Parser::createRowVector(string sLineIn)
     {
         int iColIndex = i;
         string sName = vRowAttributes[i];
+        if (sName.find("\'") != string::npos) {
+        	sName = sName.substr(1, sName.length()-2);
+        }
 
         vRowOut.push_back(make_tuple(iColIndex, sName));
     }

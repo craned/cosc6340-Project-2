@@ -23,4 +23,3 @@ Utilities.o: Utilities.h
 
 clean:
 	rm -rf *.o main
-
