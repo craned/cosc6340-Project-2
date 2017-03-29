@@ -323,10 +323,11 @@ void Table::writeIntToFile(int num, ofstream& out) {
             {
                 //set the boolean value in the column tuple to true, to show it is key
                 get < 2 > (vColumnNames[i]) = true;
+                primaryKey.push_back(sKeyIn);
                 return;
             }
         }
-
+		
         printf("ERROR: Primary Key was not set\n");
     }
 

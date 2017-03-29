@@ -248,7 +248,7 @@ bool Parser::findCreateTable(string sLineIn)
                     //call the create table function after the helper functions
                     e.createTable(sTableName, createColVector(sColumns),
                                     createVector(sPrimaryKeys));
-
+e.writetofile();
                     return true;
                 }
             }

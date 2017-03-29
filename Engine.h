@@ -50,6 +50,8 @@ class Engine {
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
     void deleteATable(Table table);
+    void writetofile();
+    void read();
 
 	};
 
