@@ -31,6 +31,7 @@ void Engine::createTable(string sTableNameIn,
     for (size_t i=0; i<vTableList.size();i++){
         if(vTableList[i].getTableName()==sTableNameIn){
             cout<<"this table already exist!"<<endl;
+            return;
         }
     }
     
