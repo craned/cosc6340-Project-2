@@ -40,6 +40,7 @@ public:
     int getTNumOfRecords() const;
 
     void setTNumOfRecords(int tNumOfRecords);
+    
     //constructors
     Table()
     {

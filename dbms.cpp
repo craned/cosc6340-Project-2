@@ -151,6 +151,8 @@ void commandLineSQLInput(string sqlQuery) {
 }
 
 int main(int argc, char *argv[]) {
+parser = new Parser();
+parser->read();
     if (argc != 2) {
         cout << "usage: dbms script=<filename> OR dbms \"<SQL query>\"" << endl;
         if (!sqlQuery.empty()) {
@@ -165,7 +167,7 @@ int main(int argc, char *argv[]) {
     
     out.open(OUTPUT_FILE, ios::out);
 
-    parser = new Parser();
+   // parser = new Parser();
 
     string firstArg = argv[1];
     //cout << firstArg << endl;
