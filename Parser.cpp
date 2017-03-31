@@ -323,6 +323,12 @@ bool Parser::findSelectNew(string sLineIn)
 					}
 					
 					selectQ.printAll();
+					e.executeSelect(selectQ.getFromTable(),
+									createVector(selectQ.getSelectCols()),
+									selectQ.getTempTable(),
+									selectQ.getWhereFilter(),
+ 									selectQ.getJoinTable(),
+        		              		selectQ.getJoinFilter());
 					
 					selectQ.setSelectCols(colNames);
 					selectQ.setFromTable(selectQ.getTempTable());
@@ -416,7 +422,12 @@ bool Parser::findSelectNew(string sLineIn)
 			}
 			
 			selectQ.printAll();
-			//e.executeSelect();
+			e.executeSelect(selectQ.getFromTable(),
+							createVector(selectQ.getSelectCols()),
+							selectQ.getTempTable(),
+							selectQ.getWhereFilter(),
+ 							selectQ.getJoinTable(),
+                      		selectQ.getJoinFilter());
 		}
 	}
 	
