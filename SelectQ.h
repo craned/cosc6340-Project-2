@@ -23,6 +23,8 @@ class SelectQ {
 	    //Declare class methods
 	    SelectQ() {};
 	    
+//	    SelectQ transferData
+	    
 	    void clearAll();
 	    void printAll();
 	    

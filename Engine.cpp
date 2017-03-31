@@ -331,7 +331,6 @@ void Engine::read(){
                 //	cout<<f1;
                 string tname=line.substr(f1+1,string::npos);
                 ob=Table(tname);
-                cout<<tname;
             }
         }
         else if(count==1)
@@ -341,8 +340,8 @@ void Engine::read(){
             size_t f1;
             size_t f2;
             if((f1=line.find("="))!=string::npos){
-                //cout<<f1;
-				int seq=0;
+                cout<<f1;
+				int seq=1;
                 string coln=line.substr(f1+1,string::npos);
                 size_t f6;
                 size_t f5;
@@ -350,17 +349,17 @@ void Engine::read(){
                 //vector<tuple<string,string,int,bool>> colname;
                 string coltemp;
                 
+                coltemp=line.substr(f1+1,f2-f1-1);
+                // cout<<coltemp<<"1111"<<"\n";
                 size_t f3;
                 f3=line.find(":");
                 f5=line.find("(");
                 
                 f6=line.find(")");
-                coltemp=line.substr(f1+1,f2-f1-1);
-                cout<<coltemp<<"1111"<<"\n";
-                cout<<line.substr(f5+1,f6-f5-1);
+                //cout<<line.substr(f5+1,f6-f5-1);
                 int c2=stoi(line.substr(f5+1,f6-f5-1));
-                cout<<c2;
-                ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,line.substr(f3+1,f5-f3-1),c2));
+                //cout<<c2;
+                ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,line.substr(f3+1,f2-f3-1),c2));
                 while(f2!=string::npos)
                 {
                     string coln=line.substr(f2+1,string::npos);
@@ -374,9 +373,8 @@ void Engine::read(){
                     f5=line.find("(",f2+1);
                     f6=line.find(")",f2+1);
                     int c1=stoi(line.substr(f5+1,f6-f5-1));
-                    cout<<line.substr(f2+1,f3-f2-1);
-                    seq=seq+1;
-                    ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,line.substr(f3+1,f5-f3-1),c1));
+                    //cout<<c1;
+                    ob.addColumn(make_tuple(seq+1,line.substr(f2+1,f3-f2-1),false,line.substr(f3,f4-f3-1),c1));
                     f2=f4;
                     if(f2==line.size()-1)
                     {
@@ -482,19 +480,19 @@ void Engine::read(){
                 ob.setTNumOfRecords(records);
                 cout<<records<<"\n";
             }
-            		vTableList.push_back(ob);
-               ob=Table();
+            
         }
         
         
         
         line.clear();
-
+		vTableList.push_back(ob);
         
     }
         
     infile.close();
 }
+
 
 
 void Engine::writetofile()
