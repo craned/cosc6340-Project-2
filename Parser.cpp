@@ -160,9 +160,9 @@ int Parser::parse(string sLineIn)
   	
     cout << "parenthesis ok" << endl;
     if (findCreateTable(sLineIn)) {
-        cout << "Create table found " << sLineIn << endl;
+        //cout << "Created table " << sLineIn << endl;
     } else if (findInsertInto(sLineIn)) {
-        cout << "Insert Into found" << endl;
+        cout << "Values Inserted" << endl;
     } else if (findSelectNew(sLineIn)) {
     //} else if (findSelect(sLineIn)) {
     	//selectQ = new SelectQ();
@@ -248,6 +248,8 @@ bool Parser::findCreateTable(string sLineIn)
                     //call the create table function after the helper functions
                     e.createTable(sTableName, createColVector(sColumns),
                                     createVector(sPrimaryKeys));
+                                    
+                    cout << "table " << sTableName << " created " << endl;
                      
                     e.writetofile();
                     return true;
@@ -420,6 +422,15 @@ bool Parser::findSelectNew(string sLineIn)
 			} else if (iPosRParen != string::npos && returnedFromRecursion){
 				return true;
 			}
+			
+			if (tableName.length() == 0) {
+		        tableName = sLineIn.substr(iPosStart,
+		                                  iPosSemiColon - iPosStart);
+		                                  
+			    tableName = Utilities::cleanSpaces(tableName);
+			    cout << "tableName was still empty " << tableName << endl;
+			    selectQ.setFromTable(tableName);
+	        }
 			
 			selectQ.printAll();
 			e.executeSelect(selectQ.getFromTable(),
