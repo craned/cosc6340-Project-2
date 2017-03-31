@@ -196,6 +196,7 @@ bool Parser::semicolonExists(string sLineIn)
 bool Parser::findCreateTable(string sLineIn)
 {
     size_t iPosStart = sLineIn.find("CREATE TABLE");
+    iPosStart += 12;
 
     //Execute if create table was found in the string
     if (iPosStart != string::npos)
@@ -206,8 +207,8 @@ bool Parser::findCreateTable(string sLineIn)
         if (iPosEnd != string::npos)
         {
             //get the table name
-            string sTableName = sLineIn.substr(iPosStart + CREATE_TABLE_SIZE,
-                                               iPosEnd - CREATE_TABLE_SIZE - 1);
+            string sTableName = sLineIn.substr(iPosStart,
+                                               iPosEnd - iPosStart);
 
             cout << "table name " << sTableName << endl;
 
