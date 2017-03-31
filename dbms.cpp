@@ -68,6 +68,7 @@ string toUpper(string str) {
 }
 
 void parseScriptFile(string scriptFile) {
+	cout << endl;
     cout << scriptFile << endl;
 
     ifstream script(scriptFile);
@@ -79,7 +80,7 @@ void parseScriptFile(string scriptFile) {
         while (getline(script, line)) {
         	out << line;
             queries += toUpper(line);
-            cout << queries << endl;
+            //cout << queries << endl;
             size_t firstSemicolon = queries.find(";") + 1;
             if (firstSemicolon != string::npos) {
                 string query = queries.substr(0, firstSemicolon);

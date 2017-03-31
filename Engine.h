@@ -45,7 +45,8 @@ class Engine {
     void displayTableSchemas();
     void addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn);
     void getRow(string sTableNameIn,int iIndex);
-    void executeSelect(string tableName, vector < string > colNames, string whereFilter,
+    void executeSelect(string tableName, vector < string > colNames,
+    				   string tempTable, string whereFilter,
                        string joinTable, string joinFilter);
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);

@@ -158,8 +158,8 @@ Table Engine::whereClause(Table tCurrentTable,string whereFilter){
     vector<tuple<int, string, bool, string, int> > vNames =
     tCurrentTable.getColumnNames();
     
-    for (int a = 0; a < vNames.size(); ++a) {
-        if (a == get<0>(vNames[a])) {
+    for (size_t a = 0; a < vNames.size(); ++a) {
+        if ((int)a == get<0>(vNames[a])) {
             //Add column to new table
             tNewTable.addColumn(vNames[a]);
             //cout<<"get<1>(vNames[a])"<<get<1>(vNames[a])<<endl;
@@ -186,7 +186,7 @@ Table Engine::whereClause(Table tCurrentTable,string whereFilter){
     }
     
     vTableList.push_back(tNewTable);
-    tNewTable.printOutTheWholeTable();
+    //tNewTable.printOutTheWholeTable();
     
     return tNewTable;
     
@@ -207,8 +207,8 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames){
         Table tNewNewTable(name);
         tNewNewTable.setTNumOfRecords(0);
         vector<int> indexes;
-        for (int x = 0; x < colNames.size(); x++) {
-            for (int i = 0; i < tNewTable.getColumnNames().size(); i++) {
+        for (size_t x = 0; x < colNames.size(); x++) {
+            for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
                 if (colNames[x] == get<1>(tNewTable.getColumnNames()[i])) {
                     tNewNewTable.addColumn(
                                            make_tuple(x, get<1>(tNewTable.getColumnNames()[i]),
@@ -222,8 +222,8 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames){
         }
         for (int j = 0; j < tNewTable.getTNumOfRecords(); j++) {
             vector<std::tuple<int, std::string> > row;
-            for (int l = 0; l < tNewTable.getColumnNames().size(); l++) {
-                for (int w = 0; w < indexes.size(); w++) {
+            for (size_t l = 0; l < tNewTable.getColumnNames().size(); l++) {
+                for (size_t w = 0; w < indexes.size(); w++) {
                     if (indexes[w] == get<0>(tNewTable.getRow(j)[l])) {
                         row.push_back(make_tuple(w, get<1>(tNewTable.getRow(j)[l])));
                     }
@@ -245,13 +245,14 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames){
 
 /******************************************************************************/
 void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
+						   string tempTable,
                            string whereFilter,
                            string joinTable,
                            string joinFilter)
 {
     
     cout<<"tableName: "<<sTableNameIn<<endl;
-    for(int i=0;i<colNames.size();i++){
+    for(size_t i=0;i<colNames.size();i++){
         cout<<"colNames: "<<colNames[i]<<endl;
     }
     
@@ -260,7 +261,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     cout<<"joinFilter: "<<joinFilter<<endl;
     
     bool hasWhere= false;
-    bool hasjoin= false;
+    bool hasjoin= false; // not used
     if(whereFilter != ""){
         hasWhere=true;
     }
@@ -268,7 +269,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         hasjoin=true;
     }
     
-    for (int i = 0; i < vTableList.size(); ++i) {
+    for (size_t i = 0; i < vTableList.size(); ++i) {
         Table tCurrentTable = vTableList[i];
         //Execute if the table is found in the list
         if (tCurrentTable.getTableName() == sTableNameIn) {
@@ -287,7 +288,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             tNewNewTable=selectClause(tNewTable,colNames);
             deleteATable(tNewTable);
             deleteATable(tNewNewTable);
-            for (int i = 0; i < vTableList.size(); i++) {
+            for (size_t i = 0; i < vTableList.size(); i++) {
                 cout << "remaining tables: " << vTableList[i].getTableName() << endl;
             }
             //*************************************************************

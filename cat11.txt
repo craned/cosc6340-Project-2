@@ -1,6 +1,0 @@
-tablename=TAINTBCHAR5CINTPRIMARYKEYC
-column=A:int(4),B:string(5),C:int(4)
-primarykey=C
-recordsize=12
-totalsize=0
-records=0

@@ -941,7 +941,7 @@ vector<string> Parser::createVector(string sLineIn)
         if (value.find("\'") != string::npos) {
         	value = Utilities::cleanSpaces(value);
         }
-        //cout << "value " << value << endl;
+        cout << "value " << value << endl;
         vReturn.push_back(value);
         iPosStart = iPosEnd + 1;
         iCount++;
@@ -969,7 +969,7 @@ vector<tuple<int, string> > Parser::createRowVector(string sLineIn)
     {
         int iColIndex = i;
         string sName = vRowAttributes[i];
-        //cout << "sName " << sName << endl;
+        cout << "sName " << sName << endl;
 
         vRowOut.push_back(make_tuple(iColIndex, sName));
     }
