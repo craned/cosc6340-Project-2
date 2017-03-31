@@ -80,7 +80,7 @@ public:
     bool semicolonExists(string sLineIn);
     void projection(string sRestOfLine, string sTableNameOut);
     void select(string sNewTableName, string sRestOfLine);
-    
+    void read();
 
 };
 

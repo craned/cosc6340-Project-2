@@ -190,6 +190,10 @@ bool Parser::semicolonExists(string sLineIn)
 	return true;
 }
 
+void Parser::read(){
+e.read();
+}
+
 /*******************************************************************************
  Function that sees if CREATE TABLE is in the string and executes the command
  correct format = CREATE TABLE () PRIMARY KEY ()
@@ -210,7 +214,7 @@ bool Parser::findCreateTable(string sLineIn)
             string sTableName = sLineIn.substr(iPosStart + CREATE_TABLE_SIZE,
                                                iPosEnd - CREATE_TABLE_SIZE - 1);
 
-            cout << "tableName create" << sTableName << endl;
+            cout << "table name " << sTableName << endl;
 
             //reposition the position values
             iPosStart = iPosEnd + 1;
@@ -509,7 +513,7 @@ bool Parser::findSelect(string sLineIn)
                 iPosEnd1 = origQuery.find(")", iPosStart+1);
                 //cout << "iPosEnd1 " << iPosEnd1 << endl;
 
-                if (iPosEnd1 == string::npos || (iPosEnd1-iPosStart) > 6) {
+                if (iPosEnd1 == string::npos) {
                     iPosEnd1 = origQuery.find(";", iPosStart);
                 }
 
@@ -856,7 +860,7 @@ bool Parser::findQuit(string sLineIn)
 bool Parser::checkParenthesis(string sLineIn)
 {
   int iBalance = 0;
-
+  e.writetofile();
   for (size_t i = 0; i < sLineIn.length(); ++i)
   {
     if (sLineIn[i] == '(')
@@ -963,7 +967,6 @@ vector<string> Parser::createVector(string sLineIn)
         if (value.find("\'") != string::npos) {
         	value = Utilities::cleanSpaces(value);
         }
-        //cout << "value " << value << endl;
         vReturn.push_back(value);
         iPosStart = iPosEnd + 1;
         iCount++;
