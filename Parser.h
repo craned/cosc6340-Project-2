@@ -44,6 +44,9 @@ private:
 public:
     //Declare class methods
     Parser() {};
+bool queryIsNested = false;		
+ 	bool returnedFromRecursion = false;		
+ 	bool foundDeepestQuery = false;
 
   bool readFromFile(string sFileName);
   bool writeToFile(string sFileName);
@@ -61,7 +64,8 @@ public:
   bool findClose(string sLineIn);
   bool findQuit(string sLineIn);
   string getAfterArrow(string sLineIn);
-
+bool findSelectNew(string sLineIn);		
+bool findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,											size_t iPosSemiColon, SelectQ selectQ);
     //helper functions
     vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
     vector<string> createVector(string sLineIn);
