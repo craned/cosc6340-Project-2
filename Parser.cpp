@@ -196,7 +196,6 @@ bool Parser::semicolonExists(string sLineIn)
 bool Parser::findCreateTable(string sLineIn)
 {
     size_t iPosStart = sLineIn.find("CREATE TABLE");
-    iPosStart += 12;
 
     //Execute if create table was found in the string
     if (iPosStart != string::npos)
@@ -207,8 +206,8 @@ bool Parser::findCreateTable(string sLineIn)
         if (iPosEnd != string::npos)
         {
             //get the table name
-            string sTableName = sLineIn.substr(iPosStart,
-                                               iPosEnd - iPosStart);
+            string sTableName = sLineIn.substr(iPosStart + CREATE_TABLE_SIZE,
+                                               iPosEnd - CREATE_TABLE_SIZE - 1);
 
             cout << "table name " << sTableName << endl;
 
@@ -377,7 +376,7 @@ bool Parser::findSelect(string sLineIn)
 	                string whereFilter = "";
 	             	if (iPosWhere != string::npos) {
 	             		size_t iPosWhereFilter = iPosWhere + 5;
-		                string whereFilter = Utilities::cleanSpaces(sLineIn.substr(iPosWhereFilter,
+		                whereFilter = Utilities::cleanSpaces(sLineIn.substr(iPosWhereFilter,
 		                                            iPosSemiColon - iPosWhereFilter));
                         
                         whereFilter = Utilities::cleanSpaces(whereFilter);
@@ -392,7 +391,7 @@ bool Parser::findSelect(string sLineIn)
                     }
 	                
 	                selectQ.printAll();
-	                e.executeSelect(tableName, createVector(colNames), whereFilter,
+	                e.executeSelect(tableName, vColNames, whereFilter,
 	                				joinTable, joinFilter);
 	                return true;
                 } else {

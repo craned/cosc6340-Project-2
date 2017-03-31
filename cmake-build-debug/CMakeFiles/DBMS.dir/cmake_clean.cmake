@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/DBMS.dir/parser.cpp.o"
   "CMakeFiles/DBMS.dir/table.cpp.o"
   "CMakeFiles/DBMS.dir/engine.cpp.o"
+  "CMakeFiles/DBMS.dir/Utilities.cpp.o"
+  "CMakeFiles/DBMS.dir/SelectQ.cpp.o"
   "DBMS.pdb"
   "DBMS"
 )

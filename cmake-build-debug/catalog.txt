@@ -1,0 +1,6 @@
+tablename=T
+column=C1:int(4),C2:string(20),C3:int(4)
+primarykey=C1
+recordsize=12
+totalsize=0
+records=0

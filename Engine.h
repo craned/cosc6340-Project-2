@@ -50,6 +50,10 @@ class Engine {
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
     void deleteATable(Table table);
+    Table whereClause(Table tCurrentTable,string whereFilter);
+    Table selectClause(Table tNewTable,vector < string > colNames);
+    void joinClause(Table originalTable,Table joinTable,string joinFilter);
+    //string delSpaces(string str);
     void writetofile();
     void read();
 

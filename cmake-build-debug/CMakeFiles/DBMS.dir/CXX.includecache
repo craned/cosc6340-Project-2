@@ -6,18 +6,7 @@
 
 #IncludeRegexTransform: 
 
-<<<<<<< HEAD
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
-=======
-<<<<<<< HEAD
-/Users/devincrane/CLionProjects/DBMS/dbms.cpp
-iostream
--
-stdio.h
--
-=======
-/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
->>>>>>> master
 string
 -
 vector
@@ -32,6 +21,8 @@ string.h
 -
 Table.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
+Utilities.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.h
 
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Parser.h
 string
@@ -56,9 +47,45 @@ Table.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
 Engine.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Engine.h
+SelectQ.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/SelectQ.h
+Utilities.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.h
+
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/SelectQ.cpp
+SelectQ.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/SelectQ.h
+
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/SelectQ.h
+iostream
+-
 
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
 string
+-
+vector
+-
+cstdlib
+-
+iostream
+-
+iomanip
+-
+tuple
+-
+fstream
+-
+fstream
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/fstream
+Utilities.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.h
+
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.cpp
+Utilities.h
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.h
+
+/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.h
+string.h
 -
 vector
 -
@@ -107,21 +134,3 @@ fstream
 Table.h
 /Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Table.h
 
-<<<<<<< HEAD
-=======
-/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/table.h
-string
--
-vector
--
-cstdlib
--
-iostream
--
-iomanip
--
-tuple
--
->>>>>>> adding-engine
-
->>>>>>> master

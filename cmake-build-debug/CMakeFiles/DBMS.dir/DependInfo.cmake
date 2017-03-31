@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/SelectQ.cpp" "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles/DBMS.dir/SelectQ.cpp.o"
+  "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.cpp" "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles/DBMS.dir/Utilities.cpp.o"
   "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/dbms.cpp" "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles/DBMS.dir/dbms.cpp.o"
   "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/engine.cpp" "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles/DBMS.dir/engine.cpp.o"
   "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/parser.cpp" "/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/cmake-build-debug/CMakeFiles/DBMS.dir/parser.cpp.o"

@@ -80,6 +80,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/SelectQ.cpp">
+			<Option target="DBMS"/>
+		</Unit>
+		<Unit filename="/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/SelectQ.h">
+			<Option target="DBMS"/>
+		</Unit>
+		<Unit filename="/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.cpp">
+			<Option target="DBMS"/>
+		</Unit>
+		<Unit filename="/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/Utilities.h">
+			<Option target="DBMS"/>
+		</Unit>
 		<Unit filename="/Users/amirreza/CLionProjects/project2/project2-desktop/cosc6340-Project-2/dbms.cpp">
 			<Option target="DBMS"/>
 		</Unit>
