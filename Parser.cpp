@@ -705,16 +705,17 @@ bool Parser::findInsertInto(string sLineIn)
         // insert into T values (1, 'string', 5);
         // insert into T select B From T1;
         // insert into T3 select T.A from T1 order by B;
+        
+        //Get the name of the table from the string
+        string tableName = sLineIn.substr(iPosStart, iPosEnd1 - iPosStart);
+        cout << "insert into tableName " << tableName << endl;
 
         //Execute if values from relation is found
         if (iPosEnd1 != string::npos) // values
         {
-            //Get the name of the table from the string
-            string sTableNameOut = sLineIn.substr(iPosStart,
-                                                  iPosEnd1 - iPosStart);
 
-            sTableNameOut = Utilities::cleanSpaces(sTableNameOut);
-            cout << sTableNameOut << endl;
+            tableName = Utilities::cleanSpaces(tableName);
+            cout << tableName << endl;
 
             //reposition the iterators to get the row values
             iPosStart = sLineIn.find("(") + 1;
@@ -739,7 +740,7 @@ bool Parser::findInsertInto(string sLineIn)
 
                 //Clean up and add the row to the table
                 vector<tuple<int, string> > rowVector = createRowVector(sRow);
-                e.addRow(sTableNameOut, rowVector);
+                e.addRow(tableName, rowVector);
 
                 return true;
             }
@@ -748,6 +749,9 @@ bool Parser::findInsertInto(string sLineIn)
         else if ((iPosEnd1 = sLineIn.find("SELECT", iPosStart)) != string::npos)
         {
             //Get the name of the table from the string
+//            string tableName = sLineIn.substr(iPosStart, iPosEnd1 - iPosStart);
+  //          cout << "insert into tableName " << tableName << endl;
+            
             iPosStart = iPosEnd1 + 6;
             iPosEnd1 = sLineIn.find("FROM", iPosStart);
             string colNames = sLineIn.substr(iPosStart,
