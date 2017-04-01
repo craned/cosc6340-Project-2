@@ -296,6 +296,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			size_t iPosRParen = sLineIn.find(")", iPosStart);
 			size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
 			size_t iPosWhere = sLineIn.find("WHERE", iPosStart);
+            size_t iPosOn = sLineIn.find("ON", iPosStart);
 			//size_t iPosGroupBy = sLineIn.find("GROUP BY", iPosStart);
 			//size_t iPosOrderBy = sLineIn.find("ORDER BY", iPosStart);
 			
@@ -345,16 +346,19 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			
 			string tableName = "";
 			string joinTable = "";
+			string joinFilter = "";
 			string whereFilter = "";
 			// don't want to check for join too early
 			if (iPosJoin != string::npos && iPosJoin < iPosLParen) {
 				//cout << "checking join clause" << endl;
 				tableName = sLineIn.substr(iPosStart,
 											iPosJoin - iPosStart);
-				
+	            
 				iPosJoin += 4;
 				//iPosStart = iPosJoin;
-				if (iPosWhere != string::npos && iPosWhere < iPosRParen) {
+				if (iPosOn != string::npos && iPosOn < iPosRParen) {
+					joinTable = sLineIn.substr(iPosJoin, iPosOn - iPosJoin);
+				} else if (iPosWhere != string::npos && iPosWhere < iPosRParen) {
 					joinTable = sLineIn.substr(iPosJoin, iPosWhere - iPosJoin);
 				} else if (iPosRParen != string::npos && iPosJoin < iPosRParen) {
 					joinTable = sLineIn.substr(iPosJoin, iPosRParen - iPosJoin);
@@ -367,7 +371,26 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			} else {
 				selectQ.setJoinTable("");
 			}
-			cout << "joinTable " << joinTable << endl;
+			
+			cout << "joinFilter " << joinFilter << endl;
+			// don't want to check for on too early
+			if (iPosOn != string::npos && iPosOn < iPosLParen) {
+				//cout << "checking join filter" << endl;
+				iPosOn += 2;
+				if (iPosWhere != string::npos && iPosWhere < iPosRParen) {
+					joinFilter = sLineIn.substr(iPosOn, iPosWhere - iPosOn);
+				} else if (iPosRParen != string::npos && iPosOn < iPosRParen) {
+					joinFilter = sLineIn.substr(iPosOn, iPosRParen - iPosOn);
+				} else {
+					joinFilter = sLineIn.substr(iPosOn, iPosSemiColon - iPosOn);
+				}
+				
+				joinFilter = Utilities::cleanSpaces(joinFilter);
+				selectQ.setJoinFilter(joinFilter);
+			} else {
+				selectQ.setJoinFilter("");
+			}
+			cout << "joinFilter " << joinFilter << endl;
 			
 			// don't want to check for where too early
 			if (iPosWhere != string::npos && iPosWhere < iPosLParen) {
@@ -812,7 +835,8 @@ bool Parser::findShowTable(string sLineIn)
     if (iPosStart != string::npos)
     {
         //Get the name of the table from the string
-        string sTableName = sLineIn.substr(iPosStart + SHOW_TABLE_SIZE);
+        string sTableName = sLineIn.substr(iPosStart,
+										sLineIn.find(";") - iPosStart);
         sTableName = Utilities::cleanSpaces(sTableName);
 
         cout << "tableName " << sTableName << endl;
@@ -835,7 +859,7 @@ bool Parser::findShowTables(string sLineIn)
 
     if (iPosStart != string::npos)
     {
-        cout << "found show table" << endl;
+        cout << "found show tables" << endl;
         e.displayTableSchemas();
 		return true;
 	} else {
