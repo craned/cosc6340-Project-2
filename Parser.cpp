@@ -448,6 +448,8 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
  							selectQ.getJoinTable(),
                       		selectQ.getJoinFilter());
 		}
+	} else {
+		return false;
 	}
 	
 	return true;
