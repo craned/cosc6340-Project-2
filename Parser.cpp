@@ -190,6 +190,10 @@ bool Parser::semicolonExists(string sLineIn)
 	return true;
 }
 
+void Parser::read(){
+e.read();
+}
+
 /*******************************************************************************
  Function that sees if CREATE TABLE is in the string and executes the command
  correct format = CREATE TABLE () PRIMARY KEY ()
@@ -860,7 +864,7 @@ bool Parser::findQuit(string sLineIn)
 bool Parser::checkParenthesis(string sLineIn)
 {
   int iBalance = 0;
-
+  e.writetofile();
   for (size_t i = 0; i < sLineIn.length(); ++i)
   {
     if (sLineIn[i] == '(')
