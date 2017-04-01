@@ -163,7 +163,7 @@ int Parser::parse(string sLineIn)
         //cout << "Created table " << sLineIn << endl;
     } else if (findInsertInto(sLineIn)) {
         cout << "Values Inserted" << endl;
-    } else if (findSelectNew(sLineIn)) {
+    } else if (findSelectNew(sLineIn, "")) {
     //} else if (findSelect(sLineIn)) {
     	//selectQ = new SelectQ();
         cout << "Select found" << endl;
@@ -191,7 +191,7 @@ bool Parser::semicolonExists(string sLineIn)
 }
 
 void Parser::read(){
-e.read();
+	e.read();
 }
 
 /*******************************************************************************
@@ -267,7 +267,7 @@ bool Parser::findCreateTable(string sLineIn)
 
 bool queryIsNested = false;
 bool returnedFromRecursion = false;
-bool Parser::findSelectNew(string sLineIn)
+bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 {
 	if (nestedLevel > 3) {
 		cout << "ERROR: too many nested levels" << endl;
@@ -307,7 +307,7 @@ bool Parser::findSelectNew(string sLineIn)
 					string subQuery = sLineIn.substr(iPosLParen+1);
 					cout << "subQuery " << subQuery << endl;
 					nestedLevel++;
-					findSelectNew(subQuery);
+					findSelectNew(subQuery, insertSelectTempName);
 		            nestedLevel--;
 		            returnedFromRecursion = true;
 		            cout << "returned from recursion" << endl;
@@ -398,7 +398,7 @@ bool Parser::findSelectNew(string sLineIn)
 			// order by
 			
 			//cout << "tableName " << tableName << endl;
-			if (tableName.length() > 0) {
+			if (!tableName.empty()) {
 				selectQ.setFromTable(tableName);
 			}
 			
@@ -434,6 +434,10 @@ bool Parser::findSelectNew(string sLineIn)
 			    tableName = Utilities::cleanSpaces(tableName);
 			    cout << "tableName was still empty " << tableName << endl;
 			    selectQ.setFromTable(tableName);
+	        }
+	        
+	        if (!insertSelectTempName.empty()) {
+	        	selectQ.setTempTable(insertSelectTempName);
 	        }
 			
 			selectQ.printAll();
@@ -744,8 +748,11 @@ bool Parser::findInsertInto(string sLineIn)
             //Execute if values from is found
         else if ((iPosEnd1 = sLineIn.find("SELECT", iPosStart)) != string::npos)
         {
+        	string selectSubQ = sLineIn.substr(iPosEnd1,
+        									sLineIn.find(";")-iPosEnd1);
             //Get the name of the table from the string
             string tableName = sLineIn.substr(iPosStart, iPosEnd1 - iPosStart);
+            tableName = Utilities::cleanSpaces(tableName);
             cout << "insert into tableName " << tableName << endl;
             
             iPosStart = iPosEnd1 + 6;
@@ -773,6 +780,10 @@ bool Parser::findInsertInto(string sLineIn)
             		cout << "group by col " << groupByCol << endl;
             	}
             } else //*/
+            
+            string tempName = "insInto" + tableName;
+            findSelectNew(selectSubQ, tempName);
+            //e.insertFrom(tableName, tempName);
             if ((iPosEnd1 = sLineIn.find(";")) != string::npos)
             {
                 //Get the tableName from the string

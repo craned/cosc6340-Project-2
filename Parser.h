@@ -64,7 +64,7 @@ bool queryIsNested = false;
   bool findClose(string sLineIn);
   bool findQuit(string sLineIn);
   string getAfterArrow(string sLineIn);
-bool findSelectNew(string sLineIn);		
+bool findSelectNew(string sLineIn, string insertSelectTempName);		
 bool findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,											size_t iPosSemiColon, SelectQ selectQ);
     //helper functions
     vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
