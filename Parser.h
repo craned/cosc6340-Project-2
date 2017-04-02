@@ -69,7 +69,7 @@ bool findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,											size
     //helper functions
     vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
     vector<string> createVector(string sLineIn);
-    vector<tuple<int, string> > createRowVector(string sLineIn,string sTableNameIn);
+    vector<tuple<int, string> > createRowVector(string sLineIn);
     //static string cleanSpaces(string sLineIn);
     string removeSpaces(string sLineIn);
     bool checkParenthesis(string sLineIn);

@@ -764,12 +764,12 @@ bool Parser::findInsertInto(string sLineIn)
                 iPosStart = iPosValues;
 
                 //Clean up and add the row to the table
-                bool valid= e.createValidate(sLineIn,sTableNameOut);
+                bool valid= e.createValidate(sLineIn,tableName);
                 if(valid==true)
                 {
-                vector<tuple<int, string> > rowVector = createRowVector(sRow,sTableNameOut);
+                vector<tuple<int, string> > rowVector = createRowVector(sRow);
                 
-                e.addRow(sTableNameOut, rowVector);
+                e.addRow(tableName, rowVector);
 
                 return true;
                 }
