@@ -64,12 +64,12 @@ bool queryIsNested = false;
   bool findClose(string sLineIn);
   bool findQuit(string sLineIn);
   string getAfterArrow(string sLineIn);
-bool findSelectNew(string sLineIn, string insertSelectTempName);		
+bool findSelectNew(string sLineIn);		
 bool findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,											size_t iPosSemiColon, SelectQ selectQ);
     //helper functions
     vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
     vector<string> createVector(string sLineIn);
-    vector<tuple<int, string> > createRowVector(string sLineIn);
+    vector<tuple<int, string> > createRowVector(string sLineIn,string sTableNameIn);
     //static string cleanSpaces(string sLineIn);
     string removeSpaces(string sLineIn);
     bool checkParenthesis(string sLineIn);

@@ -23,6 +23,8 @@
 
 vector<Table> vTableList;
 
+
+
 void Engine::createTable(string sTableNameIn,
                          vector<tuple<string, string, int, bool> > vColumnNamesIn,
                          vector<string> vKeys)
@@ -30,6 +32,7 @@ void Engine::createTable(string sTableNameIn,
     for (size_t i=0; i<vTableList.size();i++){
         if(vTableList[i].getTableName()==sTableNameIn){
             cout<<"this table already exist!"<<endl;
+            return ;
         }
     }
     
@@ -68,7 +71,31 @@ void Engine::createTable(string sTableNameIn,
 void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
     for (size_t i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
+            //vTableList[i].addRow(vRowIn);
+            int iColumnIndex= -1;
+        int numOfRows=vTableList[i].getTNumOfRecords();
+           vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
+            for (size_t a = 0; a < vNames.size(); ++a) {
+            
+        if (get<2>(vNames[a])==true) {
+                iColumnIndex = a;
+            
+        }
+    }
+    if(iColumnIndex!=-1){
+        for(int i=0; i<numOfRows; i++){
+            std::vector < std::tuple<int, std::string> > vtemp;
+            vtemp=vTableList[i].getRow(i);
+            string giventemp=get<1> (vRowIn[iColumnIndex]);
+            if(get < 1 > (vtemp[iColumnIndex]).compare(giventemp) == 0){
+            cout<<"duplicate primary key";
+                return;
+            }
+        }
+        }
             vTableList[i].addRow(vRowIn);
+            
+            
             return;
             
         }
@@ -94,11 +121,42 @@ void Engine::getRow(string sTableNameIn,int iIndex) {
    ****************************************************************************/
 void Engine::displayTable(string sTableNameIn)
 {
+const int COLUMN_WIDTH = 20;
     for (size_t i = 0; i < vTableList.size(); ++i)
     {
         if (vTableList[i].getTableName() == sTableNameIn)
         {
-            vTableList[i].displayTable();
+            //vTableList[i].displayTable();
+            cout<<"\n"<<vTableList[i].getTableName()<<"\n";
+                vector<tuple<int, string, bool, string, int > > vColumnNames;
+                
+            vColumnNames=vTableList[i].getColumnNames();
+            
+              for (size_t j = 0; j <vColumnNames.size(); ++j)
+  {
+    //get the column values for printing
+    string sColName = get < 1 > (vColumnNames[j]);
+    bool bPrimaryKey = get < 2 > (vColumnNames[j]);
+
+    //see if it is a primary key, for formatting
+    if (bPrimaryKey)
+    {
+      cout << " | " << setw(COLUMN_WIDTH) << left
+                << "*" + sColName + "*";
+    }
+    else
+    {
+      cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
+    }
+
+  }
+  std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey();
+  cout<<"Primary keys :";
+   for (size_t j = 0; j <primaryKey.size(); ++j)
+  {
+  cout<<primaryKey[j];
+  }          
+            
             return;
         }
     }
@@ -115,6 +173,7 @@ void Engine::displayTableSchemas()
     {
         //if (vTableList[i].getTableName() == sTableNameIn)
         {
+        cout<<"shje";
             vTableList[i].displayTable();
             //return;
         }
@@ -189,7 +248,6 @@ Table Engine::whereClause(Table tCurrentTable,string whereFilter){
     //tNewTable.printOutTheWholeTable();
     
     return tNewTable;
-    
     
 }
 /*********************************************************************/
@@ -271,6 +329,8 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     
     for (size_t i = 0; i < vTableList.size(); ++i) {
         Table tCurrentTable = vTableList[i];
+        //cout<<sTableNameIn<<tCurrentTable.getTableName()<<"\n";
+        
         //Execute if the table is found in the list
         if (tCurrentTable.getTableName() == sTableNameIn) {
             cout << "where in table: " << tCurrentTable.getTableName() << endl;
@@ -537,10 +597,67 @@ void Engine::writetofile()
         outfile<<"\n"<<"records="<<nrecords<<"\n";
     }
 
-	
-
     outfile.close();
-
-    
 }
 
+
+bool Engine::createValidate(string sLineIn,string sTableNameIn)
+{
+    vector < string > vReturn;
+    int iPosStart = 0;
+    int iPosEnd = 0;
+    int iCount = 0;
+    int iAmountOfCommas = 0;
+    Table ob;
+
+      for (size_t i=0; i<vTableList.size();i++){
+        if(vTableList[i].getTableName()==sTableNameIn){
+            
+            ob=vTableList[i] ;
+        }
+    }
+  
+
+    
+    //Check to see how many commas are in the string
+    for (size_t i = 0; i < sLineIn.length(); ++i)
+    {
+        //Execute if the comma is found and increment the counter
+        if (sLineIn[i] == ',')
+        {
+            iAmountOfCommas++;
+        }
+    }
+vector<tuple<int, string, bool, string, int > > vColumnNames=ob.getColumnNames();
+    //Loop to parser out the comma separated values
+    while (iCount <= iAmountOfCommas)
+    {
+        iPosEnd = sLineIn.find(",", iPosStart + 1);
+        string value = sLineIn.substr(iPosStart, iPosEnd - iPosStart);
+               
+        if ((value.find("\'") != string::npos)&&(std::get < 3 > (vColumnNames[iCount])=="string")) {
+          
+        	value = Utilities::cleanSpaces(value);
+        }
+        else if((value.find("\'") == string::npos)&& (std::get < 3 > (vColumnNames[iCount])=="int") ){
+        
+        }
+        else{
+        cout<<"not validation";
+        return false;
+        }
+        //cout << "value " << value << endl;
+        vReturn.push_back(value);
+        iPosStart = iPosEnd + 1;
+        iCount++;
+    }
+
+    //clean up the words that were separated out
+//    for (size_t i = 0; i < vReturn.size(); ++i)
+//    {
+//        vReturn[i] = Utilities::cleanSpaces(vReturn[i]);
+//        //cout<<"vReturn: "<<vReturn[i]<<endl;
+//    }
+
+    return true;
+}

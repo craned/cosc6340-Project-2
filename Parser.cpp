@@ -255,7 +255,7 @@ bool Parser::findCreateTable(string sLineIn)
                                     
                     cout << "table " << sTableName << " created " << endl;
                      
-                    e.writetofile();
+                    //e.writetofile();
                     return true;
                 }
             }
@@ -764,10 +764,19 @@ bool Parser::findInsertInto(string sLineIn)
                 iPosStart = iPosValues;
 
                 //Clean up and add the row to the table
-                vector<tuple<int, string> > rowVector = createRowVector(sRow);
-                e.addRow(tableName, rowVector);
+                bool valid= e.createValidate(sLineIn,sTableNameOut);
+                if(valid==true)
+                {
+                vector<tuple<int, string> > rowVector = createRowVector(sRow,sTableNameOut);
+                
+                e.addRow(sTableNameOut, rowVector);
 
                 return true;
+                }
+                else
+                {
+                return false;
+                }
             }
         }//change
             //Execute if values from is found
@@ -1015,6 +1024,10 @@ vector<string> Parser::createVector(string sLineIn)
 
     return vReturn;
 }
+
+
+
+
 
 /*******************************************************************************
  Takes in a string, parses it, and creates a vector of strings to send back

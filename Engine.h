@@ -57,6 +57,7 @@ class Engine {
     //string delSpaces(string str);
     void writetofile();
     void read();
+    bool createValidate(string sLineIn,string sTableNameIn);
 
 	};
 
