@@ -767,15 +767,12 @@ bool Parser::findInsertInto(string sLineIn)
                 bool valid= e.createValidate(sLineIn,tableName);
                 if(valid==true)
                 {
-                vector<tuple<int, string> > rowVector = createRowVector(sRow);
-                
-                e.addRow(tableName, rowVector);
+                	vector<tuple<int, string> > rowVector = createRowVector(sRow);
+		         	e.addRow(tableName, rowVector);
 
-                return true;
-                }
-                else
-                {
-                return false;
+                	return true;
+                } else {
+                	return false;
                 }
             }
         }//change
@@ -840,9 +837,9 @@ bool Parser::findInsertInto(string sLineIn)
 bool Parser::findShowTable(string sLineIn)
 {
 	size_t iPosStart = sLineIn.find("SHOW TABLE");
-
     if (iPosStart != string::npos)
     {
+	    iPosStart = iPosStart + 10;
         //Get the name of the table from the string
         string sTableName = sLineIn.substr(iPosStart,
 										sLineIn.find(";") - iPosStart);

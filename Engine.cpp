@@ -32,7 +32,7 @@ void Engine::createTable(string sTableNameIn,
     for (size_t i=0; i<vTableList.size();i++){
         if(vTableList[i].getTableName()==sTableNameIn){
             cout<<"this table already exist!"<<endl;
-            return ;
+            return;
         }
     }
     
@@ -121,46 +121,46 @@ void Engine::getRow(string sTableNameIn,int iIndex) {
    ****************************************************************************/
 void Engine::displayTable(string sTableNameIn)
 {
-const int COLUMN_WIDTH = 20;
+	const int COLUMN_WIDTH = 20;
     for (size_t i = 0; i < vTableList.size(); ++i)
     {
         if (vTableList[i].getTableName() == sTableNameIn)
         {
             //vTableList[i].displayTable();
             cout<<"\n"<<vTableList[i].getTableName()<<"\n";
-                vector<tuple<int, string, bool, string, int > > vColumnNames;
-                
+            vector<tuple<int, string, bool, string, int > > vColumnNames;
             vColumnNames=vTableList[i].getColumnNames();
             
-              for (size_t j = 0; j <vColumnNames.size(); ++j)
-  {
-    //get the column values for printing
-    string sColName = get < 1 > (vColumnNames[j]);
-    bool bPrimaryKey = get < 2 > (vColumnNames[j]);
+			for (size_t j = 0; j <vColumnNames.size(); ++j)
+			{
+				//get the column values for printing
+				string sColName = get < 1 > (vColumnNames[j]);
+				bool bPrimaryKey = get < 2 > (vColumnNames[j]);
 
-    //see if it is a primary key, for formatting
-    if (bPrimaryKey)
-    {
-      cout << " | " << setw(COLUMN_WIDTH) << left
-                << "*" + sColName + "*";
-    }
-    else
-    {
-      cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
-    }
+				//see if it is a primary key, for formatting
+				if (bPrimaryKey)
+				{
+					cout << " | " << setw(COLUMN_WIDTH) << left << "*" + sColName + "*";
+				}
+				else
+				{
+					cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
+				}
 
-  }
-  std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey();
-  cout<<"Primary keys :";
-   for (size_t j = 0; j <primaryKey.size(); ++j)
-  {
-  cout<<primaryKey[j];
-  }          
-            
-            return;
-        }
-    }
-    printf("ERROR: The table was not found\n");
+			}
+			
+			std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey();
+			cout<<"Primary keys :";
+			for (size_t j = 0; j <primaryKey.size(); ++j)
+			{
+				cout<<primaryKey[j];
+			}
+					        
+		    return;
+		}
+	}
+	
+	printf("ERROR: The table was not found\n");
 }
 
 /*****************************************************************************
@@ -173,7 +173,6 @@ void Engine::displayTableSchemas()
     {
         //if (vTableList[i].getTableName() == sTableNameIn)
         {
-        cout<<"shje";
             vTableList[i].displayTable();
             //return;
         }
