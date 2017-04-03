@@ -73,33 +73,34 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
         if (vTableList[i].getTableName() == sTableNameIn) {
             //vTableList[i].addRow(vRowIn);
             int iColumnIndex= -1;
-        int numOfRows=vTableList[i].getTNumOfRecords();
-           vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
+        	int numOfRows=vTableList[i].getTNumOfRecords();
+            vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
+            
             for (size_t a = 0; a < vNames.size(); ++a) {
-            
-        if (get<2>(vNames[a])==true) {
-                iColumnIndex = a;
-            
-        }
-    }
-    if(iColumnIndex!=-1){
-        for(int i=0; i<numOfRows; i++){
-            std::vector < std::tuple<int, std::string> > vtemp;
-            vtemp=vTableList[i].getRow(i);
-            string giventemp=get<1> (vRowIn[iColumnIndex]);
-            if(get < 1 > (vtemp[iColumnIndex]).compare(giventemp) == 0){
-            cout<<"duplicate primary key";
-                return;
-            }
-        }
-        }
+				if (get<2>(vNames[a])==true) {
+				        iColumnIndex = a;
+				}
+    		}
+    		
+			/*if(iColumnIndex!=-1){
+				for(int i=0; i<numOfRows; i++){
+				    std::vector < std::tuple<int, std::string> > vtemp;
+				    vtemp=vTableList[i].getRow(i);
+				    string giventemp=get<1> (vRowIn[iColumnIndex]);
+				    
+				    if(get < 1 > (vtemp[iColumnIndex]).compare(giventemp) == 0){
+				    	cout<<"duplicate primary key";
+				        return;
+				    }
+				}
+		    }//*/
+		    
             vTableList[i].addRow(vRowIn);
             
-            
             return;
-            
+        } else{
+        	cout<<"this table does not exist!"<<endl;
         }
-        else{cout<<"this table does not exist!"<<endl;}
     }
 }
 
@@ -308,14 +309,14 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                            string joinFilter)
 {
     
-    cout<<"tableName: "<<sTableNameIn<<endl;
+    //cout<<"tableName: "<<sTableNameIn<<endl;
     for(size_t i=0;i<colNames.size();i++){
-        cout<<"colNames: "<<colNames[i]<<endl;
+        //cout<<"colNames: "<<colNames[i]<<endl;
     }
     
-    cout<<"whereFilter: "<<whereFilter<<endl;
-    cout<<"joinTable: "<<joinTable<<endl;
-    cout<<"joinFilter: "<<joinFilter<<endl;
+    //cout<<"whereFilter: "<<whereFilter<<endl;
+    //cout<<"joinTable: "<<joinTable<<endl;
+    //cout<<"joinFilter: "<<joinFilter<<endl;
     
     bool hasWhere= false;
     bool hasjoin= false; // not used
@@ -627,24 +628,29 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
             iAmountOfCommas++;
         }
     }
-vector<tuple<int, string, bool, string, int > > vColumnNames=ob.getColumnNames();
+    
+	vector<tuple<int, string, bool, string, int>> vColumnNames=ob.getColumnNames();
     //Loop to parser out the comma separated values
     while (iCount <= iAmountOfCommas)
     {
         iPosEnd = sLineIn.find(",", iPosStart + 1);
         string value = sLineIn.substr(iPosStart, iPosEnd - iPosStart);
                
-        if ((value.find("\'") != string::npos)&&(std::get < 3 > (vColumnNames[iCount])=="string")) {
+        if ((value.find("\'") != string::npos)&&
+        	(std::get < 3 > (vColumnNames[iCount])=="strin"))
+        {
           
         	value = Utilities::cleanSpaces(value);
         }
-        else if((value.find("\'") == string::npos)&& (std::get < 3 > (vColumnNames[iCount])=="int") ){
+        else if((value.find("\'") == string::npos)&&
+        	(std::get < 3 > (vColumnNames[iCount])=="int") )
+        	{
         
+        } else {
+		    cout<<"not validation";
+		    return false;
         }
-        else{
-        cout<<"not validation";
-        return false;
-        }
+        
         //cout << "value " << value << endl;
         vReturn.push_back(value);
         iPosStart = iPosEnd + 1;
