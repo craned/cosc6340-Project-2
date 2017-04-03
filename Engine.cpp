@@ -29,7 +29,7 @@ void Engine::createTable(string sTableNameIn,
 {
     bool isTableFound=false;
     for (size_t i = 0; i < vTableList.size(); i++) {
-        cout << "existing table: " << vTableList[i].getTableName();
+        cout << "existing table: " << vTableList[i].getTableName()<<endl;
         if (vTableList[i].getTableName() == sTableNameIn) {
             isTableFound = true;
             cout << "vTableList[i].getTableName(): " << vTableList[i].getTableName() << endl;
@@ -73,49 +73,20 @@ void Engine::createTable(string sTableNameIn,
 }
 
 /****************************************************************************
-   Adds a row to the specified table
-   ****************************************************************************/
+ Adds a row to the specified table
+ ****************************************************************************/
 void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
-    bool isTableFound=false;
+    bool isFoundTable=false;
     for (size_t i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
-            //vTableList[i].addRow(vRowIn);
-            isTableFound=true; //*** Reza's code stays
-            
-            //int iColumnIndex= -1;
-        	//int numOfRows=vTableList[i].getTNumOfRecords();
-            /*vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
-            
-            for (size_t a = 0; a < vNames.size(); ++a) {
-				if (get<2>(vNames[a])==true) {
-				        iColumnIndex = a;
-				}
-    		}
-    		
-			if(iColumnIndex!=-1){
-				for(int i=0; i<numOfRows; i++){
-				    std::vector < std::tuple<int, std::string> > vtemp;
-				    vtemp=vTableList[i].getRow(i);
-				    string giventemp=get<1> (vRowIn[iColumnIndex]);
-				    
-				    if(get < 1 > (vtemp[iColumnIndex]).compare(giventemp) == 0){
-				    	cout<<"duplicate primary key";
-				        return;
-				    }
-				}
-		    }//*/
-		    
             vTableList[i].addRow(vRowIn);
-            
+            isFoundTable = true;
             return;
-        } else{
-        	cout<<"this table does not exist!"<<endl;
+            
         }
     }
-    
-    if(!isTableFound) cout<<"this table does not exist!"<<endl; //*** Reza's code stays
+    if(!isFoundTable) cout<<"this table does not exist!"<<endl;
 }
-
 /****************************************************************************
  get a row to the specified table
  ****************************************************************************/
@@ -525,6 +496,14 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                            string whereFilter,
                            string joinTable,
                            string joinFilter) {
+    sTableNameIn = Utilities::cleanSpaces(sTableNameIn);
+    tempTable = Utilities::cleanSpaces(tempTable);
+    whereFilter = Utilities::cleanSpaces(whereFilter);
+    joinTable = Utilities::cleanSpaces(joinTable);
+    joinFilter = Utilities::cleanSpaces(joinFilter);
+    for(int k=0; k<colNames.size(); k++){
+        colNames[k] = Utilities::cleanSpaces(colNames[k]);
+    }
     
     for (size_t i = 0; i < vTableList.size(); ++i) {
         Table tCurrentTable = vTableList[i];
