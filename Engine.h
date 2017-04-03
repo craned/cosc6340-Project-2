@@ -51,6 +51,7 @@ class Engine {
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
     void deleteATable(Table table);
+    void dropTable(string sTableNameIn);
     Table whereClause(Table tCurrentTable,string whereFilter);
     Table selectClause(Table tNewTable,vector < string > colNames, Table originalTable);
     Table joinClause(Table originalTable,string joinTableString,string joinFilter);

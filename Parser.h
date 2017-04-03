@@ -57,6 +57,7 @@ bool queryIsNested = false;
   bool findCreateTable(string sLineIn);
   bool findSelect(string sLineIn);
   bool findInsertInto(string sLineIn);
+  bool findDropTable(string sLineIn);
   bool findShowTable(string sLineIn);
   bool findShowTables(string sLineIn);
   bool findWrite(string sLineIn);

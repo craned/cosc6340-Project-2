@@ -113,7 +113,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
         }
     }
     
-    if(!isFoundTable) cout<<"this table does not exist!"<<endl; //*** Reza's code stays
+    if(!isTableFound) cout<<"this table does not exist!"<<endl; //*** Reza's code stays
 }
 
 /****************************************************************************
@@ -564,14 +564,22 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
 
 
 void Engine::deleteATable(Table table){
-    for (size_t i=0; i<vTableList.size(); i++){
-        if (table.getTableName()==vTableList[i].getTableName()){
+    dropTable(table.getTableName());
+}
+
+
+
+/*****************************************************************************
+   DROP the table with the given name
+   ****************************************************************************/
+void Engine::dropTable(string sTableNameIn)
+{
+	for (size_t i=0; i<vTableList.size(); i++){
+        if (vTableList[i].getTableName() == sTableNameIn){
             vTableList.erase(vTableList.begin()+i);
-            table.setTNumOfRecords(0);
-            table.deleteATable(table.getTableName());
+            vTableList[i].deleteATable(sTableNameIn);
         }
     }
-    
 }
 
 void Engine::read(){
