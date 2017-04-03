@@ -34,12 +34,12 @@ void Engine::createTable(string sTableNameIn,
             isTableFound = true;
             cout << "vTableList[i].getTableName(): " << vTableList[i].getTableName() << endl;
             cout << "sTableNameIn: " << sTableNameIn << endl;
-            return;
+            break;
         }
     }
     
     if(isTableFound) {
-        cout << "this table already exists! SO Not being added !" << endl;
+        cout << "ERROR: this table already exists! SO Not being added !" << endl;
     }else{
         Table t(sTableNameIn);
         
