@@ -73,34 +73,12 @@ void Engine::createTable(string sTableNameIn,
 }
 
 /****************************************************************************
-   Adds a row to the specified table
-   ****************************************************************************/
+ Adds a row to the specified table
+ ****************************************************************************/
 void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
     bool isFoundTable=false;
     for (size_t i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
-            //vTableList[i].addRow(vRowIn);
-            int iColumnIndex= -1;
-        int numOfRows=vTableList[i].getTNumOfRecords();
-           vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
-            for (size_t a = 0; a < vNames.size(); ++a) {
-            
-        if (get<2>(vNames[a])==true) {
-                iColumnIndex = a;
-            
-        }
-    }
-    if(iColumnIndex!=-1){
-        for(int i=0; i<numOfRows; i++){
-            std::vector < std::tuple<int, std::string> > vtemp;
-            vtemp=vTableList[i].getRow(i);
-            string giventemp=get<1> (vRowIn[iColumnIndex]);
-            if(get < 1 > (vtemp[iColumnIndex]).compare(giventemp) == 0){
-            cout<<"duplicate primary key";
-                return;
-            }
-        }
-        }
             vTableList[i].addRow(vRowIn);
             isFoundTable = true;
             return;
@@ -109,7 +87,6 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
     }
     if(!isFoundTable) cout<<"this table does not exist!"<<endl;
 }
-
 /****************************************************************************
  get a row to the specified table
  ****************************************************************************/
@@ -137,57 +114,37 @@ void Engine::displayTable(string sTableNameIn)
             cout<<"\n"<<vTableList[i].getTableName()<<"\n";
             vector<tuple<int, string, bool, string, int > > vColumnNames;
             vColumnNames=vTableList[i].getColumnNames();
-              cout << "\n ";
-
-  for (size_t i = 0; i < vColumnNames.size(); ++i)
-  {
-    cout << "-----------------------";
-  }
-  cout << "\n";
-
-  cout << " | " << vTableList[i].getTableName() << "\n ";
-
-  for (size_t i = 0; i < vColumnNames.size(); ++i)
-  {
-    cout << "+----------------------";
-  }
-  cout << "\n";
-              for (size_t j = 0; j <vColumnNames.size(); ++j)
-  {
-    //get the column values for printing
-    string sColName = get < 1 > (vColumnNames[j]);
-    bool bPrimaryKey = get < 2 > (vColumnNames[j]);
-
-    //see if it is a primary key, for formatting
-    if (bPrimaryKey)
-    {
-      cout << " | " << setw(COLUMN_WIDTH) << left
-                << "*" + sColName + "*";
-    }
-    else
-    {
-      cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
-    }
-
-  }
-  cout<<"\n";
-  for (size_t i = 0; i < vColumnNames.size(); ++i)
-  {
-    cout << "+----------------------";
-  }
-  cout << "\n";
-  std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey();
-  cout<<"Primary keys :";
-   for (size_t j = 0; j <primaryKey.size(); ++j)
-  {
-  cout<<primaryKey[j];
-  }  
-  cout<<"\n";        
             
-            return;
-        }
-    }
-    printf("ERROR: The table was not found\n");
+			for (size_t j = 0; j <vColumnNames.size(); ++j)
+			{
+				//get the column values for printing
+				string sColName = get < 1 > (vColumnNames[j]);
+				bool bPrimaryKey = get < 2 > (vColumnNames[j]);
+
+				//see if it is a primary key, for formatting
+				if (bPrimaryKey)
+				{
+					cout << " | " << setw(COLUMN_WIDTH) << left << "*" + sColName + "*";
+				}
+				else
+				{
+					cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
+				}
+
+			}
+			
+			std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey();
+			cout<<"Primary keys :";
+			for (size_t j = 0; j <primaryKey.size(); ++j)
+			{
+				cout<<primaryKey[j];
+			}
+					        
+		    return;
+		}
+	}
+	
+	printf("ERROR: The table was not found\n");
 }
 
 /*****************************************************************************
@@ -200,8 +157,7 @@ void Engine::displayTableSchemas()
     {
         //if (vTableList[i].getTableName() == sTableNameIn)
         {
-        
-            displayTable(vTableList[i].getTableName());
+            vTableList[i].displayTable();
             //return;
         }
     }
@@ -253,19 +209,19 @@ Table Engine::whereClause(Table tCurrentTable,string whereFilter){
                 }
             }
         }
-    }
-    //See if the column exists in the table
-    if (iColumnIndex == -1) {
-        printf("| The column does not exist.\n");
-    } else {
-        //get the values for the column
-        int numOfRows=tCurrentTable.getTNumOfRecords();
-        
-        for(int i=0; i<numOfRows; i++){
-            std::vector < std::tuple<int, std::string> > vtemp;
-            vtemp=tCurrentTable.getRow(i);
-            if(get < 1 > (vtemp[iColumnIndex]).compare(rightSideCondition) == 0){
-                tNewTable.addRow(tCurrentTable.getRow(i));
+        //See if the column exists in the table
+        if (iColumnIndex == -1) {
+            printf("| The column does not exist.\n");
+        } else {
+            //get the values for the column
+            int numOfRows=tCurrentTable.getTNumOfRecords();
+            
+            for(int i=0; i<numOfRows; i++){
+                std::vector < std::tuple<int, std::string> > vtemp;
+                vtemp=tCurrentTable.getRow(i);
+                if(get < 1 > (vtemp[iColumnIndex]).compare(rightSideCondition) == 0){
+                    tNewTable.addRow(tCurrentTable.getRow(i));
+                }
             }
         }
         
@@ -551,12 +507,8 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     
     for (size_t i = 0; i < vTableList.size(); ++i) {
         Table tCurrentTable = vTableList[i];
-        //cout<<sTableNameIn<<tCurrentTable.getTableName()<<"\n";
-        
         //Execute if the table is found in the list
-        sTableNameIn=Utilities::cleanSpaces(sTableNameIn);
         if (tCurrentTable.getTableName() == sTableNameIn) {
-            cout << "where in table: " << tCurrentTable.getTableName() << endl;
             //printout the current table
             cout << "current/original table:" << endl;
             tCurrentTable.printOutTheWholeTable();
@@ -587,6 +539,9 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         }
     }
 }
+
+
+
 void Engine::deleteATable(Table table){
     dropTable(table.getTableName());
 }
@@ -604,7 +559,6 @@ void Engine::dropTable(string sTableNameIn)
             vTableList[i].deleteATable(sTableNameIn);
         }
     }
-    
 }
 
 void Engine::read(){
@@ -865,28 +819,29 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
             iAmountOfCommas++;
         }
     }
-vector<tuple<int, string, bool, string, int > > vColumnNames=ob.getColumnNames();
-    if(iAmountOfCommas==vColumnNames.size()){
-    return false;
-    }
-
+    
+	vector<tuple<int, string, bool, string, int>> vColumnNames=ob.getColumnNames();
     //Loop to parser out the comma separated values
     while (iCount <= iAmountOfCommas)
     {
         iPosEnd = sLineIn.find(",", iPosStart + 1);
         string value = sLineIn.substr(iPosStart, iPosEnd - iPosStart);
                
-        if ((value.find("\'") != string::npos)&&(std::get < 3 > (vColumnNames[iCount])=="string")) {
+        if ((value.find("\'") != string::npos)&&
+        	(std::get < 3 > (vColumnNames[iCount])=="strin"))
+        {
           
         	value = Utilities::cleanSpaces(value);
         }
-        else if((value.find("\'") == string::npos)&& (std::get < 3 > (vColumnNames[iCount])=="int") ){
+        else if((value.find("\'") == string::npos)&&
+        	(std::get < 3 > (vColumnNames[iCount])=="int") )
+        	{
         
+        } else {
+		    cout<<"not validation";
+		    return false;
         }
-        else{
-        cout<<"not validation";
-        return false;
-        }
+        
         //cout << "value " << value << endl;
         vReturn.push_back(value);
         iPosStart = iPosEnd + 1;

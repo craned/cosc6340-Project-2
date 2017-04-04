@@ -153,18 +153,13 @@ void commandLineSQLInput(string sqlQuery) {
 int main(int argc, char *argv[]) {
 parser = new Parser();
 parser->read();
-    remove("output.txt");
-    out.open("output.txt",ios::out|ios::app);
     if (argc != 2) {
         cout << "usage: dbms script=<filename> OR dbms \"<SQL query>\"" << endl;
-        out << "usage: dbms script=<filename> OR dbms \"<SQL query>\"" << endl;
         if (!sqlQuery.empty()) {
             cout << "Running on internal sql query" << endl;
-            out << "Running on internal sql query" << endl;
             commandLineSQLInput(sqlQuery);
         } else if (!scriptFile.empty()) {
             cout << "Running on internal sql script" << endl;
-            out << "Running on internal sql script" << endl;
             parseScriptFile(scriptFile);
         }
         return 0;
@@ -180,8 +175,8 @@ parser->read();
         char* scriptFile = strtok((char*)firstArg.c_str(), "=");
         scriptFile = strtok(NULL, "="); // Advance to actual script file name
         if (scriptFile == NULL) {
-        	out << "ERROR: no sql script could be found"<<"\n";
-            cout << "ERROR: no sql script could be found" << "\n";
+        	out << "ERROR: no sql script could be found";
+            cout << "ERROR: no sql script could be found" << endl;
             return 0;
         }
 
