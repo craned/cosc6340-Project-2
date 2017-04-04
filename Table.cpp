@@ -301,9 +301,14 @@ void Table::deleteATable(string tableName){
 
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)
 {
+    
     char* valOut = new char[blockSize];
-    for (size_t i = 0; i < val.length(); i++) {
+    for (size_t i = 0; i < blockSize; i++) {
+        if(i>=val.length()){
+            valOut[i] = '\0';
+        }else{
         valOut[i] = val[i];
+        }
         //cout<<"valOut[i]: "<<valOut[i]<<endl;
     }
     //valOut[val.length()] = '\0';

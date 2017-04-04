@@ -133,6 +133,12 @@ public:
     std::vector<std::string> getColumnValues(int iIndex);
 
     void deleteATable(string tableName);
+
+    //rename the class table to parameter name
+    void rename(string sNewName)
+    {
+        sTableName = sNewName;
+    }
 };
 
 #endif //GIT2_TABLE_H
