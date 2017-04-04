@@ -323,9 +323,19 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 					if (iPosRParen != string::npos) {
 				    	tempTableName = sLineIn.substr(iPosStart, 
 				                                      iPosRParen - iPosStart);
-				  	} else { 
-				    	tempTableName = origQuery.substr(iPosStart, 
-				                    iPosSemiColon - iPosStart);
+				  	} else {
+				  		size_t joinAfterSubQPos = origQuery.find("JOIN", iPosStart);
+				  		size_t whereAfterSubQPos = origQuery.find("WHERE", iPosStart);
+				  		if (joinAfterSubQPos != string::npos) {
+				  			tempTableName = origQuery.substr(iPosStart,
+				  									joinAfterSubQPos - iPosStart);
+				  		} else if (whereAfterSubQPos != string::npos) {
+				  			tempTableName = origQuery.substr(iPosStart,
+				  									whereAfterSubQPos - iPosStart);
+				  		} else {
+				    		tempTableName = origQuery.substr(iPosStart, 
+				            	        			iPosSemiColon - iPosStart);
+				        }
 				  	}
 
 			    	//cout << "tableName " << tempTableName << endl;
