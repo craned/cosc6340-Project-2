@@ -222,18 +222,12 @@ void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
     string tableName = sTableName + ".tbl";
     ofstream out;
     out.open(tableName, ios::binary | ios::out | ios::app);
+    cout<<"extra row";
     for (size_t i = 0; i < vColumnNames.size(); ++i) {
         if(get<3>(vColumnNames[i])=="string") {
-            get<1>(v[i])=Utilities::cleanSpaces(get<1>(v[i]));
+            Utilities::cleanSpaces(get<1>(v[i]));
             //cout<<"get<1>(v[i]): "<<get<1>(v[i])<<endl;
             //cout<<"size of get<1>(v[i]): "<<sizeof(get<1>(v[i]))<<endl;
-            //cout<<"get<1>(v[i]) size: "<<get<1>(v[i]).size()<<endl;
-            //cout<<"________"<<endl;
-            //string str = "'STRINGDS'";
-            //cout<<"string str = \"'STRINGDS'\";"<<endl;
-            //cout<<"’STRINGDS’: "<<str<<endl;
-            //cout<<"size of str: "<<sizeof(str)<<endl;
-            //cout<<"str size: "<<str.size()<<endl;
             writeStringToFile(get<1>(v[i]), get<4>(vColumnNames[i]), out);
             //cout << "v" << i << ":" << get<1>(v[i]) << endl;
 
@@ -252,7 +246,7 @@ void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
     out.close();
 }
 
-/*******************************************************************/
+
 //get a row by using index
 vector < std::tuple<int, std::string> > Table::getRow(int iIndex) {
     std::vector < std::tuple<int, std::string> > vReturn;
@@ -302,12 +296,11 @@ void Table::deleteATable(string tableName){
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)
 {
     char* valOut = new char[blockSize];
-    for (size_t i = 0; i < val.length(); i++) {
+    for (int i = 0; i < blockSize; i++) {
         valOut[i] = val[i];
-        //cout<<"valOut[i]: "<<valOut[i]<<endl;
     }
     //valOut[val.length()] = '\0';
-    
+
     out.write(valOut, sizeof(char)*(blockSize));
     //cout<<"write string.val.length(): "<<valO<<endl ;
 }
