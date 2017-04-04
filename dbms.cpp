@@ -19,19 +19,19 @@ string const SELECT = "SELECT ";
 string const SHOW_TABLE = "SHOW TABLE";
 string const QUIT = "QUIT;";
 
-const int CREATE_TABLE_SIZE = 12;
-const int INSERT_INTO_SIZE = 11;
-const int WRITE_CLOSE_SIZE = 5;
-const int DELETE_FROM_SIZE = 11;
-const int UPDATE_SIZE = 5;
-const int WHERE_SIZE = 5;
-const int SET_SIZE = 3;
-const int OPEN_EXIT_SHOW_SIZE = 10;
-const int SINGLE_OP_SIZE = 1;
-const int DOUBLE_OP_SIZE = 2;
-const int VALUES_FROM_SIZE = 11;
-const int VAL_FROM_REL_SIZE = 20;
-const int PRIMARY_KEY_SIZE = 11;
+//const int CREATE_TABLE_SIZE = 12;
+//const int INSERT_INTO_SIZE = 11;
+//const int WRITE_CLOSE_SIZE = 5;
+//const int DELETE_FROM_SIZE = 11;
+//const int UPDATE_SIZE = 5;
+//const int WHERE_SIZE = 5;
+//const int SET_SIZE = 3;
+//const int OPEN_EXIT_SHOW_SIZE = 10;
+//const int SINGLE_OP_SIZE = 1;
+//const int DOUBLE_OP_SIZE = 2;
+//const int VALUES_FROM_SIZE = 11;
+//const int VAL_FROM_REL_SIZE = 20;
+//const int PRIMARY_KEY_SIZE = 11;
 
 Parser* parser;
 
@@ -76,45 +76,96 @@ void parseScriptFile(string scriptFile) {
     string line = "";
     string queries = "";
     if (script.is_open()) {
+        bool blockCommentActive = false;
         //cout << "open" << endl;
         while (getline(script, line)) {
         	out << line;
-            queries += toUpper(line);
-            //cout << queries << endl;
-            size_t firstSemicolon = queries.find(";") + 1;
+            size_t blockCommentStartPos = line.find("/*");
+            size_t blockCommentEndPos = line.find("*/");
+            size_t dashDashPos = line.find("--");
+            
+            if (blockCommentStartPos != string::npos && !blockCommentActive) {
+                blockCommentActive = true;
+                if (blockCommentEndPos != string::npos) {
+                    blockCommentActive = false;
+                    line = line.substr(0, blockCommentStartPos) +
+                    		line.substr(blockCommentEndPos+2, string::npos);
+                } else {
+                	line = line.substr(0, blockCommentStartPos);
+                }
+            }
+            if (blockCommentActive && blockCommentEndPos != string::npos) {
+                blockCommentActive = false;
+                line = line.substr(blockCommentEndPos+2, string::npos);
+            }
+            
+            if (dashDashPos != string::npos && dashDashPos < blockCommentStartPos &&
+                (blockCommentEndPos != string::npos && dashDashPos > blockCommentEndPos))
+            {
+                dashDashPos = line.find("--");
+                line = line.substr(0, dashDashPos);
+            }
+            if (blockCommentActive) {
+                continue;
+            }
+            for (int i = 0; i < line.length(); i++) {
+                if ((i+1) < line.length()) {
+                    if (line.at(i) == '-' && line.at(i+1) == '-') {
+                        line = line.substr(0, i);
+                        break;
+                    }
+                }
+            }
+            if (line.find("\r") != string::npos) {
+                line = line.substr(0, line.find('\r'));
+            }
+            if (line.find("\n") != string::npos) {
+                line = line.substr(0, line.find('\n'));
+            }
+            cout << line << endl;
+            queries += " " + toUpper(line);
+            size_t firstSemicolon = queries.find(';', 0);
             if (firstSemicolon != string::npos) {
+                firstSemicolon++;
                 string query = queries.substr(0, firstSemicolon);
-                cout << query << endl;
+                cout << "executing " << query << endl;
                 parser->parse(query);
                 queries = queries.substr(firstSemicolon,
                 						queries.length() - firstSemicolon);
-            }
+             }//*/
         }
         
         while (queries.length() > 0) {
         	out << line;
-            cout << queries << endl;
-            size_t firstSemicolon = queries.find(";") + 1;
+            size_t firstSemicolon = queries.find(";", 0);
             if (firstSemicolon != string::npos) {
+                firstSemicolon++;
                 string query = queries.substr(0, firstSemicolon);
-                cout << query << endl;
                 parser->parse(query);
                 queries = queries.substr(firstSemicolon,
                 						queries.length() - firstSemicolon);
-            }
-        }
-
-        /*while (true) {
-            size_t firstSemicolon = queries.find_first_of(";");
-            if (firstSemicolon == string::npos || queries.length() == 0) {
-                cout << "End of queries that end in a semicolon" << endl;
-                break;
+                
+                if (queries.find(';') == string::npos) {
+                    cout << "ERROR: " << queries << " not executed. No semicolon could be found." << endl;
+                    break;
+                }
             } else {
-                string query = queries.substr(0, firstSemicolon);
-                parser->parse(query);
-                queries = queries.substr(firstSemicolon, queries.length() - firstSemicolon);
-            }
-        }*/
+                bool allSpaces = true;
+                for (int i = 0; i < queries.length(); i++) {
+                    if (queries[i] != ' ') {
+                        cout << "ERROR: " << queries << " not executed. No semicolon could be found." << endl;
+                        allSpaces = false;
+                    }
+                }
+                
+                if (allSpaces) {
+                    break;
+                } else {
+                	cout << "ERROR: " << queries << " not executed. No semicolon could be found." << endl;
+                	break;
+                }
+             }
+         }//*/
 
         cout << "Finished reading sql script" << endl;
     } else {
@@ -140,7 +191,7 @@ void commandLineSQLInput(string sqlQuery) {
 		    }
 		    
 		    firstSemicolon++;
-            string sqlQuery = sqlQuery.substr(0, firstSemicolon);
+            sqlQuery = sqlQuery.substr(0, firstSemicolon);
 		    sqlQuery = "";
 		    cout << "SQL > ";
 		}

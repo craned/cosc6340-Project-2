@@ -17,40 +17,24 @@
 #include "Parser.h"
 
 const int CREATE_TABLE_SIZE = 12;
-const int INSERT_INTO_SIZE = 11;
-const int WRITE_CLOSE_SIZE = 5;
-const int DELETE_FROM_SIZE = 11;
-const int UPDATE_SIZE = 5;
-const int WHERE_SIZE = 5;
-const int SET_SIZE = 3;
-const int SHOW_TABLE_SIZE = 10;
-const int SINGLE_OP_SIZE = 1;
-const int DOUBLE_OP_SIZE = 2;
-const int VALUES_FROM_SIZE = 11;
-const int VAL_FROM_REL_SIZE = 20;
-const int PRIMARY_KEY_SIZE = 11;
+//const int INSERT_INTO_SIZE = 11;
+//const int WRITE_CLOSE_SIZE = 5;
+//const int DELETE_FROM_SIZE = 11;
+//const int UPDATE_SIZE = 5;
+//const int WHERE_SIZE = 5;
+//const int SET_SIZE = 3;
+//const int SHOW_TABLE_SIZE = 10;
+//const int SINGLE_OP_SIZE = 1;
+//const int DOUBLE_OP_SIZE = 2;
+//const int VALUES_FROM_SIZE = 11;
+//const int VAL_FROM_REL_SIZE = 20;
+//const int PRIMARY_KEY_SIZE = 11;
 
 static int nestedLevel = 0;
 static int returningNestedLevel = 1;
 static string origQuery = "";
 
 //stack <Table> stack;
-
-//Array of String identifiers for non-symbolic operations
-static const string expr[] =
-{ "select", "project", "rename", "natural-join" };
-
-//Array of String identifiers for symbolic comparisons
-static const string operant[] =
-{ "==", "!=", "<=", ">=", "<", ">" };
-
-//Array of Char identifiers for symbolic operations
-static const char symExpr[] =
-{ '+', '-', '*' };
-
-//Array of all symbols
-static const string allOp[] =
-{ "==", "!=", "<=", ">=", "<", ">", "+", "-", "*" };
 
 const string sError = "ERR:: INVALID INPUT";
 
@@ -214,7 +198,7 @@ bool Parser::findCreateTable(string sLineIn)
         {
             //get the table name
             string sTableName = sLineIn.substr(iPosStart + CREATE_TABLE_SIZE,
-                                               iPosEnd - CREATE_TABLE_SIZE - 1);
+                                               iPosEnd - CREATE_TABLE_SIZE);
 
             //cout << "tableName create" << sTableName << endl;
 
