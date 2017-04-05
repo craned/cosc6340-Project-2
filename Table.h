@@ -15,6 +15,7 @@
 #include "fstream"
 #include "Utilities.h"
 
+
 using namespace std;
 
 class Table
@@ -29,6 +30,7 @@ private:
     string sTableName;
 
 public:
+
     int getTRecordSize() const;
 
     void setTRecordSize(int tRecordSize);
@@ -74,7 +76,7 @@ public:
     }
 
     //Display function
-    void displayTable();
+    void displayTable(ofstream out);
 
     //Setters
     void setPrimaryKey(std::string sKeyIn);
@@ -133,12 +135,6 @@ public:
     std::vector<std::string> getColumnValues(int iIndex);
 
     void deleteATable(string tableName);
-
-    //rename the class table to parameter name
-    void rename(string sNewName)
-    {
-        sTableName = sNewName;
-    }
 };
 
 #endif //GIT2_TABLE_H

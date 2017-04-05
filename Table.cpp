@@ -33,25 +33,27 @@ fstream outputFile;
 /*******************************************************************************
  Display the table
  *******************************************************************************/
-void Table::displayTable()
+void Table::displayTable(ofstream out)
 {
   // Print the lines of the table for a pretty output
   cout << "\n ";
-
+out << "\n ";
   for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
     cout << "-----------------------";
+    out << "-----------------------";
   }
   cout << "\n";
-
+  out << "\n";
   cout << " | " << sTableName << "\n ";
-
+  out << " | " << sTableName << "\n ";
   for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
     cout << "+----------------------";
+    out << "+----------------------";
   }
   cout << "\n";
-
+  cout << "\n";
   // Determine how far to space the column bars
   for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
@@ -64,22 +66,26 @@ void Table::displayTable()
     {
       cout << " | " << setw(COLUMN_WIDTH) << left
                 << "*" + sColName + "*";
+      out << " | " << setw(COLUMN_WIDTH) << left
+                << "*" + sColName + "*";
     }
     else
     {
       cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
+      out << " | " << setw(COLUMN_WIDTH) << left << sColName;
     }
 
   }
   cout << "\n ";
-
+  out << "\n ";
   // Print the row dividers for the number of columns
   for (size_t i = 0; i < vColumnNames.size(); ++i)
   {
     cout << "+----------------------";
+    out << "+----------------------";
   }
   cout << "\n";
-
+  out << "\n";
 //  for (size_t i = 0; i < vRows.size(); ++i)
 //  {
 //
@@ -301,14 +307,9 @@ void Table::deleteATable(string tableName){
 
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)
 {
-    
     char* valOut = new char[blockSize];
-    for (size_t i = 0; i < blockSize; i++) {
-        if(i>=val.length()){
-            valOut[i] = '\0';
-        }else{
+    for (size_t i = 0; i < val.length(); i++) {
         valOut[i] = val[i];
-        }
         //cout<<"valOut[i]: "<<valOut[i]<<endl;
     }
     //valOut[val.length()] = '\0';
