@@ -31,7 +31,7 @@ const int CREATE_TABLE_SIZE = 12;
 //const int PRIMARY_KEY_SIZE = 11;
 
 static int nestedLevel = 0;
-static int returningNestedLevel = 1;
+static int returningNestedLevel = 0;
 static string origQuery = "";
 
 //stack <Table> stack;
@@ -326,12 +326,17 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				  	} else {
 				  		size_t joinAfterSubQPos = origQuery.find("JOIN", iPosStart);
 				  		size_t whereAfterSubQPos = origQuery.find("WHERE", iPosStart);
-				  		if (joinAfterSubQPos != string::npos) {
-				  			tempTableName = origQuery.substr(iPosStart,
+				  		if (joinAfterSubQPos != string::npos ||
+				  			whereAfterSubQPos != string::npos)
+				  		{
+				  			if (joinAfterSubQPos != string::npos) {
+				  				tempTableName = origQuery.substr(iPosStart,
 				  									joinAfterSubQPos - iPosStart);
-				  		} else if (whereAfterSubQPos != string::npos) {
-				  			tempTableName = origQuery.substr(iPosStart,
-				  									whereAfterSubQPos - iPosStart);
+				  			}
+				  			if (whereAfterSubQPos != string::npos) {
+				  				tempTableName = origQuery.substr(iPosStart,
+				  								whereAfterSubQPos - iPosStart);
+				  			}
 				  		} else {
 				    		tempTableName = origQuery.substr(iPosStart, 
 				            	        			iPosSemiColon - iPosStart);
@@ -350,6 +355,11 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
  									selectQ.getJoinTable(),
         		              		selectQ.getJoinFilter());
 					
+				  			
+					iPosJoin = origQuery.find("JOIN", iPosStart);
+					iPosOn = origQuery.find("ON", iPosJoin);
+					iPosWhere = origQuery.find("WHERE", iPosStart);
+							
 					selectQ.setSelectCols(colNames);
 					selectQ.setFromTable(selectQ.getTempTable());
 					selectQ.setTempTable("");
@@ -358,11 +368,17 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			}
 			
 			string tableName = "";
+			if (!selectQ.getFromTable().empty()) {
+				tableName = selectQ.getFromTable();
+			}
 			string joinTable = "";
 			string joinFilter = "";
 			string whereFilter = "";
 			// don't want to check for join too early
-			if (iPosJoin != string::npos && iPosJoin < iPosLParen) {
+			if (iPosJoin != string::npos) {
+				//cout << "iPosJoin " << origQuery.at(iPosJoin-2) << origQuery.at(iPosJoin-1) << origQuery.at(iPosJoin) << endl;
+				if (iPosJoin < iPosLParen ||
+					returningNestedLevel > 0) {
 				//cout << "checking join clause" << endl;
 				tableName = sLineIn.substr(iPosStart,
 											iPosJoin - iPosStart);
@@ -429,6 +445,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 					joinTable = Utilities::cleanSpaces(joinTable);
 					selectQ.setJoinTable(joinTable);
 				}
+				}
 			} else {
 				selectQ.setJoinTable("");
 			}
@@ -436,7 +453,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			//cout << "joinFilter " << joinFilter << endl;
 			// don't want to check for on too early
 			if (iPosOn != string::npos &&
-				(iPosOn < iPosLParen || joinSelectRecursion))
+				(iPosOn < iPosLParen || joinSelectRecursion || !joinTable.empty()))
 			{
 				//cout << "checking join filter" << endl;
 				iPosOn += 2;
