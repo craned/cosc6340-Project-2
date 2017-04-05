@@ -51,7 +51,7 @@ void parseSQLQuery(string SQL) {
 string toUpper(string str) {
     bool toUpper = true;
     for (size_t i = 0; i < str.length(); i++) {
-        if (str[i] == '\'') {
+        if (toUpper && str[i] == '\'') {
             toUpper = false;
         } else {
             if (toUpper) {
@@ -108,7 +108,7 @@ void parseScriptFile(string scriptFile) {
             if (blockCommentActive) {
                 continue;
             }
-            for (int i = 0; i < line.length(); i++) {
+            for (size_t i = 0; i < line.length(); i++) {
                 if ((i+1) < line.length()) {
                     if (line.at(i) == '-' && line.at(i+1) == '-') {
                         line = line.substr(0, i);
@@ -122,8 +122,10 @@ void parseScriptFile(string scriptFile) {
             if (line.find("\n") != string::npos) {
                 line = line.substr(0, line.find('\n'));
             }
-            cout << line << endl;
-            queries += " " + toUpper(line);
+            //cout << "before " << line << endl;
+            line = toUpper(line);
+            //cout << "after " << line << endl;
+            queries += " " + line;
             size_t firstSemicolon = queries.find(';', 0);
             if (firstSemicolon != string::npos) {
                 firstSemicolon++;
@@ -151,7 +153,7 @@ void parseScriptFile(string scriptFile) {
                 }
             } else {
                 bool allSpaces = true;
-                for (int i = 0; i < queries.length(); i++) {
+                for (size_t i = 0; i < queries.length(); i++) {
                     if (queries[i] != ' ') {
                         cout << "ERROR: " << queries << " not executed. No semicolon could be found." << endl;
                         allSpaces = false;
