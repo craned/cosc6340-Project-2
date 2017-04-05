@@ -79,30 +79,6 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
     bool isFoundTable=false;
     for (size_t i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
-          
-          /*  int iColumnIndex= -1; 
-        int numOfRows=vTableList[i].getTNumOfRecords(); 
-           vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames(); 
-        for (size_t a = 0; a < vNames.size(); ++a) { 
-             
-        if (get<2>(vNames[a])==true) { 
-                iColumnIndex = a; 
-             
-        } 
-        
-        }
-        if(iColumnIndex!=-1){
-        for(int i=0; i<numOfRows; i++){ 
-            std::vector < std::tuple<int, std::string> > vtemp; 
-            vtemp=vTableList[i].getRow(i); 
-            string giventemp=get<1> (vRowIn[iColumnIndex]); 
-            if(get < 1 > (vtemp[iColumnIndex]).compare(giventemp) == 0){ 
-            cout<<"duplicate primary key"; 
-                return; 
-            } 
-        } 
-        }
-        */
             vTableList[i].addRow(vRowIn);
             isFoundTable = true;
             return;
@@ -138,63 +114,37 @@ void Engine::displayTable(string sTableNameIn)
             cout<<"\n"<<vTableList[i].getTableName()<<"\n";
             vector<tuple<int, string, bool, string, int > > vColumnNames;
             vColumnNames=vTableList[i].getColumnNames();
-                          cout << "\n "; 
- 
-  for (size_t i = 0; i < vColumnNames.size(); ++i) 
-  { 
-    cout << "-----------------------"; 
-  } 
-  cout << "\n"; 
- 
-  cout << " | " << vTableList[i].getTableName() << "\n "; 
- 
-  for (size_t i = 0; i < vColumnNames.size(); ++i) 
-  { 
-    cout << "+----------------------"; 
-  } 
-  cout << "\n"; 
-              for (size_t j = 0; j <vColumnNames.size(); ++j) 
-  { 
-    //get the column values for printing 
-    string sColName = get < 1 > (vColumnNames[j]); 
-    bool bPrimaryKey = get < 2 > (vColumnNames[j]); 
- 
-    //see if it is a primary key, for formatting 
+            
+			for (size_t j = 0; j <vColumnNames.size(); ++j)
+			{
+				//get the column values for printing
+				string sColName = get < 1 > (vColumnNames[j]);
+				bool bPrimaryKey = get < 2 > (vColumnNames[j]);
+
+				//see if it is a primary key, for formatting
+				if (bPrimaryKey)
+				{
+					cout << " | " << setw(COLUMN_WIDTH) << left << "*" + sColName + "*";
+				}
+				else
+				{
+					cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
+				}
+
+			}
+			
+			std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey();
+			cout<<"Primary keys :";
+			for (size_t j = 0; j <primaryKey.size(); ++j)
+			{
+				cout<<primaryKey[j];
+			}
+					        
+		    return;
+		}
+	}
 	
-	
-	    if (bPrimaryKey) 
-    { 
-      cout << " | " 
-                << "*" + sColName + "*"+" "<<get < 3 > (vColumnNames[j])<<"("<<get < 4 > (vColumnNames[j])<<")"; 
-    } 
-    else 
-    { 
-      cout << " | " 
-                << "*" + sColName + "*"+" "<<get < 3 > (vColumnNames[j])<<"("<<get < 4 > (vColumnNames[j])<<")"; 
-    } 
- 
-  } 
-  
-    cout<<"\n"; 
-  for (size_t i = 0; i < vColumnNames.size(); ++i) 
-  { 
-    cout << "+----------------------"; 
-  } 
-  cout << "\n"; 
-  std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey(); 
-  cout<<"Primary keys :"; 
-  out<<"Primary Keys";
-   for (size_t j = 0; j <primaryKey.size(); ++j) 
-  { 
-  cout<<primaryKey[j]; 
-  }   
-  cout<<"\n";  
-              return; 
-        } 
-    } 
-    printf("ERROR: The table was not found\n"); 
-  close();
-  
+	printf("ERROR: The table was not found\n");
 }
 
 /*****************************************************************************
@@ -207,7 +157,7 @@ void Engine::displayTableSchemas()
     {
         //if (vTableList[i].getTableName() == sTableNameIn)
         {
-           displayTable(vTableList[i].getTableName()); 
+            vTableList[i].displayTable();
             //return;
         }
     }
@@ -265,7 +215,6 @@ Table Engine::whereClause(Table tCurrentTable,string whereFilter){
         } else {
             //get the values for the column
             int numOfRows=tCurrentTable.getTNumOfRecords();
-            
             for(int i=0; i<numOfRows; i++){
                 std::vector < std::tuple<int, std::string> > vtemp;
                 vtemp=tCurrentTable.getRow(i);

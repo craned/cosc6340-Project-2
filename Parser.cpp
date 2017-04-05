@@ -846,18 +846,18 @@ bool Parser::findInsertInto(string sLineIn)
                 iPosStart = iPosValues;
 
                 //Clean up and add the row to the table
-                bool valid= e.createValidate(sLineIn,tableName);
-                if(valid==true)
-                {
+                //bool valid= e.createValidate(sLineIn,tableName);
+                //if(valid==true)
+                //{
                 	vector<tuple<int, string> > rowVector = createRowVector(sRow);
 					//cout << "adding Row parser" << endl;
 		         	e.addRow(tableName, rowVector);
 					//cout << "addedRow parser" << endl;
 					
                 	return true;
-                } else {
-                	return false;
-                }
+                //} else {
+                	//return false;
+                //}
             }
         }//change
             //Execute if values from is found
