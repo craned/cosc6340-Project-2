@@ -841,7 +841,11 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
         }
     }
     
-	vector<tuple<int, string, bool, string, int>> vColumnNames=ob.getColumnNames();
+ 
+ vector<tuple<int, string, bool, string, int > > vColumnNames=ob.getColumnNames(); 
+    if(iAmountOfCommas>=vColumnNames.size()){ 
+    return false; 
+    } 
     //Loop to parser out the comma separated values
     while (iCount <= iAmountOfCommas)
     {
@@ -849,7 +853,7 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
         string value = sLineIn.substr(iPosStart, iPosEnd - iPosStart);
                
         if ((value.find("\'") != string::npos)&&
-        	(std::get < 3 > (vColumnNames[iCount])=="strin"))
+        	(std::get < 3 > (vColumnNames[iCount])=="string"))
         {
           
         	value = Utilities::cleanSpaces(value);
