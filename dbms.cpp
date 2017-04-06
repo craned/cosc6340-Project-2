@@ -219,6 +219,8 @@ parser->read();
     }
     
     out.open(OUTPUT_FILE, ios::out);
+    
+    cout.rdbuf(out.rdbuf());
 
    // parser = new Parser();
 
