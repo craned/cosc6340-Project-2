@@ -1,23 +1,9 @@
 /*******************************************************************************
  File: Table.cpp
 
- Authors: Gustavo Pedroso UIN: 423002834
- Levi Clark      UIN: 520007880
- Terry Chen      UIN: 121007055
- Daniel He       UIN: 620006827
-
- Department of Computer Science
- Texas A&M University
- Date  : 2014-02-18
-
- Formatting: * 80 pt width is used for code, for the most part
- * Hungarian naming convention is used for variables
- * Comments are applied for explanations
- * Spacing and brackets are applied for readability
-
- This file contains the table implementation file
+ Author:Amirreza Shirani
  *******************************************************************************/
-
+#include <cstdio>
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -217,8 +203,8 @@ void Table::printOutTheWholeTable(){
 
 void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
 
-    cout << "adding Rows" << endl;
-    cout << "in table " << sTableName << endl;
+    //cout << "adding Rows" << endl;
+    //cout << "in table " << sTableName << endl;
     string tableName = sTableName + ".tbl";
     ofstream out;
     out.open(tableName, ios::binary | ios::out | ios::app);
