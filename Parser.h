@@ -44,9 +44,10 @@ private:
 public:
     //Declare class methods
     Parser() {};
-bool queryIsNested = false;		
+	bool queryIsNested = false;		
  	bool returnedFromRecursion = false;		
  	bool foundDeepestQuery = false;
+	bool joinSelectRecursion = false;
 
   bool readFromFile(string sFileName);
   bool writeToFile(string sFileName);
