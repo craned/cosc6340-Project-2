@@ -1,5 +1,6 @@
 #include <fstream>
 #include "Parser.h"
+#include <cstdio>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ string scriptFile = "";
 
 const string OUTPUT_FILE = "output.txt";
 
-ofstream out;
+//ofstream out;
 
 string const CREATE_TABLE = "CREATE TABLE ";
 string const INSERT_INTO = "INSERT INTO ";
@@ -51,7 +52,7 @@ void parseSQLQuery(string SQL) {
 string toUpper(string str) {
     bool toUpper = true;
     for (size_t i = 0; i < str.length(); i++) {
-        if (toUpper && str[i] == '\'') {
+        if (str[i] == '\'') {
             toUpper = false;
         } else {
             if (toUpper) {
@@ -79,7 +80,7 @@ void parseScriptFile(string scriptFile) {
         bool blockCommentActive = false;
         //cout << "open" << endl;
         while (getline(script, line)) {
-        	out << line;
+        	//out << line;
             size_t blockCommentStartPos = line.find("/*");
             size_t blockCommentEndPos = line.find("*/");
             size_t dashDashPos = line.find("--");
@@ -108,7 +109,7 @@ void parseScriptFile(string scriptFile) {
             if (blockCommentActive) {
                 continue;
             }
-            for (size_t i = 0; i < line.length(); i++) {
+            for (int i = 0; i < line.length(); i++) {
                 if ((i+1) < line.length()) {
                     if (line.at(i) == '-' && line.at(i+1) == '-') {
                         line = line.substr(0, i);
@@ -122,10 +123,8 @@ void parseScriptFile(string scriptFile) {
             if (line.find("\n") != string::npos) {
                 line = line.substr(0, line.find('\n'));
             }
-            //cout << "before " << line << endl;
-            line = toUpper(line);
-            //cout << "after " << line << endl;
-            queries += " " + line;
+            cout << line << endl;
+            queries += " " + toUpper(line);
             size_t firstSemicolon = queries.find(';', 0);
             if (firstSemicolon != string::npos) {
                 firstSemicolon++;
@@ -138,7 +137,7 @@ void parseScriptFile(string scriptFile) {
         }
         
         while (queries.length() > 0) {
-        	out << line;
+        	//out << line;
             size_t firstSemicolon = queries.find(";", 0);
             if (firstSemicolon != string::npos) {
                 firstSemicolon++;
@@ -153,7 +152,7 @@ void parseScriptFile(string scriptFile) {
                 }
             } else {
                 bool allSpaces = true;
-                for (size_t i = 0; i < queries.length(); i++) {
+                for (int i = 0; i < queries.length(); i++) {
                     if (queries[i] != ' ') {
                         cout << "ERROR: " << queries << " not executed. No semicolon could be found." << endl;
                         allSpaces = false;
@@ -185,7 +184,7 @@ void commandLineSQLInput(string sqlQuery) {
 //        getline(cin, SQL);
 //        SQL = toupper(SQL);
 
-		out << sqlQuery;    
+		//out << sqlQuery;
 		size_t firstSemicolon = sqlQuery.find(";");
 		if (sqlQuery.find(";") != string::npos) {
 		    if (parser->parse(sqlQuery) == 0) {
@@ -204,6 +203,10 @@ void commandLineSQLInput(string sqlQuery) {
 }
 
 int main(int argc, char *argv[]) {
+    //out.open("out2.txt", ios::out);
+    ofstream cout(OUTPUT_FILE);
+    std::cout.rdbuf(cout.rdbuf());
+
 parser = new Parser();
 parser->read();
     if (argc != 2) {
@@ -218,7 +221,7 @@ parser->read();
         return 0;
     }
     
-    out.open(OUTPUT_FILE, ios::out);
+   // out.open(OUTPUT_FILE, ios::out);
 
    // parser = new Parser();
 
@@ -228,7 +231,7 @@ parser->read();
         char* scriptFile = strtok((char*)firstArg.c_str(), "=");
         scriptFile = strtok(NULL, "="); // Advance to actual script file name
         if (scriptFile == NULL) {
-        	out << "ERROR: no sql script could be found";
+        	//out << "ERROR: no sql script could be found";
             cout << "ERROR: no sql script could be found" << endl;
             return 0;
         }

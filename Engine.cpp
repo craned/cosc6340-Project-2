@@ -1,32 +1,24 @@
 /*******************************************************************************
  File: Engine.cpp
- Authors: Gustavo Pedroso UIN: 423002834
- Levi Clark      UIN: 520007880
- Terry Chen      UIN: 121007055
- Daniel He       UIN: 620006827
- Department of Computer Science
- Texas A&M University
- Date  : 2014-02-18
- Formatting: * 80 pt width is used for code, for the most part
- * Hungarian naming convention is used for variables
- * Comments are applied for explanations
- * Spacing and brackets are applied for readability
- This file contains the implementation for the engine
+ Author: Amirreza Shirani
  *******************************************************************************/
 
 #include "Engine.h"
-
+#include <cstdio>
+#include "SortTable.h"
+#include <algorithm>
 /*******************************************************************************
  This function will take in a vector of column names and trailing primary keys,
  and an integer specifying how many columns are in the vector.
  *******************************************************************************/
 
 vector<Table> vTableList;
-
+vector<string> vSTemplist;
 void Engine::createTable(string sTableNameIn,
                          vector<tuple<string, string, int, bool> > vColumnNamesIn,
                          vector<string> vKeys)
 {
+
     bool isTableFound=false;
     for (size_t i = 0; i < vTableList.size(); i++) {
         cout << "existing table: " << vTableList[i].getTableName()<<endl;
@@ -79,32 +71,32 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
     bool isFoundTable=false;
     for (size_t i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
-        Table tb=vTableList[i];
-        int iColumnIndex= -1; 
-        int numOfRows=tb.getTNumOfRecords(); 
-           vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames(); 
-        for (size_t a = 0; a < vNames.size(); ++a) { 
-             
-        if (get<2>(vNames[a])==true) { 
-                iColumnIndex = a; 
-             
-        } 
-        
-        }
-        if(iColumnIndex!=-1){
-        for(int i=0; i<numOfRows; i++){ 
-            vector < std::tuple<int, std::string> > vtemp; 
-            vtemp=tb.getRow(i); 
-            string giventemp=get<1> (vRowIn[iColumnIndex]); 
-            if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){ 
-            cout<<"duplicate primary key"; 
-            isFoundTable = true;
-                return; 
-            } 
-            vtemp.clear();
-        } 
-        }
-              
+            Table tb=vTableList[i];
+            int iColumnIndex= -1;
+            int numOfRows=tb.getTNumOfRecords();
+            vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
+            for (size_t a = 0; a < vNames.size(); ++a) {
+                
+                if (get<2>(vNames[a])==true) {
+                    iColumnIndex = a;
+                    
+                }
+                
+            }
+            if(iColumnIndex!=-1){
+                for(int i=0; i<numOfRows; i++){
+                    vector < std::tuple<int, std::string> > vtemp;
+                    vtemp=tb.getRow(i);
+                    string giventemp=get<1> (vRowIn[iColumnIndex]);
+                    if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
+                        cout<<"duplicate primary key";
+                        isFoundTable = true;
+                        return;
+                    }
+                    vtemp.clear();
+                }
+            }
+            
             vTableList[i].addRow(vRowIn);
             isFoundTable = true;
             return;
@@ -112,18 +104,6 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
         }
     }
     if(!isFoundTable) cout<<"this table does not exist!"<<endl;
-}
-/****************************************************************************
- get a row to the specified table
- ****************************************************************************/
-void Engine::getRow(string sTableNameIn,int iIndex) {
-    for (size_t i = 0; i < vTableList.size(); ++i) {
-        if (vTableList[i].getTableName() == sTableNameIn) {
-            vTableList[i].getRow(iIndex);
-            return;
-            
-        }
-    }
 }
 
 /*****************************************************************************
@@ -307,17 +287,20 @@ Table Engine::whereClause(Table tCurrentTable, string whereFilter){
 
 }
 /******************************************************************************/
-Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table originalTable){
+Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table originalTable, string tempTable, bool &returnBool){
     
 
     cout<<"tableName: "<<tNewTable.getTableName()<<endl;
     for(size_t i=0;i<colNames.size();i++){
-        
         cout<<"colNames: "<<colNames[i]<<endl;
     }
-    
-    //make a temp table
     string name = "s"+tNewTable.getTableName();
+    if(tempTable!=""){
+        name=tempTable;
+        vSTemplist.push_back(tempTable);
+    }
+    //make a temp table
+
     Table tNewNewTable(name);
     tNewNewTable.setTNumOfRecords(0);
     vector<int> indexes;
@@ -333,8 +316,6 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
             tNewNewTable.addRow(tNewTable.getRow(j));
         }
         return tNewNewTable;
-
-
 
     //selectionS
     } else {
@@ -366,7 +347,10 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                             }
                         }
                     }
-                    if (!isColumnFound) cout << "wrong column selected for select-clause!" << endl;
+                    if (!isColumnFound){
+                        cout << "wrong column selected for select-clause!" << endl;
+                        returnBool=false;
+                    }
                 }else{
                     for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
                         if (columnName == get<1>(tNewTable.getColumnNames()[i])) {
@@ -382,7 +366,10 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                             }
                         }
                     }
-                    if (!isColumnFound) cout << "wrong column selected for select-clause!" << endl;
+                    if (!isColumnFound){
+                        cout << "wrong column selected for select-clause!" << endl;
+                        returnBool=false;
+                    }
                 }
                 //when we have no dot in select statement
             } else {
@@ -398,11 +385,13 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                         isColumnFound = true;
                     }
                 }
-                if (!isColumnFound) cout << "ERROR: wrong column selected for select-clause!" << endl;
+                if (!isColumnFound){
+                    cout << "wrong column selected for select-clause!" << endl;
+                    returnBool=false;
+                }
             }
         }
-        
-        
+
         for (int j = 0; j < tNewTable.getTNumOfRecords(); j++) {
             int seq=0;
             vector<std::tuple<int, std::string> > row;
@@ -416,18 +405,13 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
             }
             tNewNewTable.addRow(row);
         }
-//        for(int y=0;y<tNewNewTable.getColumnNames().size();y++){
-//            cout<<"get<0>(tNewNewTable.getColumnNames()[y]): "<<get<0>(tNewNewTable.getColumnNames()[y])<<endl;
-//        }
 
-        //vTableList.push_back(tNewNewTable);
-        //tNewNewTable.printOutTheWholeTable();
         return tNewNewTable;
     }
 }
 
 /******************************************************************************/
-Table Engine::joinClause(Table originalTable,Table joinTable,string joinFilter){
+Table Engine::joinClause(Table originalTable,Table joinTable,string joinFilter, bool &returnBool){
     
     if(joinFilter!="") {
         cout << "join between tables: " << originalTable.getTableName() << " and " << joinTable.getTableName()
@@ -515,7 +499,13 @@ Table Engine::joinClause(Table originalTable,Table joinTable,string joinFilter){
                         }
                     }
                 }
+            }else{
+                cout<<"ERROR: Wrong table name"<<endl;
+                returnBool=false;
             }
+        }else{
+            cout<<"ERROR: Wrong table name"<<endl;
+            returnBool=false;
         }
 
 
@@ -582,6 +572,9 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     for(int k=0; k<colNames.size(); k++){
         colNames[k] = Utilities::cleanSpaces(colNames[k]);
     }
+    //CHANGE IT:
+    tempTable="";
+    bool returnBool= true;
     if(joinFilter != "") {
         for (size_t i = 0; i < vTableList.size(); ++i) {
             Table tOriginalTable = vTableList[i];
@@ -595,7 +588,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                     //Execute if the table is found in the list
                     if (tJoinTable.getTableName() == joinTable) {
                         //printout the current table
-                        cout << "current/original table:" << endl;
+                        cout << "join table:" << endl;
                         tJoinTable.printOutTheWholeTable();
                         //1
                         Table tPhseOneTableFromOriginalTable;
@@ -613,21 +606,26 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
 
                         //2
                         Table tPhaseTwo;
-                        tPhaseTwo = joinClause(tPhseOneTableFromOriginalTable, tPhseOneTableFromJoinTable, joinFilter);
+                        tPhaseTwo = joinClause(tPhseOneTableFromOriginalTable, tPhseOneTableFromJoinTable, joinFilter, returnBool);
                         vTableList.push_back(tPhaseTwo);
                         tPhaseTwo.printOutTheWholeTable();
 
                         //3
                         Table tPhaseThree;
-                        tPhaseThree = selectClause(tPhaseTwo, colNames, tPhseOneTableFromOriginalTable);
+                        tPhaseThree = selectClause(tPhaseTwo, colNames, tPhseOneTableFromOriginalTable,  tempTable, returnBool);
                         vTableList.push_back(tPhaseThree);
                         tPhaseThree.printOutTheWholeTable();
+                        cout<<"after sorting:"<<endl;
+                        sortp(tPhaseThree.getTableName());
 
                         //deleting tables
                         deleteATable(tPhseOneTableFromOriginalTable);
                         deleteATable(tPhseOneTableFromJoinTable);
                         deleteATable(tPhaseTwo);
-                        deleteATable(tPhaseThree);
+                        if(tempTable ==""){
+                            deleteATable(tPhaseThree);
+                        }
+
                         //remaining tables:
                         for (size_t i = 0; i < vTableList.size(); i++) {
                             cout << "remaining tables: " << vTableList[i].getTableName() << endl;
@@ -636,6 +634,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 }
             }
         }
+        cout<<"select Successful?: "<<returnBool<<endl;
     }
     else{
         for (size_t i = 0; i < vTableList.size(); ++i) {
@@ -658,13 +657,18 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
 //                tPhaseTwo.printOutTheWholeTable();
                 //3
                 Table tPhaseThree;
-                tPhaseThree = selectClause(tPhseOneTable, colNames, tCurrentTable);
+                tPhaseThree = selectClause(tPhseOneTable, colNames, tCurrentTable,  tempTable, returnBool);
                 vTableList.push_back(tPhaseThree);
                 tPhaseThree.printOutTheWholeTable();
+                cout<<"after sorting:"<<endl;
+                sortp(tPhaseThree.getTableName());
+                
                 //deleting tables
                 deleteATable(tPhseOneTable);
                 //deleteATable(tPhaseTwo);
-                deleteATable(tPhaseThree);
+                if(tempTable ==""){
+                    deleteATable(tPhaseThree);
+                }
                 //remaining tables:
                 for (size_t i = 0; i < vTableList.size(); i++) {
                     cout << "remaining tables: " << vTableList[i].getTableName() << endl;
@@ -673,6 +677,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         }
 
     }
+    cout<<"select Successful?: "<<returnBool<<endl;
 }
 
 void Engine::deleteATable(Table table){
@@ -692,14 +697,99 @@ void Engine::dropTable(string sTableNameIn)
     }
 }
 /*****************************************************************************
-   READ
+   QUIT: removes all temp Tables
    ****************************************************************************/
+void Engine::executeQuit(){
+    for (size_t i=0; i<vSTemplist.size(); i++){
+        for (size_t j=0; j<vTableList.size(); j++){
+            if(vTableList[j].getTableName()==vSTemplist[i]){
+                dropTable(vSTemplist[i]);
+            }
+        }
+    }
+    for (size_t j=0; j<vTableList.size(); j++){
+        cout<<"remaining Table: "<<vTableList[j].getTableName()<<endl;
+    }
+
+}
+/*****************************************************************************
+ SORT: sorting and showing
+ ****************************************************************************/
+ bool Engine::sortbyp(const SortTable &lhs,const SortTable &rhs)
+ {
+ 
+ return lhs.value<rhs.value;
+ 
+ }
+ 
+ void Engine::sortp(string sTableNameIn){
+ 
+ 
+ for (size_t i=0; i<vTableList.size(); i++){
+ if (vTableList[i].getTableName() == sTableNameIn){
+ Table ob=vTableList[i];
+ int rNum=ob.getTNumOfRecords();
+ std::vector < SortTable> arrang;
+ for(int i=0;i<rNum;i++){
+ SortTable temp;
+ temp.getprimarykey(ob,i);
+ temp.getrow(ob,i);
+ 
+ arrang.push_back(temp);
+ 
+ }
+ 
+ sort(arrang.begin(),arrang.end(),sortbyp);
+ vector<tuple<int, string, bool, string, int > > vColumnNames;
+ vColumnNames=ob.getColumnNames();
+ for (size_t i = 0; i < vColumnNames.size(); ++i)
+ {
+ //get the column values for printing
+ std::string sColName = std::get < 1 > (vColumnNames[i]);
+ bool bPrimaryKey = std::get < 2 > (vColumnNames[i]);
+ 
+ //see if it is a primary key, for formatting
+ if (bPrimaryKey)
+ {
+ std::cout << " | "
+ << "*" + sColName + "*";
+ }
+ else
+ {
+ std::cout << " | " <<  sColName;
+ }
+ 
+ }
+ 
+ for(int i=0;i<arrang.size();i++)
+ {
+ SortTable st=arrang[i];
+ vector < std::tuple<int, std::string> > vrow;
+ vrow=st.vrow;
+ for(int j=0;j<vrow.size();j++){
+ cout<<get<1>(vrow[j]);
+ }
+ }
+ 
+ 
+ 
+ }
+ }
+ 
+ }
+ 
+ 
+ 
+ 
+ /*****************************************************************************
+ READ
+ ****************************************************************************/
 void Engine::read(){
     
     ifstream infile;
     //int present=0;
     infile.open("catalog.txt",ios::in);
-
+    
     Table ob;
     string line;
     int count=0;
@@ -726,7 +816,7 @@ void Engine::read(){
             size_t f2;
             if((f1=line.find("="))!=string::npos){
                 //cout<<f1;
-				int seq=0;
+                int seq=0;
                 string coln=line.substr(f1+1,string::npos);
                 size_t f6;
                 size_t f5;
@@ -780,8 +870,8 @@ void Engine::read(){
             if((f1=line.find("="))!=string::npos){
                 
                 string coln=line.substr(f1+1,string::npos);
-               
-           
+                
+                
                 f2=line.find(",",f1+1);
                 //vector<string> primkey;
                 string coltemp;
@@ -789,7 +879,7 @@ void Engine::read(){
                 coltemp=line.substr(f1+1,f2-f1-1);
                 
                 cout<<coltemp<<"\n";
-               // primkey.push_back(coltemp);
+                // primkey.push_back(coltemp);
                 ob.setPrimaryKey(coltemp);
                 while(f2!=string::npos)
                 { cout<<"prime";
@@ -866,17 +956,17 @@ void Engine::read(){
                 ob.setTNumOfRecords(records);
                 cout<<records<<"\n";
             }
-            		vTableList.push_back(ob);
-               ob=Table();
+            vTableList.push_back(ob);
+            ob=Table();
         }
         
         
         
         line.clear();
-
+        
         
     }
-        
+    
     infile.close();
 }
 
@@ -895,7 +985,7 @@ void Engine::writetofile()
         outfile<<"column=";
         for(size_t j=0;j< col.size();++j){
             if(j<col.size()-1)
-            outfile<<get<1>(col[j])<<":"<<get<3>(col[j])<<"("<<get<4>(col[j])<<")"<<",";
+                outfile<<get<1>(col[j])<<":"<<get<3>(col[j])<<"("<<get<4>(col[j])<<")"<<",";
             else
                 outfile<<get<1>(col[j])<<":"<<get<3>(col[j])<<"("<<get<4>(col[j])<<")";
         }
@@ -904,7 +994,7 @@ void Engine::writetofile()
         outfile<<"\n"<<"primarykey=";
         for(size_t k=0;k<primarykey.size();++k){
             if(k<primarykey.size()-1)
-            outfile<<primarykey[k]<<",";
+                outfile<<primarykey[k]<<",";
             else
                 outfile<<primarykey[k];
         }
@@ -920,7 +1010,7 @@ void Engine::writetofile()
         nrecords=vTableList[i].getTNumOfRecords();
         outfile<<"\n"<<"records="<<nrecords<<"\n";
     }
-
+    
     outfile.close();
 }
 
@@ -933,15 +1023,15 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
     int iCount = 0;
     int iAmountOfCommas = 0;
     Table ob;
-
-      for (size_t i=0; i<vTableList.size();i++){
+    
+    for (size_t i=0; i<vTableList.size();i++){
         if(vTableList[i].getTableName()==sTableNameIn){
             
             ob=vTableList[i] ;
         }
     }
-  
-
+    
+    
     
     //Check to see how many commas are in the string
     for (size_t i = 0; i < sLineIn.length(); ++i)
@@ -953,30 +1043,30 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
         }
     }
     
- 
- vector<tuple<int, string, bool, string, int > > vColumnNames=ob.getColumnNames(); 
-    if(iAmountOfCommas>=vColumnNames.size()){ 
-    return false; 
-    } 
+    
+    vector<tuple<int, string, bool, string, int > > vColumnNames=ob.getColumnNames();
+    if(iAmountOfCommas>=vColumnNames.size()){
+        return false;
+    }
     //Loop to parser out the comma separated values
     while (iCount <= iAmountOfCommas)
     {
         iPosEnd = sLineIn.find(",", iPosStart + 1);
         string value = sLineIn.substr(iPosStart, iPosEnd - iPosStart);
-               
+        
         if ((value.find("\'") != string::npos)&&
-        	(std::get < 3 > (vColumnNames[iCount])=="string"))
+            (std::get < 3 > (vColumnNames[iCount])=="string"))
         {
-          
-        	value = Utilities::cleanSpaces(value);
+            
+            value = Utilities::cleanSpaces(value);
         }
         else if((value.find("\'") == string::npos)&&
-        	(std::get < 3 > (vColumnNames[iCount])=="int") )
-        	{
-        
+                (std::get < 3 > (vColumnNames[iCount])=="int") )
+        {
+            
         } else {
-		    cout<<"not validation";
-		    return false;
+            cout<<"not validation";
+            return false;
         }
         
         //cout << "value " << value << endl;
@@ -984,13 +1074,13 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
         iPosStart = iPosEnd + 1;
         iCount++;
     }
-
+    
     //clean up the words that were separated out
-//    for (size_t i = 0; i < vReturn.size(); ++i)
-//    {
-//        vReturn[i] = Utilities::cleanSpaces(vReturn[i]);
-//        //cout<<"vReturn: "<<vReturn[i]<<endl;
-//    }
-
+    //    for (size_t i = 0; i < vReturn.size(); ++i)
+    //    {
+    //        vReturn[i] = Utilities::cleanSpaces(vReturn[i]);
+    //        //cout<<"vReturn: "<<vReturn[i]<<endl;
+    //    }
+    
     return true;
 }
