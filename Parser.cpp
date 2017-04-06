@@ -142,6 +142,7 @@ int Parser::parse(string sLineIn)
   		return 0;
   	}
   	
+	selectQ.clearAll();
     cout << "parenthesis ok" << endl;
     if (findCreateTable(sLineIn)) {
         //cout << "Created table " << sLineIn << endl;
@@ -293,9 +294,14 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 					(iPosJoin != string::npos && iPosLParen < iPosJoin) ||
 					(iPosWhere != string::npos && iPosLParen < iPosWhere))
 				{
-					string subQuery = sLineIn.substr(iPosLParen+1);
-					//cout << "subQuery " << subQuery << endl;
+					//cout << "recursion detected" << endl;
+					size_t subQueryEnd = getMatchingClosingParen(sLineIn,
+																iPosLParen);
+					string subQuery = sLineIn.substr(iPosLParen+1,
+													subQueryEnd - (iPosLParen+1));
+					cout << "subQuery " << subQuery << endl;
 					nestedLevel++;
+					cout << "findSelectNew from recursion" << endl;
 					findSelectNew(subQuery, insertSelectTempName);
 		            nestedLevel--;
 		            returnedFromRecursion = true;
@@ -304,7 +310,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 
 		            // find temporary table name
 					if (joinSelectRecursion) {
-						//cout << "joinSelectRecursion setting to false" << endl;
+						cout << "joinSelectRecursion now setting to false" << endl;
 						iPosStart = returningNestedLevel + 1;
 						
 						iPosRParen = origQuery.find(")", returningNestedLevel+1) + 1;
@@ -314,18 +320,32 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 					}
 					
 					iPosRParen = origQuery.find(")", iPosStart);
+					iPosLParen = origQuery.find("(", iPosStart);
 					sLineIn = origQuery;
-					/*cout << "returningNestedLevel "<< origQuery.at(returningNestedLevel-2) << origQuery.at(returningNestedLevel-1) << origQuery.at(returningNestedLevel) << endl;
+					
+					//cout << "returningNestedLevel "<< origQuery.at(returningNestedLevel-2) << origQuery.at(returningNestedLevel-1) << origQuery.at(returningNestedLevel) << endl;
 					cout << "iPosStart " << origQuery.at(iPosStart-2) << origQuery.at(iPosStart-1) << origQuery.at(iPosStart) << endl;
-					//cout << "iPosRParen " << origQuery.at(iPosRParen-1) << origQuery.at(iPosRParen) << endl;//*/
+					if (iPosRParen != string::npos)
+					cout << "iPosRParen " << origQuery.at(iPosRParen-1) << origQuery.at(iPosRParen) << endl;//*/
 					
 					string tempTableName = "";
 					if (iPosRParen != string::npos) {
-				    	tempTableName = sLineIn.substr(iPosStart, 
+				  		size_t joinAfterSubQPos = origQuery.find("JOIN", iPosStart);
+				  		if (joinAfterSubQPos != string::npos)
+				  		{
+				  		cout << "joinAfterSubQPos " << joinAfterSubQPos << endl;
+				  			//if (joinAfterSubQPos != string::npos) {
+				  				tempTableName = origQuery.substr(iPosStart,
+				  									joinAfterSubQPos - iPosStart);
+				  			//}
+				  		} else {
+				    		tempTableName = sLineIn.substr(iPosStart, 
 				                                      iPosRParen - iPosStart);
+				        }
 				  	} else {
 				  		size_t joinAfterSubQPos = origQuery.find("JOIN", iPosStart);
 				  		size_t whereAfterSubQPos = origQuery.find("WHERE", iPosStart);
+				  		//cout << "joinAfterSubQPos " << origQuery.at(joinAfterSubQPos-2) << origQuery.at(joinAfterSubQPos-1) << origQuery.at(joinAfterSubQPos) << endl;
 				  		if (joinAfterSubQPos != string::npos ||
 				  			whereAfterSubQPos != string::npos)
 				  		{
@@ -333,7 +353,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				  				tempTableName = origQuery.substr(iPosStart,
 				  									joinAfterSubQPos - iPosStart);
 				  			}
-				  			if (whereAfterSubQPos != string::npos) {
+				  			else if (whereAfterSubQPos != string::npos) {
 				  				tempTableName = origQuery.substr(iPosStart,
 				  								whereAfterSubQPos - iPosStart);
 				  			}
@@ -341,23 +361,28 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				    		tempTableName = origQuery.substr(iPosStart, 
 				            	        			iPosSemiColon - iPosStart);
 				        }
+				        //cout << "got alias" << endl;
 				  	}
 
-			    	//cout << "tableName " << tempTableName << endl;
 					tempTableName = Utilities::cleanSpaces(tempTableName);
+			    	//cout << "tempTableName " << tempTableName << endl;
 				    selectQ.setTempTable(tempTableName);
+				    cout << "printAll from recursion" << endl;
 					selectQ.printAll();
 					
-					e.executeSelect(selectQ.getFromTable(),
+					/*e.executeSelect(selectQ.getFromTable(),
 									createVector(selectQ.getSelectCols()),
 									selectQ.getTempTable(),
 									selectQ.getWhereFilter(),
  									selectQ.getJoinTable(),
-        		              		selectQ.getJoinFilter());
+        		              		selectQ.getJoinFilter());//*/
 					
-				  			
-					iPosJoin = origQuery.find("JOIN", iPosStart);
-					iPosOn = origQuery.find("ON", iPosJoin);
+				  	if (iPosJoin < iPosStart) {
+						iPosJoin = origQuery.find("JOIN", iPosStart);
+					}
+					if (iPosOn < iPosStart) {
+						iPosOn = origQuery.find("ON", iPosJoin);
+					}
 					iPosWhere = origQuery.find("WHERE", iPosStart);
 							
 					selectQ.setSelectCols(colNames);
@@ -376,10 +401,12 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			string whereFilter = "";
 			// don't want to check for join too early
 			if (iPosJoin != string::npos) {
-				//cout << "iPosJoin " << origQuery.at(iPosJoin-2) << origQuery.at(iPosJoin-1) << origQuery.at(iPosJoin) << endl;
+				cout << "iPosJoin " << iPosJoin << " " << sLineIn.at(iPosJoin-2) << sLineIn.at(iPosJoin-1) << sLineIn.at(iPosJoin) << endl;
+				cout << "iPosLParen " << iPosLParen << endl;
+				//cout << "iPosLParen " << sLineIn.at(iPosLParen-2) << sLineIn.at(iPosLParen-1) << sLineIn.at(iPosLParen) << endl;
 				if (iPosJoin < iPosLParen ||
 					returningNestedLevel > 0) {
-				//cout << "checking join clause" << endl;
+				cout << "checking join clause" << endl;
 				tableName = sLineIn.substr(iPosStart,
 											iPosJoin - iPosStart);
 	            
@@ -398,6 +425,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				size_t joinRightPNested = sLineIn.find(")", iPosJoin)+1;
 				size_t joinSelect = joinTable.find("SELECT", 0);
 				if (joinSelect != string::npos) {
+					selectQ.clearAll();
 					joinSelectRecursion = true;
 					joinTable = joinTable.substr(joinSelect);
 					//cout << joinTable << endl;
@@ -423,8 +451,17 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 					
 					selectQ.setTempTable(joinTempTable);
 					nestedLevel++;
+					cout << "findSelectNew join recursion" << endl;
 					findSelectNew(joinTable, joinTempTable);
 					nestedLevel--;
+					
+					selectQ.printAll();
+					/*e.executeSelect(selectQ.getFromTable(),
+									createVector(selectQ.getSelectCols()),
+									selectQ.getTempTable(),
+									selectQ.getWhereFilter(),
+		 							selectQ.getJoinTable(),
+				              		selectQ.getJoinFilter());//*/
 					
 					
 					/*cout << "joinRightPNested " << origQuery.at(joinRightPNested-1) << origQuery.at(joinRightPNested) << endl;
@@ -537,7 +574,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 		                                  iPosSemiColon - iPosStart);
 		                                  
 			    tableName = Utilities::cleanSpaces(tableName);
-			    //cout << "tableName was still empty " << tableName << endl;
+			    cout << "tableName was still empty " << tableName << endl;
 			    selectQ.setFromTable(tableName);
 	        }
 	        
@@ -545,261 +582,23 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 	        	selectQ.setTempTable(insertSelectTempName);
 	        }
 			
-			selectQ.printAll();
-			e.executeSelect(selectQ.getFromTable(),
-							createVector(selectQ.getSelectCols()),
-							selectQ.getTempTable(),
-							selectQ.getWhereFilter(),
- 							selectQ.getJoinTable(),
-                      		selectQ.getJoinFilter());
+			cout << "end printall" << endl;
+			if (iPosSemiColon != string::npos) {
+				selectQ.printAll();
+				/*e.executeSelect(selectQ.getFromTable(),
+								createVector(selectQ.getSelectCols()),
+								selectQ.getTempTable(),
+								selectQ.getWhereFilter(),
+	 							selectQ.getJoinTable(),
+		                  		selectQ.getJoinFilter());//*/
+		    }
+		        return true;
 		}
 	} else {
 		return false;
 	}
 	
 	return true;
-}
-
-bool Parser::findSelect(string sLineIn)
-{
-    size_t iPosStart = sLineIn.find("SELECT");
-
-    if (iPosStart != string::npos)
-    {
-        //cout << "Select found" << endl;
-        iPosStart += 6;
-        size_t iPosEnd1 = sLineIn.find("FROM", iPosStart);
-
-        if (iPosEnd1 != string::npos)
-        {
-            //cout << "From found" << endl;
-            string colNames = sLineIn.substr(iPosStart,
-                                             iPosEnd1 - iPosStart);
-            //cout << "colNames " << colNames << endl;
-            selectQ.setSelectCols(colNames);
-
-            iPosStart = iPosEnd1 + 4 + 1/*for the space*/;	
-            
-            size_t iPosSemiColon = sLineIn.find(";", iPosStart);
-			size_t nestedSelectPos = sLineIn.find("(", iPosStart);
-			size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
-			size_t iPosWhere = sLineIn.find("WHERE", iPosStart);
-			if (iPosJoin < nestedSelectPos || iPosWhere < nestedSelectPos) {
-				// get fromTable
-				string tableName = "";
-				if (iPosJoin == string::npos) {
-					tableName = sLineIn.substr(iPosStart,
-													iPosWhere - iPosStart);
-				} else {
-					tableName = sLineIn.substr(iPosStart,
-													iPosJoin - iPosStart);
-				}
-				//cout << "tableName " << tableName << endl;
-				selectQ.setFromTable(tableName);
-	            return findJoinWhereGroupInSelect(sLineIn, iPosStart,
-            								iPosSemiColon, selectQ);
-        	}
-
-			// is it nested?
-            //size_t nestedSelectPos = sLineIn.find("(", iPosStart);
-            if (nestedSelectPos != string::npos) {
-                nestedLevel++;
-                //cout << "detected nested query" << endl;
-                if (nestedLevel > 3) {
-                    cout << "ERROR: Too many nested SELECT statements" << endl;
-                    return false;
-                }
-                iPosStart += sLineIn.find("FROM") + 4;
-                string nestedSelect = sLineIn.substr(nestedSelectPos+1);
-
-                // recursion starts
-                this->findSelect(nestedSelect);
-                nestedLevel--;
-                //cout << "returned from recursion" << endl;
-                // ok, now start using origQuery
-
-                // find temporary table name
-                iPosStart = origQuery.find(")", returningNestedLevel) + 1;
-                //cout << "iPosStart " << iPosStart << endl;
-                iPosEnd1 = origQuery.find(")", iPosStart+1);
-                //cout << "iPosEnd1 " << iPosEnd1 << endl;
-
-                if (iPosEnd1 == string::npos || (iPosEnd1-iPosStart) > 6) {
-                    iPosEnd1 = origQuery.find(";", iPosStart);
-                }
-
-                if (iPosEnd1 != string::npos)
-                {
-                    //cout << "iPosStart " << iPosStart << endl;
-                    //cout << "iPosEnd1 " << iPosEnd1 << endl;
-                    string tempTableName = origQuery.substr(iPosStart,
-                                                        iPosEnd1 - iPosStart);
-                    //cout << "tempTableName substr " << tempTableName << endl;
-
-                    tempTableName = Utilities::cleanSpaces(tempTableName);
-                    selectQ.setTempTable(tempTableName);
-                    returningNestedLevel = iPosEnd1 - 1;
-                    //cout << "tempTableName " << tempTableName << endl;
-                    //cout << "colNames 1" << colNames << endl;
-	          			
-          			selectQ.printAll();
-          			//e.executeSelect();
-          			
-                    selectQ.setFromTable(selectQ.getTempTable());
-                    selectQ.setTempTable("");
-                    selectQ.setSelectCols(colNames);
-                    //cout << "nested level " << nestedLevel << endl;
-                    if (nestedLevel == 0) {
-                    	selectQ.printAll();
-                    }
-
-                    return true;
-                }
-            } else {
-                if (nestedLevel == 0) {
-                    size_t iPosSemiColon = sLineIn.find(";", iPosStart);
-	             	size_t iPosTableSpace = sLineIn.find(" ", iPosStart);
-	             	
-	             	string tableName = "";
-	             	if (iPosTableSpace != string::npos) {
-		             	tableName = sLineIn.substr(iPosStart,
-	             									iPosTableSpace - iPosStart);
-	          		} else {
-		             	tableName = sLineIn.substr(iPosStart,
-	             									iPosSemiColon - iPosStart);
-	          		}
-	          		selectQ.setFromTable(tableName);
-	                //cout << "tableName " << tableName << endl;
-	                
-	                size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
-	                string joinTable = "";
-	                string joinFilter = "";
-	             	if (iPosJoin != string::npos) {
-	             		iPosStart = iPosJoin + 4 + 1/*space after JOIN*/;
-		                size_t iPosSpace = sLineIn.find(" ", iPosStart);
-		                joinTable = Utilities::cleanSpaces(sLineIn.substr(iPosStart, 
-		                							iPosSpace - iPosStart));
-		                //cout << "joinTable " << joinTable << endl;
-		                selectQ.setJoinTable(joinTable);
-		                
-		                size_t iPosOn = sLineIn.find("ON", iPosStart);
-	             		if (iPosOn != string::npos) {
-			                size_t iPosEqual = sLineIn.find("=", iPosOn) + 1;
-			                size_t iPosTableDotCol = sLineIn.find(".", iPosEqual);
-			                size_t iPosJoinEnd = sLineIn.find(" ", iPosTableDotCol);
-	             			iPosOn += 2;
-	             			joinFilter = Utilities::cleanSpaces(sLineIn.substr(iPosOn,
-	             											iPosJoinEnd - iPosOn));
-	             			//cout << "joinFilter " << joinFilter << endl;
-	             			selectQ.setJoinFilter(joinFilter);
-	             		}
-	             	}
-	             	
-	                size_t iPosWhere = sLineIn.find("WHERE", iPosStart);
-	                //cout << "after poswhere " << iPosWhere << endl;
-	                string whereFilter = "";
-	             	if (iPosWhere != string::npos) {
-	             		size_t iPosWhereFilter = iPosWhere + 5;
-		                whereFilter = Utilities::cleanSpaces(sLineIn.substr(iPosWhereFilter,
-		                                            iPosSemiColon - iPosWhereFilter));
-                        
-                        whereFilter = Utilities::cleanSpaces(whereFilter);
-		                //cout << "where " << whereFilter << endl;
-		                selectQ.setWhereFilter(whereFilter);
-                    }
-                    
-                    vector <string> vColNames;
-                    vColNames=createVector(colNames);
-                    for(size_t j=0; j<vColNames.size();j++){
-                        vColNames[j]=Utilities::cleanSpaces(vColNames[j]);
-                    }
-	                
-	                selectQ.printAll();
-	                //e.executeSelect(tableName, vColNames, whereFilter,
-	                	//			joinTable, joinFilter);
-	                return true;
-	                //return findJoinWhereGroupInSelect(sLineIn, iPosStart,
-            			//								iPosSemiColon, selectQ);//*/
-                } else {
-                    iPosEnd1 = sLineIn.find(")", iPosStart);
-                    returningNestedLevel = iPosEnd1 - 1;
-                    if (iPosEnd1 != string::npos)
-                    {
-                        //cout << sLineIn << endl;
-                        string tableName = sLineIn.substr(iPosStart,
-                                                          iPosEnd1 - iPosStart);
-                        //cout << "deepest nested tableName " << tableName << endl;
-	          			selectQ.setFromTable(tableName);
-	          			
-                        return true;
-                    }
-                }
-            }
-        }
-    } else/* if (nestedLevel > 0) */{
-        return false;
-    }
-
-    return false;
-}
-
-bool Parser::findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,
-										size_t iPosSemiColon, SelectQ selectQ)
-{
-	size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
-    string joinTable = "";
-    string joinFilter = "";
- 	if (iPosJoin != string::npos) {
- 		iPosStart = iPosJoin + 4 + 1/*space after JOIN*/;
-        size_t iPosSpace = sLineIn.find(" ", iPosStart);
-        joinTable = Utilities::cleanSpaces(sLineIn.substr(iPosStart, 
-        							iPosSpace - iPosStart));
-        //cout << "joinTable " << joinTable << endl;
-        selectQ.setJoinTable(joinTable);
-        
-        size_t iPosOn = sLineIn.find("ON", iPosStart);
- 		if (iPosOn != string::npos) {
-            size_t iPosEqual = sLineIn.find("=", iPosOn) + 1;
-            size_t iPosTableDotCol = sLineIn.find(".", iPosEqual);
-            size_t iPosJoinEnd = sLineIn.find(" ", iPosTableDotCol);
- 			iPosOn += 2;
- 			joinFilter = Utilities::cleanSpaces(sLineIn.substr(iPosOn,
- 											iPosJoinEnd - iPosOn));
- 			//cout << "joinFilter " << joinFilter << endl;
- 			selectQ.setJoinFilter(joinFilter);
- 		}
- 	}
- 	
-    size_t iPosWhere = sLineIn.find("WHERE", iPosStart);
-    //cout << "after poswhere " << iPosWhere << endl;
-    string whereFilter = "";
- 	if (iPosWhere != string::npos) {
- 		size_t iPosWhereFilter = iPosWhere + 5;
- 		size_t iPosCloseParen = sLineIn.find(")", iPosWhereFilter);
- 		string whereFilter = "";
- 		if (iPosCloseParen != string::npos && iPosCloseParen < iPosSemiColon) {
-        	whereFilter = sLineIn.substr(iPosWhereFilter,
-	                                    iPosCloseParen - iPosWhereFilter);
-        } else {
-        	whereFilter = sLineIn.substr(iPosWhereFilter,
-	                                    iPosSemiColon - iPosWhereFilter);
-        }
-        whereFilter = Utilities::cleanSpaces(whereFilter);
-        //cout << "where " << whereFilter << endl;
-        selectQ.setWhereFilter(whereFilter);
-    }
-    
-    vector <string> vColNames;
-    vColNames=createVector(selectQ.getSelectCols());
-    for(size_t j=0; j<vColNames.size();j++){
-        vColNames[j]=Utilities::cleanSpaces(vColNames[j]);
-    }
-    
-    selectQ.printAll();
-    //e.executeSelect(selectQ.getFromTable(), vColNames,
-		//			whereFilter, joinTable, joinFilter);
-	
-    return true;
 }
 
 /*******************************************************************************
@@ -846,25 +645,24 @@ bool Parser::findInsertInto(string sLineIn)
                 iPosStart = iPosValues;
 
                 //Clean up and add the row to the table
-                //bool valid= e.createValidate(sLineIn,tableName);
-                //if(valid==true)
-                //{
+                bool valid= e.createValidate(sLineIn,tableName);
+                if(valid==true)
+                {
                 	vector<tuple<int, string> > rowVector = createRowVector(sRow);
 					//cout << "adding Row parser" << endl;
 		         	e.addRow(tableName, rowVector);
 					//cout << "addedRow parser" << endl;
 					
                 	return true;
-                //} else {
-                	//return false;
-                //}
+                } else {
+                	return false;
+                }
             }
         }//change
             //Execute if values from is found
         else if ((iPosEnd1 = sLineIn.find("SELECT", iPosStart)) != string::npos)
         {
-        	string selectSubQ = sLineIn.substr(iPosEnd1,
-        									sLineIn.find(";")-iPosEnd1);
+        	string selectSubQ = sLineIn.substr(iPosEnd1, string::npos);
             //Get the name of the table from the string
             string tableName = sLineIn.substr(iPosStart, iPosEnd1 - iPosStart);
             tableName = Utilities::cleanSpaces(tableName);
@@ -1032,6 +830,31 @@ bool Parser::checkParenthesis(string sLineIn)
   else
   {
     return false;
+  }
+}
+
+/*******************************************************************************
+ Function that sees if the parenthesis are balanced in a line
+ *******************************************************************************/
+size_t Parser::getMatchingClosingParen(string sLineIn, size_t start)
+{
+  int iBalance = 0;
+  e.writetofile();
+  size_t i = start;
+  for (; i < sLineIn.length(); ++i)
+  {
+    if (sLineIn[i] == '(')
+    {
+      iBalance++;
+    }
+    else if (sLineIn[i] == ')')
+    {
+      iBalance--;
+    }
+	  if (iBalance == 0)
+	  {
+		return i;
+	  }
   }
 }
 
