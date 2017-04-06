@@ -54,7 +54,7 @@ class Engine {
     void dropTable(string sTableNameIn);
     Table whereClause(Table tCurrentTable,string whereFilter);
     Table selectClause(Table tNewTable,vector < string > colNames, Table originalTable);
-    Table joinClause(Table originalTable,string joinTableString,string joinFilter);
+    Table joinClause(Table originalTable,Table joinTable,string joinFilter);
     //string delSpaces(string str);
     void writetofile();
     void read();
