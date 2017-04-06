@@ -394,7 +394,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				    cout << "printAll from recursion" << endl;
 					selectQ.printAll();
 					
-					/*e.executeSelect(selectQ.getFromTable(),
+					e.executeSelect(selectQ.getFromTable(),
 									createVector(selectQ.getSelectCols()),
 									selectQ.getTempTable(),
 									selectQ.getWhereFilter(),
@@ -481,7 +481,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 					nestedLevel--;
 					
 					selectQ.printAll();
-					/*e.executeSelect(selectQ.getFromTable(),
+					e.executeSelect(selectQ.getFromTable(),
 									createVector(selectQ.getSelectCols()),
 									selectQ.getTempTable(),
 									selectQ.getWhereFilter(),
@@ -610,7 +610,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			cout << "end printall" << endl;
 			if (iPosSemiColon != string::npos) {
 				selectQ.printAll();
-				/*e.executeSelect(selectQ.getFromTable(),
+				e.executeSelect(selectQ.getFromTable(),
 								createVector(selectQ.getSelectCols()),
 								selectQ.getTempTable(),
 								selectQ.getWhereFilter(),
