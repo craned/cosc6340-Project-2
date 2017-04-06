@@ -79,6 +79,32 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
     bool isFoundTable=false;
     for (size_t i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
+        Table tb=vTableList[i];
+        int iColumnIndex= -1; 
+        int numOfRows=tb.getTNumOfRecords(); 
+           vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames(); 
+        for (size_t a = 0; a < vNames.size(); ++a) { 
+             
+        if (get<2>(vNames[a])==true) { 
+                iColumnIndex = a; 
+             
+        } 
+        
+        }
+        if(iColumnIndex!=-1){
+        for(int i=0; i<numOfRows; i++){ 
+            vector < std::tuple<int, std::string> > vtemp; 
+            vtemp=tb.getRow(i); 
+            string giventemp=get<1> (vRowIn[iColumnIndex]); 
+            if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){ 
+            cout<<"duplicate primary key"; 
+            isFoundTable = true;
+                return; 
+            } 
+            vtemp.clear();
+        } 
+        }
+              
             vTableList[i].addRow(vRowIn);
             isFoundTable = true;
             return;
@@ -815,7 +841,7 @@ void Engine::writetofile()
 
 bool Engine::createValidate(string sLineIn,string sTableNameIn)
 {
-    vector < string > vReturn;
+   vector < string > vReturn;
     int iPosStart = 0;
     int iPosEnd = 0;
     int iCount = 0;
