@@ -148,7 +148,7 @@ int Parser::parse(string sLineIn)
         //cout << "Created table " << sLineIn << endl;
     } else if (findInsertInto(sLineIn)) {
         cout << "Values Inserted" << endl;
-    } else if (findSelectParen(sLineIn)) {//findSelectNew(sLineIn, "")) {
+    } else if (findSelectParen(sLineIn, "")) {//findSelectNew(sLineIn, "")) {
     //} else if (findSelect(sLineIn)) {
     	//selectQ = new SelectQ();
         //cout << "Select found" << endl;
@@ -240,7 +240,7 @@ bool Parser::findCreateTable(string sLineIn)
                     e.createTable(sTableName, createColVector(sColumns),
                                     createVector(sPrimaryKeys));
                                     
-                    //cout << "table " << sTableName << " created " << endl;
+                    cout << "Created TABLE " << sTableName << " successfully. " << endl;
                      
                     //e.writetofile();
                     return true;
@@ -252,30 +252,63 @@ bool Parser::findCreateTable(string sLineIn)
     return false;
 }
 
-bool Parser::findSelectParen(string sLineIn)
+bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 {
 	size_t openParen = sLineIn.find("(", 0);
+	//cout << "findSelectParen " << sLineIn << endl;
+	
 	
 	if (openParen != string::npos) {
-		for (int i = openParen; i < sLineIn.length(); i++) {
-			char index = sLineIn[i];
-			if (index == '(') {
+		for (int i = 0; i < sLineIn.length(); i++) {
+		//cout << "starting" << endl;
+			char queryChar = sLineIn[i];
+			if (queryChar == '(') {
 				parens.push(i);
-			} else if (index == ')') {
-				int leftParenIndex = parens.top()+1;
-				size_t nextSpace = sLineIn.find(" ", leftParenIndex);
-				string tempTable = sLineIn.substr(leftParenIndex, nextSpace - leftParenIndex);
-				string query = sLineIn.substr(leftParenIndex, index);
+			} else if (queryChar == ')') {
+				int leftParenIndex = parens.top();
+				int subQueryBeg = leftParenIndex + 1;
+				//cout << "open paren " << leftParenIndex << endl;
+				//cout << "close paren " << i << endl;
+				string query = sLineIn.substr(subQueryBeg, i - subQueryBeg);
+				//cout << "subquery " << query << endl;
+				
+				int begTempTable = i;
+				while (!isalnum(sLineIn[begTempTable])) {
+					begTempTable++;
+				}
+				size_t nextSpace = sLineIn.find(" ", begTempTable);
+				string tempTable = sLineIn.substr(begTempTable,
+												nextSpace - begTempTable);
+												
 				bool result = findSelectNew(query, tempTable);
 				parens.pop();
 				
+				sLineIn.replace(leftParenIndex, (i+1) - (leftParenIndex), "");
+				i = 0;
+				while (parens.size() != 0) {
+					parens.pop();
+				}
+				//cout << "query replaced" << endl;//*/
 				if (!result) {
+					//cout << "bad result" << endl;
 					return false;
 				}
+				
+				//cout << "for() end" << endl;
+				break;
 			}
 		}
+		
+		//if (parens.size() > 0) {
+			findSelectParen(sLineIn, insertSelectTable);
+		//}
+		
+		//cout << "subquery " << sLineIn << endl;
+		//return findSelectNew(sLineIn, "");
 	} else {
-		return findSelectNew(sLineIn, "");
+		//cout << "query " << sLineIn << endl;
+		
+		return findSelectNew(sLineIn, insertSelectTable);
 	}
 }
 
@@ -351,7 +384,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				selectQ.setJoinTable(joinTable);
 			}
 			
-			cout << "joinFilter " << joinFilter << endl;
+			//cout << "joinFilter " << joinFilter << endl;
 			// don't want to check for on too early
 			if (iPosOn != string::npos &&
 				!joinTable.empty())
@@ -387,7 +420,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			// order by
 			
 			selectQ.printAll();
-			/*e.executeSelect(selectQ.getFromTable(),
+			e.executeSelect(selectQ.getFromTable(),
 							createVector(selectQ.getSelectCols()),
 							selectQ.getTempTable(),
 							selectQ.getWhereFilter(),
@@ -466,11 +499,12 @@ bool Parser::findInsertInto(string sLineIn)
         {
         	string selectSubQ = sLineIn.substr(iPosEnd1, string::npos);
             //Get the name of the table from the string
-            string tableName = sLineIn.substr(iPosStart, iPosEnd1 - iPosStart);
-            tableName = Utilities::cleanSpaces(tableName);
+            string tableIntoName = sLineIn.substr(iPosStart, iPosEnd1 - iPosStart);
+            //cout << "tableIntoName " << tableIntoName << endl;
+            tableIntoName = Utilities::cleanSpaces(tableIntoName);
             //cout << "insert into tableName " << tableName << endl;
             
-            iPosStart = iPosEnd1 + 6;
+            /*iPosStart = iPosEnd1 + 6;
             iPosEnd1 = sLineIn.find("FROM", iPosStart);
             string colNames = sLineIn.substr(iPosStart,
                                              iPosEnd1 - iPosStart);
@@ -478,7 +512,7 @@ bool Parser::findInsertInto(string sLineIn)
             //cout << "from colNames " << colNames << endl;
 
             //reposition the iterators to get the row values
-            iPosStart = iPosEnd1 + 4;
+            iPosStart = iPosEnd1 + 4;//*/
             
             // Group By isn't required for Phase 1, but this should work when it is
             /*if ((iPosEnd1 = sLineIn.find("ORDER BY", iPosStart)) != string::npos) {
@@ -496,9 +530,13 @@ bool Parser::findInsertInto(string sLineIn)
             	}
             } else //*/
             
-            string tempName = "insInto" + tableName;
-            findSelectNew(selectSubQ, tempName);
-            //e.insertFrom(tableName, tempName);
+            string tempFromName = "insInto" + tableIntoName;
+            findSelectParen(selectSubQ, tempFromName);
+            
+            //string insertInto = "INSERT INTO 
+            
+            //cout << tempFromName << " " << tableIntoName << endl;
+            e.insertFromSelect(tempFromName, tableIntoName);
             if ((iPosEnd1 = sLineIn.find(";")) != string::npos)
             {
                 //Get the tableName from the string
@@ -529,7 +567,7 @@ bool Parser::findDropTable(string sLineIn)
 										sLineIn.find(";") - iPosStart);
         sTableName = Utilities::cleanSpaces(sTableName);
 
-        cout << "tableName " << sTableName << endl;
+        //cout << "tableName " << sTableName << endl;
 
         // call the function to display table
         e.dropTable(sTableName);
@@ -554,7 +592,7 @@ bool Parser::findShowTable(string sLineIn)
 										sLineIn.find(";") - iPosStart);
         sTableName = Utilities::cleanSpaces(sTableName);
 
-        cout << "tableName " << sTableName << endl;
+        //cout << "tableName " << sTableName << endl;
 
         // call the function to display table
         e.displayTable(sTableName);
@@ -609,7 +647,7 @@ bool Parser::findQuit(string sLineIn)
 bool Parser::checkParenthesis(string sLineIn)
 {
   int iBalance = 0;
-  e.writetofile();
+  //e.writetofile();
   for (size_t i = 0; i < sLineIn.length(); ++i)
   {
     if (sLineIn[i] == '(')
@@ -642,7 +680,7 @@ bool Parser::checkParenthesis(string sLineIn)
 size_t Parser::getMatchingClosingParen(string sLineIn, size_t start)
 {
   int iBalance = 0;
-  e.writetofile();
+  //e.writetofile();
   size_t i = start;
   for (; i < sLineIn.length(); ++i)
   {

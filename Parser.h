@@ -40,6 +40,7 @@ private:
     vector<string> vValuesRead;
   Engine e;
   SelectQ selectQ;
+  stack<int> parens;
 
 public:
     //Declare class methods
@@ -67,6 +68,7 @@ public:
   bool findQuit(string sLineIn);
   string getAfterArrow(string sLineIn);
 bool findSelectNew(string sLineIn, string insertSelectTempName);
+bool findSelectParen(string sLineIn, string insertSelectTable);
 size_t getMatchingClosingParen(string sLineIn, size_t start);
 bool findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,											size_t iPosSemiColon, SelectQ selectQ);
     //helper functions
