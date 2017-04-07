@@ -2,5 +2,3 @@
 *.o
 
 *.tbl
-
-cmake-build-debug/
