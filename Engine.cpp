@@ -1196,7 +1196,7 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
         {
             
         } else {
-            cout<<"not validation";
+            cout<<"ERROR: column data does not match column type" << endl;
             return false;
         }
         
