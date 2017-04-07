@@ -714,6 +714,24 @@ void Engine::executeQuit(){
 
 }
 /*****************************************************************************
+   insertFromSelect
+   ****************************************************************************/
+void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
+    for(int i=0;i<vTableList.size();i++){
+        if(sTableNameFrom==vTableList[i].getTableName()) {
+            Table fromTable;
+            fromTable = vTableList[i];
+            Table toTable(sTableNameTo);
+            toTable.setTNumOfRecords(0);
+            for (int k = 0; k < fromTable.getTNumOfRecords(); k++) {
+                toTable.addRow(fromTable.getRow(k));
+            }
+        } else{
+            cout<<"can't find the table"<<endl;
+        }
+    }
+}
+/*****************************************************************************
  SORT: sorting and showing
  ****************************************************************************/
  bool Engine::sortbyp(const SortTable &lhs,const SortTable &rhs)
