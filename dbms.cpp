@@ -204,8 +204,11 @@ void commandLineSQLInput(string sqlQuery) {
 
 int main(int argc, char *argv[]) {
     //out.open("out2.txt", ios::out);
-    ofstream cout(OUTPUT_FILE);
-    std::cout.rdbuf(cout.rdbuf());
+    //ofstream cout(OUTPUT_FILE);
+    //std::cout.rdbuf(cout.rdbuf());
+    std::ofstream out("output.txt");
+    std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+    std::cout.rdbuf(out.rdbuf());
 
 parser = new Parser();
 parser->read();
@@ -242,8 +245,8 @@ parser->read();
         commandLineSQLInput(firstArg);
     }
     
-    out.close();
-
+    //out.close();
+    std::cout.rdbuf(coutbuf);
     return 0;
 }
 

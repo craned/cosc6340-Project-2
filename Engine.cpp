@@ -616,7 +616,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                         vTableList.push_back(tPhaseThree);
                         tPhaseThree.printOutTheWholeTable();
                         cout<<"after sorting:"<<endl;
-                        sortp(tPhaseThree.getTableName());
+                        //sortp(tPhaseThree.getTableName());
 
                         //deleting tables
                         deleteATable(tPhseOneTableFromOriginalTable);
@@ -661,7 +661,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 vTableList.push_back(tPhaseThree);
                 tPhaseThree.printOutTheWholeTable();
                 cout<<"after sorting:"<<endl;
-                sortp(tPhaseThree.getTableName());
+                //sortp(tPhaseThree.getTableName());
                 
                 //deleting tables
                 deleteATable(tPhseOneTable);
