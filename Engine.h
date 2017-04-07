@@ -51,6 +51,7 @@ class Engine {
 	void executeQuit();
     static bool sortbyp(const SortTable &lhs,const SortTable &rhs);
     void sortp(string sTableNameIn);
+    void insertFromSelect(string sTableNameFrom, string sTableNameTo );
 	};
 
 #endif
