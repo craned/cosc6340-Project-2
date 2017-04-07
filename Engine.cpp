@@ -123,7 +123,7 @@ void Engine::displayTable(string sTableNameIn)
             vColumnNames=vTableList[i].getColumnNames();
             for (size_t i = 0; i < vColumnNames.size(); ++i)
     {
-        std::cout << "+----------------";
+        std::cout << "+-----------";
     }
     std::cout << "\n";
             
@@ -146,7 +146,6 @@ void Engine::displayTable(string sTableNameIn)
           }
           else{
           cout<<get < 3 > (vColumnNames[j]);
-          cout<<"("<<get < 4 > (vColumnNames[j])<<")";
           }
 				}
 				else
@@ -159,7 +158,6 @@ void Engine::displayTable(string sTableNameIn)
           }
           else{
           cout<<get < 3 > (vColumnNames[j]);
-          cout<<"("<<get < 4 > (vColumnNames[j])<<")";
           }
 				}
 
@@ -167,7 +165,7 @@ void Engine::displayTable(string sTableNameIn)
       cout<<"\n";
       for (size_t i = 0; i < vColumnNames.size(); ++i)
     {
-        std::cout << "+----------------------";
+        std::cout << "+-----------";
     }
     std::cout << "\n";
 			
