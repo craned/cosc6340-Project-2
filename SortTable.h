@@ -21,7 +21,7 @@ vector < std::tuple<int, std::string> > vrow;
 
 void getprimarykey(Table ob, int i){
 
-            int numOfRows=ob.getTNumOfRecords();
+   /*         int numOfRows=ob.getTNumOfRecords();
 
                        vector<tuple<int, string, bool, string, int> > vNames = ob.getColumnNames(); 
                        int iColumnIndex=-1;
@@ -33,14 +33,15 @@ void getprimarykey(Table ob, int i){
              
         } 
         
-        } 
+        } */
+        primarykey=0;
         
 }
 void getrow(Table ob, int i){
             vector < std::tuple<int, std::string> > vtemp; 
             vtemp=ob.getRow(i); 
             vrow=vtemp;
-            value=get<1> (vtemp[primarykey+1]);
+            value=get<1> (vtemp[primarykey]);
                 
 }
 };

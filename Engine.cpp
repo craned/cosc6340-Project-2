@@ -7,6 +7,7 @@
 #include <cstdio>
 #include "SortTable.h"
 #include <algorithm>
+const int COLUMN_WIDTH = 20;
 /*******************************************************************************
  This function will take in a vector of column names and trailing primary keys,
  and an integer specifying how many columns are in the vector.
@@ -617,7 +618,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                         tPhaseThree.printOutTheWholeTable();
                         cout<<"after sorting:"<<endl;
                         sortp(tPhaseThree.getTableName());
-
+                        //tPhaseThree.distinct();
                         //deleting tables
                         deleteATable(tPhseOneTableFromOriginalTable);
                         deleteATable(tPhseOneTableFromJoinTable);
@@ -662,7 +663,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 tPhaseThree.printOutTheWholeTable();
                 cout<<"after sorting:"<<endl;
                 sortp(tPhaseThree.getTableName());
-                
+                //tPhaseThree.distinct();
                 //deleting tables
                 deleteATable(tPhseOneTable);
                 //deleteATable(tPhaseTwo);
@@ -734,14 +735,52 @@ void Engine::executeQuit(){
  SortTable temp;
  temp.getprimarykey(ob,i);
  temp.getrow(ob,i);
+ std::vector < std::tuple<int, std::string> > row;
+  row =ob.getRow(i);
+  int rowcounter=0;
+            for(int j=i+1; j<rNum; j++) {
+            std::vector < std::tuple<int, std::string> > row2;
+             row2 =ob.getRow(j);
+            int counter=0;
+            for(size_t z=0;z<row.size();z++) {
+                if (get<1>(row[z]) == get<1>(row2[z])) {
+                    counter=counter+1;
+
+                }
+
+            }
+            if(counter!=row.size()){
+            rowcounter=rowcounter+1;
+             //arrang.push_back(temp);
+            }
+            
  
+ }
+ if(rowcounter==rNum-i-1){
  arrang.push_back(temp);
+ }
  
  }
  
  sort(arrang.begin(),arrang.end(),sortbyp);
  vector<tuple<int, string, bool, string, int > > vColumnNames;
  vColumnNames=ob.getColumnNames();
+ 
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "-----------------------";
+    }
+    std::cout << "\n";
+
+    std::cout << " | " << sTableNameIn << "\n ";
+
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "+----------------------";
+    }
+    std::cout << "\n";
+ 
+ 
  for (size_t i = 0; i < vColumnNames.size(); ++i)
  {
  //get the column values for printing
@@ -751,15 +790,22 @@ void Engine::executeQuit(){
  //see if it is a primary key, for formatting
  if (bPrimaryKey)
  {
- std::cout << " | "
- << "*" + sColName + "*";
+cout << " | " << setw(COLUMN_WIDTH) << left
+                << "*" + sColName + "*";
  }
  else
  {
- std::cout << " | " <<  sColName;
+  cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
+
  }
  
  }
+ cout<<"\n";
+     for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "+----------------------";
+    }
+    std::cout << "\n";
  
  for(int i=0;i<arrang.size();i++)
  {
@@ -767,8 +813,15 @@ void Engine::executeQuit(){
  vector < std::tuple<int, std::string> > vrow;
  vrow=st.vrow;
  for(int j=0;j<vrow.size();j++){
- cout<<get<1>(vrow[j]);
+ cout << " | " << setw(COLUMN_WIDTH) << left <<get<1>(vrow[j]);
  }
+         std::cout << "\n ";
+        for (size_t y = 0; y < vColumnNames.size(); ++y)
+        {
+            std::cout << "+----------------------";
+        }
+        std::cout << "\n";
+ 
  }
  
  
@@ -1017,7 +1070,7 @@ void Engine::writetofile()
 
 bool Engine::createValidate(string sLineIn,string sTableNameIn)
 {
-   vector < string > vReturn;
+    vector < string > vReturn;
     int iPosStart = 0;
     int iPosEnd = 0;
     int iCount = 0;
