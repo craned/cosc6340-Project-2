@@ -937,6 +937,11 @@ void Engine::read(){
                // cout<<line.substr(f5+1,f6-f5-1);
                 int c2=stoi(line.substr(f5+1,f6-f5-1));
                 //cout<<c2;
+                if(line.substr(f3+1,f5-f3-1)=="CHAR"){
+                c2=c2+6;
+                ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,line.substr(f3+1,f5-f3-1),c2));
+                }
+                else
                 ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,line.substr(f3+1,f5-f3-1),c2));
                 while(f2!=string::npos)
                 {
