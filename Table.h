@@ -140,6 +140,108 @@ public:
     {
         sTableName = sNewName;
     }
+    
+    void distinct(){
+    
+    const int COLUMN_WIDTH = 20;
+std::cout << "\n ";
+
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "-----------------------";
+    }
+    std::cout << "\n";
+
+    std::cout << " | " << sTableName << "\n ";
+
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "+----------------------";
+    }
+    std::cout << "\n";
+
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        //get the column values for printing
+        std::string sColName = std::get < 1 > (vColumnNames[i]);
+        bool bPrimaryKey = std::get < 2 > (vColumnNames[i]);
+
+        //see if it is a primary key, for formatting
+        if (bPrimaryKey)
+        {
+            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+                      << "*" + sColName + "*";
+        }
+        else
+        {
+            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left << sColName;
+        }
+
+    }
+        std::cout << "\n ";
+       for (size_t y = 0; y < vColumnNames.size(); ++y)
+        {
+            std::cout << "+----------------------";
+        }
+        std::cout << "\n";
+    
+     for(int i=0; i<tNumOfRecords; i++) {
+        
+            std::vector < std::tuple<int, std::string> > row;
+            row =getRow(i);
+            int rowcounter=0;
+            for(int j=i+1; j<tNumOfRecords; j++) {
+            std::vector < std::tuple<int, std::string> > row2;
+            row2 =getRow(j);
+            int counter=0;
+            for(size_t z=0;z<row.size();z++) {
+                if (get<1>(row[z]) == get<1>(row2[z])) {
+                   /* string sCurrent = get<1>(row[z]);
+                    //cout << "sCurrent " << sCurrent << endl;
+                    if (sCurrent.size() > COLUMN_WIDTH) {
+                        sCurrent.resize(COLUMN_WIDTH);
+                    }*/
+                    counter=counter+1;
+                    /*std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+                              << sCurrent;
+
+                    break;*/
+
+                }
+
+            }
+           // cout<<counter<<" "<<row.size();
+            if(counter!=row.size()){
+ 
+            rowcounter=rowcounter+1;
+        }
+        if(rowcounter==tNumOfRecords-i-1){
+        
+        
+                   for(size_t z=0;z<row.size();z++) {
+            string sCurrent = get<1>(row[z]);
+            //cout << "sCurrent " << sCurrent << endl;
+            if (sCurrent.size() > COLUMN_WIDTH) {
+                        sCurrent.resize(COLUMN_WIDTH);
+                    }
+            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+                              << sCurrent;
+                              }
+            }
+
+ }
+        
+        std::cout << "\n ";
+       for (size_t y = 0; y < vColumnNames.size(); ++y)
+        {
+            std::cout << "+----------------------";
+        }
+        std::cout << "\n";
+    }
+    
+
+}
+    
 };
 
 #endif //GIT2_TABLE_H
