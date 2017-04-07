@@ -1,23 +1,18 @@
 tablename=T
-<<<<<<< Updated upstream
-column=C1:int(4),C2:string(6)
-primarykey=C2
-=======
-column=K:int(4),A:int(4),C:string(106)
+column=K:int(4),A:int(4),C:CHAR(1)
 primarykey=A
 recordsize=12
 totalsize=72
 records=6
 tablename=S
-column=I:int(4),B:int(4),D:string(9)
+column=I:int(4),B:int(4),D:CHAR(3)
 primarykey=I
 recordsize=12
-totalsize=84
-records=7
+totalsize=108
+records=9
 tablename=Z
-column=K:int(4),C:string(7)
+column=K:int(4),C:CHAR(1)
 primarykey=K
->>>>>>> Stashed changes
 recordsize=8
-totalsize=560
-records=70
+totalsize=24
+records=3
