@@ -120,7 +120,7 @@ tuple<int, string, bool, string> Table::getColumnIndex(
     }
   }
 
-  printf("| We didnt find it\n");
+  cout << "ERROR: the column was not found" << endl;
   //The column was not found
   return make_tuple(-1, "n/a", false, "n/a");
 }
@@ -232,7 +232,7 @@ void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
             writeIntToFile(value,out);
 
         }
-        else cout<<"type error! "<<endl;
+        else cout<<"ERROR: column type mismatch! "<<endl;
     }
     setTNumOfRecords(getTNumOfRecords()+1);
     out.close();
@@ -280,9 +280,9 @@ void Table::deleteATable(string tableName){
     //setTNumOfRecords(0);
     const char* tName=name.c_str();
     if( remove( tName ) != 0 )
-        perror( "Error deleting file" );
+        cout << "Error deleting file" << endl;
     else
-        puts( "File successfully deleted" );
+        cout << "File successfully deleted" << endl;
 }
 
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)

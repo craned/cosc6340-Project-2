@@ -32,7 +32,7 @@ void Engine::createTable(string sTableNameIn,
     }
     
     if(isTableFound) {
-        cout << "ERROR: this table already exists! SO Not being added !" << endl;
+        cout << "ERROR: this table already exists! SO Not being added!" << endl;
     }else{
         Table t(sTableNameIn);
         
@@ -90,7 +90,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     vtemp=tb.getRow(i);
                     string giventemp=get<1> (vRowIn[iColumnIndex]);
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
-                        cout<<"duplicate primary key";
+                        cout<<"ERROR: duplicate primary key" << endl;
                         isFoundTable = true;
                         return;
                     }
@@ -104,7 +104,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
             
         }
     }
-    if(!isFoundTable) cout<<"this table does not exist!"<<endl;
+    if(!isFoundTable) cout<<"ERROR: this table does not exist!"<<endl;
 }
 
 /*****************************************************************************
@@ -183,7 +183,7 @@ void Engine::displayTable(string sTableNameIn)
 		}
 	}
 	
-	printf("ERROR: The table was not found\n");
+	cout << "ERROR: The table was not found" << endl;
 }
 
 /*****************************************************************************
@@ -267,7 +267,7 @@ Table Engine::whereClause(Table tCurrentTable, string whereFilter){
             }
             //See if the column exists in the table
             if (iColumnIndex == -1) {
-                printf("| The column does not exist.\n");
+                cout << "ERROR: the column does not exist." << endl;
             } else {
                 //get the values for the column
                 int numOfRows = tCurrentTable.getTNumOfRecords();
@@ -284,7 +284,7 @@ Table Engine::whereClause(Table tCurrentTable, string whereFilter){
 
             //not for this table:
         else{
-            cout<<columnName <<" does not exist in table "<< tCurrentTable.getTableName()<<endl;
+            cout<<"ERROR: " << columnName <<" does not exist in table "<< tCurrentTable.getTableName()<<endl;
             //add columns:
             vector<tuple<int, string, bool, string, int> > vNames =
                     tCurrentTable.getColumnNames();
@@ -381,7 +381,7 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                         }
                     }
                     if (!isColumnFound){
-                        cout << "wrong column selected for select-clause!" << endl;
+                        cout << "ERROR: wrong column selected for select-clause!" << endl;
                         returnBool=false;
                     }
                 }else{
@@ -400,7 +400,7 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                         }
                     }
                     if (!isColumnFound){
-                        cout << "wrong column selected for select-clause!" << endl;
+                        cout << "ERROR: wrong column selected for select-clause!" << endl;
                         returnBool=false;
                     }
                 }
@@ -419,7 +419,7 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                     }
                 }
                 if (!isColumnFound){
-                    cout << "wrong column selected for select-clause!" << endl;
+                    cout << "ERROR: wrong column selected for select-clause!" << endl;
                     returnBool=false;
                 }
             }
@@ -602,7 +602,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     whereFilter = Utilities::cleanSpaces(whereFilter);
     joinTable = Utilities::cleanSpaces(joinTable);
     joinFilter = Utilities::cleanSpaces(joinFilter);
-    for(int k=0; k<colNames.size(); k++){
+    for(size_t k=0; k<colNames.size(); k++){
         colNames[k] = Utilities::cleanSpaces(colNames[k]);
     }
     //CHANGE IT:
@@ -759,7 +759,7 @@ void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
                 toTable.addRow(fromTable.getRow(k));
             }
         } else{
-            cout<<"can't find the table"<<endl;
+            cout<<"ERROR: table does not exist."<<endl;
         }
     }
 }

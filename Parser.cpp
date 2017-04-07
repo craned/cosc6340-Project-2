@@ -134,11 +134,11 @@ int Parser::parse(string sLineIn)
     //printf("\n%s\n", sLineIn.c_str());
     origQuery = sLineIn;
     if (!checkParenthesis(sLineIn)) {
-  		printf("ERROR: the parentheses do not match\n");
+  		cout << "ERROR: the parentheses do not match" << endl;
   		return 0;
   	}
     if (!semicolonExists(sLineIn)) {
-  		printf("ERROR: there is no semicolon\n");
+  		cout << "ERROR: there is no semicolon" << endl;
   		return 0;
   	}
   	
@@ -162,7 +162,7 @@ int Parser::parse(string sLineIn)
     } else if (findDropTable(sLineIn)) {
         cout << "Drop table" << endl;
     } else {
-        printf("ERROR: no match for the query could be found\n");
+        cout << "ERROR: no match for the query could be found" << endl;
     }
 
 	return 1;
