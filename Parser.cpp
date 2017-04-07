@@ -816,6 +816,7 @@ bool Parser::findQuit(string sLineIn)
   if (iPosStart != string::npos)
   {
     //cout << "quit" << endl;
+	  e.executeQuit();
 
     return true;
   }
