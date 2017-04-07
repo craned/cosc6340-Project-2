@@ -933,16 +933,17 @@ void Engine::read(){
                 
                 f6=line.find(")");
                 coltemp=line.substr(f1+1,f2-f1-1);
-                //cout<<coltemp<<"1111"<<"\n";
                // cout<<line.substr(f5+1,f6-f5-1);
+                //int c2=stoi(line.substr(f5+1,f6-f5-1));
+                int comparision=0;
+                 comparision=f5-f2;
+                if(((f2==string::npos)&&(f5!=string::npos))||comparision<0){
                 int c2=stoi(line.substr(f5+1,f6-f5-1));
-                //cout<<c2;
-                if(line.substr(f3+1,f5-f3-1)=="CHAR"){
                 c2=c2+6;
-                ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,line.substr(f3+1,f5-f3-1),c2));
+                ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,"string",c2));
                 }
                 else
-                ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,line.substr(f3+1,f5-f3-1),c2));
+                ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,"int",4));
                 while(f2!=string::npos)
                 {
                     string coln=line.substr(f2+1,string::npos);
@@ -951,19 +952,22 @@ void Engine::read(){
                     string coltemp;
                     
                     coltemp=line.substr(f2+1,f4-f2-1);
-                    //cout<<coltemp<<"\n";
                     f3=line.find(":",f2+1);
                     f5=line.find("(",f2+1);
                     f6=line.find(")",f2+1);
-                    int c1=stoi(line.substr(f5+1,f6-f5-1));
+                    //int c1=stoi(line.substr(f5+1,f6-f5-1));
                    // cout<<line.substr(f2+1,f3-f2-1);
                     seq=seq+1;
-                    if(line.substr(f3+1,f5-f3-1)=="CHAR"){
+                    comparision=0;
+                    comparision=f5-f4;
+
+                    if(((f4==string::npos)&&(f5!=string::npos))||comparision<0){
+                    int c1=stoi(line.substr(f5+1,f6-f5-1));
                     c1=c1+6;
                     ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,"string",c1));
                     }
                     else
-                    ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,line.substr(f3+1,f5-f3-1),c1));
+                    ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,"int",4));
                     f2=f4;
                     if(f2==line.size()-1)
                     {
@@ -1104,7 +1108,7 @@ void Engine::writetofile()
         
             }
             else
-                outfile<<get<1>(col[j])<<":"<<get<3>(col[j])<<"("<<get<4>(col[j])<<")"<<",";
+                outfile<<get<1>(col[j])<<":"<<"INT"<<",";
                 }
             else{
             if(get<3>(col[j])=="string"){
@@ -1113,7 +1117,7 @@ void Engine::writetofile()
         
             }
             else
-                outfile<<get<1>(col[j])<<":"<<get<3>(col[j])<<"("<<get<4>(col[j])<<")";
+                outfile<<get<1>(col[j])<<":"<<"INT";
                 }
         }
         vector<string> primarykey;
