@@ -261,6 +261,9 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 		cout << "ERROR: too many nested levels" << endl;
 		return false;
 	}
+	queryIsNested = false;
+	returnedFromRecursion = false;
+	joinSelectRecursion = false;
 	size_t iPosStart = sLineIn.find("SELECT");
 
     if (iPosStart != string::npos)
@@ -308,22 +311,28 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 		            //cout << "returned from recursion" << endl;
 		            // ok, now start using origQuery
 
+					//cout << "returningNestedLevel " << origQuery.at(returningNestedLevel-2) << origQuery.at(returningNestedLevel-1) << origQuery.at(returningNestedLevel) << endl;
 		            // find temporary table name
 					if (joinSelectRecursion) {
 						cout << "joinSelectRecursion now setting to false" << endl;
 						iPosStart = returningNestedLevel + 1;
 						
 						iPosRParen = origQuery.find(")", returningNestedLevel+1) + 1;
+					cout << "returningNestedLevel " << origQuery.at(returningNestedLevel-2) << origQuery.at(returningNestedLevel-1) << origQuery.at(returningNestedLevel) << endl;
+				  		//cout << "iPosRParen " << iPosRParen << endl;
 						joinSelectRecursion = false;
 					} else {//*/
 		            	iPosStart = origQuery.find(")", returningNestedLevel+1) + 1;
 					}
 					
 					iPosRParen = origQuery.find(")", iPosStart);
+				  		cout << "iPosRParen1 " << iPosRParen << endl;
 					iPosLParen = origQuery.find("(", iPosStart);
-					sLineIn = origQuery;
+				  		cout << "iPosLParen1 " << iPosLParen << endl;
+					//sLineIn = origQuery;
 					
 					//cout << "returningNestedLevel "<< origQuery.at(returningNestedLevel-2) << origQuery.at(returningNestedLevel-1) << origQuery.at(returningNestedLevel) << endl;
+					if (iPosStart != string::npos)
 					cout << "iPosStart " << origQuery.at(iPosStart-2) << origQuery.at(iPosStart-1) << origQuery.at(iPosStart) << endl;
 					if (iPosRParen != string::npos)
 					cout << "iPosRParen " << origQuery.at(iPosRParen-1) << origQuery.at(iPosRParen) << endl;//*/
@@ -339,15 +348,27 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				  									joinAfterSubQPos - iPosStart);
 				  			//}
 				  		} else {
-				    		tempTableName = sLineIn.substr(iPosStart, 
+				  			// needs to be sLineIn; maybe not?
+				  			size_t onAfterSubQPos = origQuery.find("ON", iPosStart);
+				  			if (onAfterSubQPos != string::npos) {
+				  				tempTableName = origQuery.substr(iPosStart,
+				  								onAfterSubQPos - iPosStart);
+				  			} else {
+					    		tempTableName = origQuery.substr(iPosStart, 
 				                                      iPosRParen - iPosStart);
+				            }
 				        }
+				  		cout << "tempTableName " << tempTableName << endl;
 				  	} else {
+				  		cout << "here1" << endl;
 				  		size_t joinAfterSubQPos = origQuery.find("JOIN", iPosStart);
+				  		size_t onAfterSubQPos = origQuery.find("ON", iPosStart);
+				  		cout << "here2" << endl;
 				  		size_t whereAfterSubQPos = origQuery.find("WHERE", iPosStart);
 				  		//cout << "joinAfterSubQPos " << origQuery.at(joinAfterSubQPos-2) << origQuery.at(joinAfterSubQPos-1) << origQuery.at(joinAfterSubQPos) << endl;
 				  		if (joinAfterSubQPos != string::npos ||
-				  			whereAfterSubQPos != string::npos)
+				  			whereAfterSubQPos != string::npos ||
+				  			onAfterSubQPos != string::npos)
 				  		{
 				  			if (joinAfterSubQPos != string::npos) {
 				  				tempTableName = origQuery.substr(iPosStart,
@@ -356,12 +377,15 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				  			else if (whereAfterSubQPos != string::npos) {
 				  				tempTableName = origQuery.substr(iPosStart,
 				  								whereAfterSubQPos - iPosStart);
+				  			} else if (onAfterSubQPos != string::npos) {
+				  				tempTableName = origQuery.substr(iPosStart,
+				  								onAfterSubQPos - iPosStart);
 				  			}
 				  		} else {
 				    		tempTableName = origQuery.substr(iPosStart, 
 				            	        			iPosSemiColon - iPosStart);
 				        }
-				        //cout << "got alias" << endl;
+				        cout << "got alias" << endl;
 				  	}
 
 					tempTableName = Utilities::cleanSpaces(tempTableName);
@@ -426,9 +450,10 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				size_t joinSelect = joinTable.find("SELECT", 0);
 				if (joinSelect != string::npos) {
 					selectQ.clearAll();
+					cout << "select found in joinTable " << joinTable << endl;
 					joinSelectRecursion = true;
 					joinTable = joinTable.substr(joinSelect);
-					//cout << joinTable << endl;
+					cout << "joinTable " << joinTable << endl;
 					//cout << "nested select in JOIN table detected" << endl;
 					
 					//cout << "char at" << sLineIn.at(joinRightPNested) << endl;
