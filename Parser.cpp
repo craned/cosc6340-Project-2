@@ -632,7 +632,7 @@ bool Parser::findQuit(string sLineIn)
     //cout << "quit" << endl;
 	  e.executeQuit();
 	  
-	  e.writeToFile();
+	  e.writetofile();
 
     return true;
   }
