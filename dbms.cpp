@@ -247,9 +247,8 @@ parser->read();
         commandLineSQLInput(firstArg);
     }
     
-
+    //out.close();
     std::cout.rdbuf(coutbuf);
-       out.close();
     return 0;
 }
 

@@ -121,12 +121,6 @@ void Engine::displayTable(string sTableNameIn)
             cout<<"\n"<<vTableList[i].getTableName()<<"\n";
             vector<tuple<int, string, bool, string, int > > vColumnNames;
             vColumnNames=vTableList[i].getColumnNames();
-            for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "+----------------------";
-    }
-    std::cout << "\n";
-            
             
 			for (size_t j = 0; j <vColumnNames.size(); ++j)
 			{
@@ -137,39 +131,14 @@ void Engine::displayTable(string sTableNameIn)
 				//see if it is a primary key, for formatting
 				if (bPrimaryKey)
 				{
-					cout << " | " << left << "*" + sColName + "*"<<" ";
-               if(get < 3 > (vColumnNames[j])=="string"){
-               
-          cout<<"CHAR";
-          int c=get < 4 > (vColumnNames[j])-6;
-          cout<<"("<<c<<")";
-          }
-          else{
-          cout<<get < 3 > (vColumnNames[j]);
-          cout<<"("<<get < 4 > (vColumnNames[j])<<")";
-          }
+					cout << " | " << setw(COLUMN_WIDTH) << left << "*" + sColName + "*";
 				}
 				else
 				{
-					cout << " | "  << left << sColName<<" ";
-          if(get < 3 > (vColumnNames[j])=="string"){
-          cout<<"CHAR";
-          int c=get < 4 > (vColumnNames[j])-6;
-          cout<<"("<<c<<")";
-          }
-          else{
-          cout<<get < 3 > (vColumnNames[j]);
-          cout<<"("<<get < 4 > (vColumnNames[j])<<")";
-          }
+					cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
 				}
 
 			}
-      cout<<"\n";
-      for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "+----------------------";
-    }
-    std::cout << "\n";
 			
 			std::vector<std::string> primaryKey=vTableList[i].getPrimaryKey();
 			cout<<"Primary keys :";
@@ -177,7 +146,6 @@ void Engine::displayTable(string sTableNameIn)
 			{
 				cout<<primaryKey[j];
 			}
-      cout<<"\n";
 					        
 		    return;
 		}
@@ -606,7 +574,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         colNames[k] = Utilities::cleanSpaces(colNames[k]);
     }
     //CHANGE IT:
-    tempTable="";
+    //tempTable="";
     bool returnBool= true;
     if(joinFilter != "") {
         for (size_t i = 0; i < vTableList.size(); ++i) {
@@ -908,7 +876,7 @@ void Engine::read(){
                 //	cout<<f1;
                 string tname=line.substr(f1+1,string::npos);
                 ob=Table(tname);
-               // cout<<tname;
+                cout<<tname;
             }
         }
         else if(count==1)
@@ -933,10 +901,10 @@ void Engine::read(){
                 
                 f6=line.find(")");
                 coltemp=line.substr(f1+1,f2-f1-1);
-                //cout<<coltemp<<"1111"<<"\n";
-               // cout<<line.substr(f5+1,f6-f5-1);
+                cout<<coltemp<<"1111"<<"\n";
+                cout<<line.substr(f5+1,f6-f5-1);
                 int c2=stoi(line.substr(f5+1,f6-f5-1));
-                //cout<<c2;
+                cout<<c2;
                 ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,line.substr(f3+1,f5-f3-1),c2));
                 while(f2!=string::npos)
                 {
@@ -951,18 +919,13 @@ void Engine::read(){
                     f5=line.find("(",f2+1);
                     f6=line.find(")",f2+1);
                     int c1=stoi(line.substr(f5+1,f6-f5-1));
-                   // cout<<line.substr(f2+1,f3-f2-1);
+                    cout<<line.substr(f2+1,f3-f2-1);
                     seq=seq+1;
-                    if(line.substr(f3+1,f5-f3-1)=="CHAR"){
-                    c1=c1+6;
-                    ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,"string",c1));
-                    }
-                    else
                     ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,line.substr(f3+1,f5-f3-1),c1));
                     f2=f4;
                     if(f2==line.size()-1)
                     {
-                       // cout<<"hei";
+                        cout<<"hei";
                         break;
                     }
                 }
@@ -971,7 +934,7 @@ void Engine::read(){
         }
         
         else if(count==2){
-            //cout<<line;
+            cout<<line;
             count=3;
             size_t f1;
             size_t f2;
@@ -986,23 +949,23 @@ void Engine::read(){
                 
                 coltemp=line.substr(f1+1,f2-f1-1);
                 
-               // cout<<coltemp<<"\n";
+                cout<<coltemp<<"\n";
                 // primkey.push_back(coltemp);
                 ob.setPrimaryKey(coltemp);
                 while(f2!=string::npos)
-                { //cout<<"prime";
+                { cout<<"prime";
                     string coln=line.substr(f2+1,string::npos);
                     size_t f4;
                     f4=line.find(",",f2+1);
                     string coltemp;
                     
                     coltemp=line.substr(f2+1,f4-f2-1);
-                    //cout<<coltemp;
+                    cout<<coltemp;
                     ob.setPrimaryKey(coltemp);
                     f2=f4;
                     if(f2==line.size()-1)
                     {
-                        //cout<<"hei";
+                        cout<<"hei";
                         break;
                     }
                 }
@@ -1011,7 +974,7 @@ void Engine::read(){
         }
         else if(count==3){
             //cout<<"Asdfas";
-            //cout<<line;
+            cout<<line;
             count=4;
             size_t f1;
             size_t f2;
@@ -1025,12 +988,12 @@ void Engine::read(){
                 
                 recordsize=stoi(line.substr(f1+1,f2-f1-1));
                 ob.setTRecordSize(recordsize);
-                //cout<<recordsize<<"\n";
+                cout<<recordsize<<"\n";
             }
         }
         else if(count==4){
             
-            //cout<<line;
+            cout<<line;
             count=5;
             size_t f1;
             size_t f2;
@@ -1043,13 +1006,13 @@ void Engine::read(){
                 
                 totalsize=stoi(line.substr(f1+1,f2-f1-1));
                 ob.setTTotalSize(totalsize);
-                //cout<<totalsize<<"\n";
+                cout<<totalsize<<"\n";
             }
             
         }
         else if(count==5){
             
-            //cout<<line;
+            cout<<line;
             count=0;
             size_t f1;
             size_t f2;
@@ -1062,7 +1025,7 @@ void Engine::read(){
                 
                 records=stoi(line.substr(f1+1,f2-f1-1));
                 ob.setTNumOfRecords(records);
-               // cout<<records<<"\n";
+                cout<<records<<"\n";
             }
             vTableList.push_back(ob);
             ob=Table();
@@ -1087,29 +1050,15 @@ void Engine::writetofile()
     for(size_t i=0; i<vTableList.size();++i){
         //string name=cataloglist[i].getTableName();
         outfile<<"tablename="<<vTableList[i].getTableName()<<'\n';
-        //cout<<"table";
+        cout<<"table";
         vector<tuple<int, string, bool, string, int > > col;
         col=vTableList[i].getColumnNames();
         outfile<<"column=";
         for(size_t j=0;j< col.size();++j){
-            if(j<col.size()-1){
-            if(get<3>(col[j])=="string"){
-            int c=get<4>(col[j])-6;
-            outfile<<get<1>(col[j])<<":"<<"CHAR"<<"("<<c<<")"<<",";
-        
-            }
-            else
+            if(j<col.size()-1)
                 outfile<<get<1>(col[j])<<":"<<get<3>(col[j])<<"("<<get<4>(col[j])<<")"<<",";
-                }
-            else{
-            if(get<3>(col[j])=="string"){
-            int c=get<4>(col[j])-6;
-            outfile<<get<1>(col[j])<<":"<<"CHAR"<<"("<<c<<")";
-        
-            }
             else
                 outfile<<get<1>(col[j])<<":"<<get<3>(col[j])<<"("<<get<4>(col[j])<<")";
-                }
         }
         vector<string> primarykey;
         primarykey=vTableList[i].getPrimaryKey();
