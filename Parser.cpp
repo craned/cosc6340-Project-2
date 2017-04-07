@@ -148,7 +148,7 @@ int Parser::parse(string sLineIn)
         //cout << "Created table " << sLineIn << endl;
     } else if (findInsertInto(sLineIn)) {
         cout << "Values Inserted" << endl;
-    } else if (findSelectNew(sLineIn, "")) {
+    } else if (findSelectParen(sLineIn)) {//findSelectNew(sLineIn, "")) {
     //} else if (findSelect(sLineIn)) {
     	//selectQ = new SelectQ();
         //cout << "Select found" << endl;
@@ -252,9 +252,33 @@ bool Parser::findCreateTable(string sLineIn)
     return false;
 }
 
-bool queryIsNested = false;
-bool returnedFromRecursion = false;
-bool joinSelectRecursion = false;
+bool Parser::findSelectParen(string sLineIn)
+{
+	size_t openParen = sLineIn.find("(", 0);
+	
+	if (openParen != string::npos) {
+		for (int i = openParen; i < sLineIn.length(); i++) {
+			char index = sLineIn[i];
+			if (index == '(') {
+				parens.push(i);
+			} else if (index == ')') {
+				int leftParenIndex = parens.top()+1;
+				size_t nextSpace = sLineIn.find(" ", leftParenIndex);
+				string tempTable = sLineIn.substr(leftParenIndex, nextSpace - leftParenIndex);
+				string query = sLineIn.substr(leftParenIndex, index);
+				bool result = findSelectNew(query, tempTable);
+				parens.pop();
+				
+				if (!result) {
+					return false;
+				}
+			}
+		}
+	} else {
+		return findSelectNew(sLineIn, "");
+	}
+}
+
 bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 {
 	if (nestedLevel > 3) {

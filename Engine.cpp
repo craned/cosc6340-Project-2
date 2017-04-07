@@ -574,7 +574,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         colNames[k] = Utilities::cleanSpaces(colNames[k]);
     }
     //CHANGE IT:
-    tempTable="";
+    //tempTable="";
     bool returnBool= true;
     if(joinFilter != "") {
         for (size_t i = 0; i < vTableList.size(); ++i) {
