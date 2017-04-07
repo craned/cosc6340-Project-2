@@ -755,7 +755,7 @@ bool Parser::findDropTable(string sLineIn)
         cout << "tableName " << sTableName << endl;
 
         // call the function to display table
-        e.displayTable(sTableName);
+        e.dropTable(sTableName);
 
 		return true;
 	} else {

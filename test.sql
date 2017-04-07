@@ -1,12 +1,4 @@
-<<<<<<< Updated upstream
-create table t (c1 int, c2 char(6), primary key (c2));
-insert into t values (1, 'test');
-show table t;
-show tables;
-select a,b,c,d from deep join j;
-select a from (select a,b from (select a,b,c,d from deep join (select a,b,c from jn) tt on t.a = t1.b) t1) t3s;
-quit;
-=======
+DROP TABLE T;
 CREATE TABLE T (K INT, A INT, C CHAR(100), PRIMARY KEY(A));
 CREATE TABLE S (I INT, B INT, D CHAR(3), PRIMARY KEY(I));
 CREATE TABLE Z (K INT, C CHAR(1), PRIMARY KEY(K));
@@ -35,5 +27,6 @@ INSERT INTO Z VALUES(8,'D');
 INSERT INTO Z VALUES(9,'D'); 
 INSERT INTO Z VALUES(10,'D');
 SELECT A, C, D FROM T JOIN S ON T.A=S.I;
+DROP TABLE T;
+DROP TABLE S;
 Quit;
->>>>>>> Stashed changes
