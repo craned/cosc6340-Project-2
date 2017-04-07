@@ -232,7 +232,7 @@ void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
             writeIntToFile(value,out);
 
         }
-        else cout<<"type error! "<<endl;
+        else cout<<"ERROR: type mismatch! "<<endl;
     }
     setTNumOfRecords(getTNumOfRecords()+1);
     out.close();
@@ -289,8 +289,8 @@ void Table::writeStringToFile(string val,int blockSize, ofstream& out)
 {
     
     char* valOut = new char[blockSize];
-    for (size_t i = 0; i < blockSize; i++) {
-        if(i>=val.length()){
+    for (int i = 0; i < blockSize; i++) {
+        if((size_t)i>=val.length()){
             valOut[i] = '\0';
         }else{
         valOut[i] = val[i];
@@ -327,7 +327,7 @@ void Table::setPrimaryKey(string sKeyIn)
         }
     }
 	
-    printf("ERROR: Primary Key was not set\n");
+    cout << "ERROR: Primary Key was not set" << endl;
 }
 
 //add a column to the class vector

@@ -591,7 +591,7 @@ bool Parser::findShowTable(string sLineIn)
 										sLineIn.find(";") - iPosStart);
         sTableName = Utilities::cleanSpaces(sTableName);
 
-        //cout << "tableName " << sTableName << endl;
+        cout << "tableName " << sTableName << endl;
 
         // call the function to display table
         e.displayTable(sTableName);
