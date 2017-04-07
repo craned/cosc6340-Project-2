@@ -240,9 +240,8 @@ bool Parser::findCreateTable(string sLineIn)
                     e.createTable(sTableName, createColVector(sColumns),
                                     createVector(sPrimaryKeys));
                                     
-                    cout << "Created TABLE " << sTableName << " successfully. " << endl;
-                     
-                    //e.writetofile();
+                    //cout << "table " << sTableName << " created " << endl;
+                    
                     return true;
                 }
             }
@@ -632,6 +631,8 @@ bool Parser::findQuit(string sLineIn)
   {
     //cout << "quit" << endl;
 	  e.executeQuit();
+	  
+	  e.writeToFile();
 
     return true;
   }
@@ -647,7 +648,6 @@ bool Parser::findQuit(string sLineIn)
 bool Parser::checkParenthesis(string sLineIn)
 {
   int iBalance = 0;
-  //e.writetofile();
   for (size_t i = 0; i < sLineIn.length(); ++i)
   {
     if (sLineIn[i] == '(')
@@ -680,7 +680,6 @@ bool Parser::checkParenthesis(string sLineIn)
 size_t Parser::getMatchingClosingParen(string sLineIn, size_t start)
 {
   int iBalance = 0;
-  //e.writetofile();
   size_t i = start;
   for (; i < sLineIn.length(); ++i)
   {
