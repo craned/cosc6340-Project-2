@@ -1,6 +1,9 @@
-//
-// Created by amirreza shirani on 3/11/17.
-//
+/*******************************************************************************
+ File: Engine.cpp
+ Author: Amirreza Shirani
+ Author: Devin Crane
+ Author: sakhitha kanyadhara
+ *******************************************************************************/
 
 #ifndef GIT2_TABLE_H
 #define GIT2_TABLE_H

@@ -1,7 +1,9 @@
 /*******************************************************************************
- File: Engine.h
+ File: Engine.cpp
  Author: Amirreza Shirani
- *********************************/
+ Author: Devin Crane
+ Author: sakhitha kanyadhara
+ *******************************************************************************/
 
 #ifndef ENGINE_H
 #define ENGINE_H

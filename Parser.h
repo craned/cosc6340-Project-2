@@ -1,7 +1,8 @@
 /*******************************************************************************
- File: Table.cpp
-
- Author:Amirreza Shirani
+ File: Engine.cpp
+ Author: Amirreza Shirani
+ Author: Devin Crane
+ Author: sakhitha kanyadhara
  *******************************************************************************/
 
 #ifndef PARSER_H
