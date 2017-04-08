@@ -760,6 +760,7 @@ void Engine::executeQuit(){
 void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
     cout<<"sTableNameFrom "<<sTableNameFrom<<" sTableNameTo "<<sTableNameTo<<endl;
     bool foundTable = false;
+        bool insertvalidate=false;
     for(int i=0;i<vTableList.size();i++){
         if(sTableNameFrom==vTableList[i].getTableName()) {
             Table fromTable;
@@ -767,16 +768,42 @@ void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
             for(int j=0;j<vTableList.size();j++) {
                 if(sTableNameTo==vTableList[j].getTableName()) {
                     Table toTable = vTableList[j];
+                    insertvalidate=insertselectValidate(fromTable, toTable);
+                    if(insertvalidate==true)
                     for (int k = 0; k < fromTable.getTNumOfRecords(); k++) {
                         toTable.addRow(fromTable.getRow(k));
                         foundTable= true;
                     }
+                    else
+                    cout<<"couldn't validate data type";
                 }
             }
         }
     }
     if(!foundTable) cout<<"couldn't find the table"<<endl;
 }
+
+bool Engine::insertselectValidate(Table fromTable, Table toTable){
+    bool validateinsert = false;
+    bool foundTable = false;
+
+
+          vector<tuple<int, string, bool, string, int > > fromcolumn;
+          fromcolumn=fromTable.getColumnNames();
+
+                        vector<tuple<int, string, bool, string, int > > tocolumn;
+                        tocolumn=toTable.getColumnNames();
+                    for (int k = 0; k < tocolumn.size(); k++) {
+                        if(get<3>(tocolumn[k])!=get<3>(fromcolumn[k])){
+                        validateinsert=false;
+                        return validateinsert;
+                        }
+                    }
+                   foundTable = true;
+                   return true;
+}
+
+
 /*****************************************************************************
  SORT: sorting and showing
  ****************************************************************************/
