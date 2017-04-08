@@ -280,9 +280,9 @@ void Table::deleteATable(string tableName){
     //setTNumOfRecords(0);
     const char* tName=name.c_str();
     if( remove( tName ) != 0 )
-        cout << "Error deleting file" << endl;
+        perror( "Error deleting file" );
     else
-        cout << "File successfully deleted" << endl;
+        puts( "File successfully deleted" );
 }
 
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)

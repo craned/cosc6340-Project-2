@@ -90,7 +90,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     vtemp=tb.getRow(i);
                     string giventemp=get<1> (vRowIn[iColumnIndex]);
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
-                        cout<<"ERROR: duplicate primary key" << endl;
+                        cout<<"duplicate primary key";
                         isFoundTable = true;
                         return;
                     }
@@ -146,6 +146,7 @@ void Engine::displayTable(string sTableNameIn)
           }
           else{
           cout<<get < 3 > (vColumnNames[j]);
+          cout<<"("<<get < 4 > (vColumnNames[j])<<")";
           }
 				}
 				else
@@ -363,8 +364,17 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                 string columnName = colNames[x].substr(colNames[x].find(delimiter) + delimiter.length(),
                                                        colNames[x].length());
                 //if this is the first table:
-                if(tableName==originalTable.getTableName()){
+
+                //string originalTableName="w"+originalTable.getTableName();
+                string wtableName="w"+tableName;
+                cout<<"tableName "<<tableName<<endl;
+                cout<<"originalTable.getTableName() "<<originalTable.getTableName()<<endl;
+                if((tableName)== originalTable.getTableName() or wtableName==originalTable.getTableName()){
+
+                    cout<<"columnName "<<columnName<<endl;
+
                     for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
+                        cout<<"get<1>(tNewTable.getColumnNames()[i]) "<<get<1>(tNewTable.getColumnNames()[i])<<endl;
                         if (columnName == get<1>(tNewTable.getColumnNames()[i])) {
                             if (i < originalTable.getColumnNames().size()) {
                                 tNewNewTable.addColumn(
@@ -590,7 +600,7 @@ Table Engine::joinClause(Table originalTable,Table joinTable,string joinFilter, 
 }
 
 /******************************************************************************/
-void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
+bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                            string tempTable,
                            string whereFilter,
                            string joinTable,
@@ -709,6 +719,7 @@ void Engine::executeSelect(string sTableNameIn, vector < string > colNames,
 
     }
     cout<<"select Successful?: "<<returnBool<<endl;
+    return returnBool;
 }
 
 void Engine::deleteATable(Table table){
