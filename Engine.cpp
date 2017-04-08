@@ -767,12 +767,13 @@ void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
             //fromTable = vTableList[i];
             for(int j=0;j<vTableList.size();++j) {
                 if(sTableNameTo==vTableList[j].getTableName()) {
-                    Table toTable = vTableList[j];
-                    insertvalidate=insertselectValidate(fromTable, toTable);
-                    if(insertvalidate==true)
-                    for (int k = 0; k < fromTable.getTNumOfRecords(); k++) {
-                        toTable.addRow(fromTable.getRow(k));
-                        foundTable= true;
+                    //Table toTable = vTableList[j];
+                    insertvalidate=insertselectValidate(vTableList[i], vTableList[j]);
+                    if(insertvalidate==true) {
+                        for (int k = 0; k < vTableList[i].getTNumOfRecords(); k++) {
+                            vTableList[j].addRow(vTableList[i].getRow(k));
+                            foundTable = true;
+                        }
                     }
                     else
                     cout<<"couldn't validate data type";
