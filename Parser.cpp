@@ -419,12 +419,16 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			// order by
 			
 			selectQ.printAll();
-			e.executeSelect(selectQ.getFromTable(),
+			bool result = e.executeSelect(selectQ.getFromTable(),
 							createVector(selectQ.getSelectCols()),
 							selectQ.getTempTable(),
 							selectQ.getWhereFilter(),
  							selectQ.getJoinTable(),
 	                  		selectQ.getJoinFilter());//*/
+	        
+	        if (!result) {
+	        	return false;
+	        }
 		    
 		    return true;
 		}
