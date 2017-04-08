@@ -783,7 +783,9 @@ void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
     }
     if(!foundTable) cout<<"couldn't find the table"<<endl;
 }
-
+/*****************************************************************************
+insertselectValidate
+ ****************************************************************************/
 bool Engine::insertselectValidate(Table fromTable, Table toTable){
     bool validateinsert = false;
     bool foundTable = false;
