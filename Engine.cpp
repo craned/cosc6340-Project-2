@@ -760,15 +760,15 @@ void Engine::executeQuit(){
 void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
     cout<<"sTableNameFrom "<<sTableNameFrom<<" sTableNameTo "<<sTableNameTo<<endl;
     bool foundTable = false;
-    for(int i=0;i<vTableList.size();i++){
+    for(int i=0;i<vTableList.size();++i){
         if(sTableNameFrom==vTableList[i].getTableName()) {
-            Table fromTable;
-            fromTable = vTableList[i];
-            for(int j=0;j<vTableList.size();j++) {
+            //Table fromTable;
+            //fromTable = vTableList[i];
+            for(int j=0;j<vTableList.size();++j) {
                 if(sTableNameTo==vTableList[j].getTableName()) {
-                    Table toTable = vTableList[j];
-                    for (int k = 0; k < fromTable.getTNumOfRecords(); k++) {
-                        toTable.addRow(fromTable.getRow(k));
+                    //Table toTable = vTableList[j];
+                    for (int k = 0; k < vTableList[i].getTNumOfRecords(); k++) {
+                        vTableList[j].addRow(vTableList[i].getRow(k));
                         foundTable= true;
                     }
                 }
