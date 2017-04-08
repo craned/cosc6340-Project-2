@@ -281,9 +281,9 @@ void Table::deleteATable(string tableName){
     //setTNumOfRecords(0);
     const char* tName=name.c_str();
     if( remove( tName ) != 0 )
-        perror( "Error deleting file" );
+        cout << "ERROR: could not delete file" << endl;
     else
-        puts( "File successfully deleted" );
+        cout << "File successfully deleted" << endl;
 }
 
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)
@@ -328,7 +328,7 @@ void Table::setPrimaryKey(string sKeyIn)
         }
     }
 	
-    printf("ERROR: Primary Key was not set\n");
+    cout << "ERROR: Primary Key was not set" << endl;
 }
 
 //add a column to the class vector
