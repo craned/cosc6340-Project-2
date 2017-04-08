@@ -758,19 +758,24 @@ void Engine::executeQuit(){
    insertFromSelect
    ****************************************************************************/
 void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
+    cout<<"sTableNameFrom "<<sTableNameFrom<<" sTableNameTo "<<sTableNameTo<<endl;
+    bool foundTable = false;
     for(int i=0;i<vTableList.size();i++){
         if(sTableNameFrom==vTableList[i].getTableName()) {
             Table fromTable;
             fromTable = vTableList[i];
-            Table toTable(sTableNameTo);
-            toTable.setTNumOfRecords(0);
-            for (int k = 0; k < fromTable.getTNumOfRecords(); k++) {
-                toTable.addRow(fromTable.getRow(k));
+            for(int j=0;j<vTableList.size();j++) {
+                if(sTableNameTo==vTableList[j].getTableName()) {
+                    Table toTable = vTableList[j];
+                    for (int k = 0; k < fromTable.getTNumOfRecords(); k++) {
+                        toTable.addRow(fromTable.getRow(k));
+                        foundTable= true;
+                    }
+                }
             }
-        } else{
-            cout<<"ERROR: table does not exist."<<endl;
         }
     }
+    if(!foundTable) cout<<"couldn't find the table"<<endl;
 }
 /*****************************************************************************
  SORT: sorting and showing

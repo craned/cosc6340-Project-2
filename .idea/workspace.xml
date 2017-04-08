@@ -13,22 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6edad320-1b21-4f4e-9f9a-c40936ec8244" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Z2.tbl" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Engine.o" afterPath="$PROJECT_DIR$/Engine.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser.o" afterPath="$PROJECT_DIR$/Parser.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/S.tbl" afterPath="$PROJECT_DIR$/S.tbl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SelectQ.o" afterPath="$PROJECT_DIR$/SelectQ.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/T.tbl" afterPath="$PROJECT_DIR$/T.tbl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Table.o" afterPath="$PROJECT_DIR$/Table.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities.o" afterPath="$PROJECT_DIR$/Utilities.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbms" afterPath="$PROJECT_DIR$/dbms" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbms.o" afterPath="$PROJECT_DIR$/dbms.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser.cpp" afterPath="$PROJECT_DIR$/Parser.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog.txt" afterPath="$PROJECT_DIR$/catalog.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbms.cpp" afterPath="$PROJECT_DIR$/dbms.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/output.txt" afterPath="$PROJECT_DIR$/output.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.sql" afterPath="$PROJECT_DIR$/test.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Engine.cpp" afterPath="$PROJECT_DIR$/Engine.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,11 +30,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Engine.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Engine.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Engine.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3045">
-              <caret line="203" column="12" lean-forward="false" selection-start-line="203" selection-start-column="12" selection-end-line="203" selection-end-column="12" />
+            <state relative-caret-position="258">
+              <caret line="757" column="10" lean-forward="false" selection-start-line="757" selection-start-column="3" selection-end-line="757" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -69,11 +55,9 @@
       <file leaf-file-name="Table.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Table.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1425">
+            <state relative-caret-position="772">
               <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-              <folding>
-                <element signature="e#92#109#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -81,12 +65,9 @@
       <file leaf-file-name="Table.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Table.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3390">
-              <caret line="226" column="21" lean-forward="false" selection-start-line="226" selection-start-column="21" selection-end-line="226" selection-end-column="21" />
-              <folding>
-                <element signature="e#655#672#0" expanded="true" />
-                <element signature="e#3080#4001#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="258">
+              <caret line="203" column="14" lean-forward="false" selection-start-line="203" selection-start-column="13" selection-end-line="203" selection-end-column="14" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -111,7 +92,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SelectQ.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SelectQ.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SelectQ.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
@@ -136,7 +117,6 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>spec</find>
-      <find>addrow</find>
       <find>dis</find>
       <find>disp</find>
       <find>Print</find>
@@ -165,6 +145,7 @@
       <find>print</find>
       <find>printou</find>
       <find>executes</find>
+      <find>addrow</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -432,11 +413,12 @@
       <workItem from="1489766200154" duration="104792000" />
       <workItem from="1490931224603" duration="196000" />
       <workItem from="1491516368770" duration="49000" />
+      <workItem from="1491612418836" duration="198000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134499000" />
+    <option name="totallyTimeSpent" value="134697000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -449,7 +431,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23114869" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32891566" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -779,41 +761,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Engine.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3045">
-          <caret line="203" column="12" lean-forward="false" selection-start-line="203" selection-start-column="12" selection-end-line="203" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Engine.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
           <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
           <folding>
             <element signature="e#681#698#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Table.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1425">
-          <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-          <folding>
-            <element signature="e#92#109#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Table.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3390">
-          <caret line="226" column="21" lean-forward="false" selection-start-line="226" selection-start-column="21" selection-end-line="226" selection-end-column="21" />
-          <folding>
-            <element signature="e#655#672#0" expanded="true" />
-            <element signature="e#3080#4001#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -846,6 +799,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Table.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="772">
+          <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Table.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="203" column="14" lean-forward="false" selection-start-line="203" selection-start-column="13" selection-end-line="203" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Engine.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="757" column="10" lean-forward="false" selection-start-line="757" selection-start-column="3" selection-end-line="757" selection-end-column="10" />
           <folding />
         </state>
       </provider>
