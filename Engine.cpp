@@ -146,7 +146,6 @@ void Engine::displayTable(string sTableNameIn)
           }
           else{
           cout<<get < 3 > (vColumnNames[j]);
-          cout<<"("<<get < 4 > (vColumnNames[j])<<")";
           }
 				}
 				else
