@@ -1,17 +1,7 @@
 /*******************************************************************************
- File: Parser.h
- Authors: Gustavo Pedroso UIN: 423002834
- Levi Clark      UIN: 520007880
- Terry Chen      UIN: 121007055
- Daniel He       UIN: 620006827
- Department of Computer Science
- Texas A&M University
- Date  : 2/2/2014
- Formatting: * 80 pt width is used for code, for the most part
- * Hungarian naming convention is used for variables
- * Comments are applied for explanations
- * Spacing and brackets are applied for readability
- This file contains the header for the parser
+ File: Table.cpp
+
+ Author:Amirreza Shirani
  *******************************************************************************/
 
 #ifndef PARSER_H
@@ -67,10 +57,10 @@ public:
   bool findClose(string sLineIn);
   bool findQuit(string sLineIn);
   string getAfterArrow(string sLineIn);
-bool findSelectNew(string sLineIn, string insertSelectTempName);
-bool findSelectParen(string sLineIn, string insertSelectTable);
-size_t getMatchingClosingParen(string sLineIn, size_t start);
-bool findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,											size_t iPosSemiColon, SelectQ selectQ);
+    bool findSelectNew(string sLineIn, string insertSelectTempName);
+    bool findSelectParen(string sLineIn, string insertSelectTable);
+    size_t getMatchingClosingParen(string sLineIn, size_t start);
+    bool findJoinWhereGroupInSelect(string sLineIn, size_t iPosStart,											size_t iPosSemiColon, SelectQ selectQ);
     //helper functions
     vector<tuple<string, string, int, bool> > createColVector(string sLineIn);
     vector<string> createVector(string sLineIn);
