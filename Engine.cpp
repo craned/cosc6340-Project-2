@@ -62,6 +62,8 @@ void Engine::createTable(string sTableNameIn,
             t.setPrimaryKey(vKeys[i]);
         }
         
+        cout << "TABLE " << sTableNameIn << " created successfully" << endl;
+        
         //push table into the table list
         vTableList.push_back(t);
     }
@@ -92,7 +94,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     vtemp=tb.getRow(i);
                     string giventemp=get<1> (vRowIn[iColumnIndex]);
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
-                        cout<<"duplicate primary key";
+                        cout<<"ERROR: duplicate primary key";
                         isFoundTable = true;
                         return;
                     }
@@ -665,7 +667,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                         vTableList.push_back(tPhaseThree);
                         tPhaseThree.printOutTheWholeTable();
                         cout<<"after sorting:"<<endl;
-                        sortp(tPhaseThree.getTableName());
+                        //sortp(tPhaseThree.getTableName());
                         //tPhaseThree.distinct();
                         //deleting tables
                         deleteATable(tPhseOneTableFromOriginalTable);
@@ -710,7 +712,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 vTableList.push_back(tPhaseThree);
                 tPhaseThree.printOutTheWholeTable();
                 cout<<"after sorting:"<<endl;
-                sortp(tPhaseThree.getTableName());
+                //sortp(tPhaseThree.getTableName());
                 //tPhaseThree.distinct();
                 //deleting tables
                 deleteATable(tPhseOneTable);

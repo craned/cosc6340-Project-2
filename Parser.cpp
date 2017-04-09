@@ -137,7 +137,7 @@ int Parser::parse(string sLineIn)
     if (findCreateTable(sLineIn)) {
         //cout << "Created table " << sLineIn << endl;
     } else if (findInsertInto(sLineIn)) {
-        cout << "Values Inserted" << endl;
+        //cout << "Values Inserted" << endl;
     } else if (findSelectParen(sLineIn, "")) {//findSelectNew(sLineIn, "")) {
     //} else if (findSelect(sLineIn)) {
     	//selectQ = new SelectQ();
