@@ -6,3 +6,5 @@
 We wrote our own parser, not using lex, yacc, bison, etc. Since many other teams are using the other parsers, Dr. Ordonez said we could get extra credit for writing our own parser. 
 
 We are also sorting, removing duplicates, data validation while inserting and inserting into select, and primary key validation. We understood that these features would also give us some extra credit.
+
+***Note: We removed the sorting because we weren't sure if the amount of data would remain such that we could sort in memory, but we did implement it. 
