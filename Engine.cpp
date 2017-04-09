@@ -196,7 +196,7 @@ void Engine::displayTableSchemas()
     {
         //if (vTableList[i].getTableName() == sTableNameIn)
         {
-            vTableList[i].displayTable();
+            displayTable(vTableList[i].getTableName());
             //return;
         }
     }
