@@ -265,9 +265,12 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 				while (!isalnum(sLineIn[begTempTable])) {
 					begTempTable++;
 				}
-				size_t nextSpace = sLineIn.find(" ", begTempTable);
-				string tempTable = sLineIn.substr(begTempTable,
-												nextSpace - begTempTable);
+				
+				string tempTable = "";
+				while (isalnum(sLineIn[begTempTable])) {
+					tempTable += sLineIn[begTempTable];
+					begTempTable++;
+				}
 												
 				bool result = findSelectNew(query, tempTable);
 				parens.pop();
