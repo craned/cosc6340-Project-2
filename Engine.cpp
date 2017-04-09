@@ -178,7 +178,14 @@ void Engine::displayTable(string sTableNameIn)
 				cout<<primaryKey[j];
 			}
       cout<<"\n";
-					        
+      cout<<"Number of records : "<<vTableList[i].getTNumOfRecords();		  
+      cout<<"\n";  
+      vTableList[i].calculateRecordSize();
+            cout<<"Size of record : "<<vTableList[i].getTRecordSize();		  
+      cout<<"\n";
+      vTableList[i].calculateTotalRecordSize();
+                  cout<<"Size of All records : "<<vTableList[i].getTTotalSize();		  
+      cout<<"\n";    
 		    return;
 		}
 	}
