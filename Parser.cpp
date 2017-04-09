@@ -306,11 +306,6 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 
 bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 {
-	if (nestedLevel > 3) {
-		cout << "ERROR: too many nested levels" << endl;
-		return false;
-	}
-	
 	size_t iPosStart = sLineIn.find("SELECT");
 	
 	selectQ.clearAll();
@@ -649,10 +644,16 @@ bool Parser::checkParenthesis(string sLineIn)
   {
     if (sLineIn[i] == '(')
     {
+		nestedLevel++;
+		if (nestedLevel > 3) {
+			cout << "ERROR: exceeded max of 3 nested subqueries" << endl;
+			return false;
+		}
       iBalance++;
     }
     else if (sLineIn[i] == ')')
     {
+    	nestedLevel--;
       iBalance--;
     }
     if (iBalance < 0)
