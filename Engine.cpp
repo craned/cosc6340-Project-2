@@ -92,7 +92,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     vtemp=tb.getRow(i);
                     string giventemp=get<1> (vRowIn[iColumnIndex]);
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
-                        cout<<"duplicate primary key";
+                        cout<<"duplicate primary key"<<"\n";
                         isFoundTable = true;
                         return;
                     }
