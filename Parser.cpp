@@ -332,19 +332,25 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
 			size_t iPosWhere = sLineIn.find("WHERE", iPosStart);
             size_t iPosOn = sLineIn.find("ON", iPosStart);
-			//size_t iPosGroupBy = sLineIn.find("GROUP BY", iPosStart);
-			//size_t iPosOrderBy = sLineIn.find("ORDER BY", iPosStart);
+			size_t iPosGroupBy = sLineIn.find("GROUP BY", iPosStart);
+			size_t iPosOrderBy = sLineIn.find("ORDER BY", iPosStart);
 			
 			string fromTable = "";
 			string joinTable = "";
 			string joinFilter = "";
 			string whereFilter = "";
+			string groupBy = "";
+			string orderBy = "";
             
             // get the from table; we already know it exists
             if (iPosJoin != string::npos) {
 				fromTable = sLineIn.substr(iPosStart, iPosJoin - iPosStart);
 			} else if (iPosWhere != string::npos) {
 				fromTable = sLineIn.substr(iPosStart, iPosWhere - iPosStart);
+			} else if (iPosGroupBy != string::npos) {
+				fromTable = sLineIn.substr(iPosStart, iPosGroupBy - iPosStart);
+			} else if (iPosOrderBy != string::npos) {
+				fromTable = sLineIn.substr(iPosStart, iPosOrderBy - iPosStart);
 			} else if (iPosSemiColon != string::npos) {
 				fromTable = sLineIn.substr(iPosStart, iPosSemiColon - iPosStart);
 			} else {
@@ -361,6 +367,10 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 					joinTable = sLineIn.substr(iPosJoin, iPosOn - iPosJoin);
 				} else if (iPosWhere != string::npos) {
 					joinTable = sLineIn.substr(iPosJoin, iPosWhere - iPosJoin);
+				} else if (iPosGroupBy != string::npos) {
+					joinTable = sLineIn.substr(iPosJoin, iPosGroupBy - iPosJoin);
+				} else if (iPosOrderBy != string::npos) {
+					joinTable = sLineIn.substr(iPosJoin, iPosOrderBy - iPosJoin);
 				} else if (iPosSemiColon != string::npos) {
 					joinTable = sLineIn.substr(iPosJoin, iPosSemiColon - iPosJoin);
 				} else {
@@ -380,6 +390,10 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				iPosOn += 2;
 				if (iPosWhere != string::npos) {
 					joinFilter = sLineIn.substr(iPosOn, iPosWhere - iPosOn);
+				} else if (iPosGroupBy != string::npos) {
+					joinFilter = sLineIn.substr(iPosOn, iPosGroupBy - iPosOn);
+				} else if (iPosOrderBy != string::npos) {
+					joinFilter = sLineIn.substr(iPosOn, iPosOrderBy - iPosOn);
 				} else if (iPosSemiColon != string::npos) {
 					joinFilter = sLineIn.substr(iPosOn, iPosSemiColon - iPosOn);
 				} else {
@@ -393,7 +407,11 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			if (iPosWhere != string::npos) {
 				iPosWhere += 5;
 				
-				if (iPosSemiColon != string::npos) {
+				if (iPosGroupBy != string::npos) {
+					whereFilter = sLineIn.substr(iPosWhere, iPosGroupBy - iPosWhere);
+				} else if (iPosOrderBy != string::npos) {
+					whereFilter = sLineIn.substr(iPosWhere, iPosOrderBy - iPosWhere);
+				} else if (iPosSemiColon != string::npos) {
 					whereFilter = sLineIn.substr(iPosWhere, iPosSemiColon - iPosWhere);
 				} else {
 					whereFilter = sLineIn.substr(iPosWhere, string::npos);
@@ -403,8 +421,37 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			}
 			
 			// group by
+			if (iPosGroupBy != string::npos) {
+				//cout << "group by found " << endl;
+				iPosGroupBy += 8;
+				
+				if (iPosOrderBy != string::npos) {
+				//cout << "order by found after" << endl;
+					groupBy = sLineIn.substr(iPosGroupBy, iPosOrderBy - iPosGroupBy);
+					//cout << groupBy << endl;
+				} else if (iPosSemiColon != string::npos) {
+					groupBy = sLineIn.substr(iPosGroupBy, iPosSemiColon - iPosGroupBy);
+				} else {
+					groupBy = sLineIn.substr(iPosGroupBy, string::npos);
+				}
+				groupBy = Utilities::cleanSpaces(groupBy);
+					//cout << groupBy << endl;
+				selectQ.setGroupBy(groupBy);
+			}
 			
 			// order by
+			if (iPosOrderBy != string::npos) {
+				//cout << "order by found " << endl;
+				iPosOrderBy += 8;
+				
+				if (iPosSemiColon != string::npos) {
+					orderBy = sLineIn.substr(iPosOrderBy, iPosSemiColon - iPosOrderBy);
+				} else {
+					orderBy = sLineIn.substr(iPosOrderBy, string::npos);
+				}
+				orderBy = Utilities::cleanSpaces(orderBy);
+				selectQ.setOrderBy(orderBy);
+			}
 			
 			selectQ.printAll();
 			bool result = e.executeSelect(selectQ.getFromTable(),
