@@ -24,7 +24,7 @@ void SelectQ::clearAll()
 
 void SelectQ::printAll()
 {
-	/*cout << "printing all" << endl;
+	cout << "printing all" << endl;
 	cout << "select cols " << getSelectCols() << endl;
 	cout << "from table " << getFromTable() << endl;
 	cout << "temp table " << getTempTable() << endl;

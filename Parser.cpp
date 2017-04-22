@@ -243,23 +243,45 @@ bool Parser::findCreateTable(string sLineIn)
 
 bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 {
-	size_t openParen = sLineIn.find("(", 0);
-	//cout << "findSelectParen " << sLineIn << endl;
+	bool sumExists = false;
+	size_t sumMaybe = sLineIn.find("SUM", 0);
+	size_t sumOpenParen = sLineIn.find("(", sumMaybe);
+	size_t sumCloseParen = sLineIn.find(")", sumMaybe);
+	if (sumMaybe != string::npos) {
+		sumExists = true;
+	}
 	
+	size_t openParen = sLineIn.find("(", 0);
+	cout << "sumMaybe " << sumMaybe << endl;
+	cout << "openParen " << openParen << endl;
+	if (sumMaybe < openParen) {
+		sumMaybe += 5;
+		cout << "sum less than openParen" << endl;
+		openParen = sLineIn.find("(", sumMaybe+1);
+	}
+	//cout << "findSelectParen " << sLineIn << endl;
 	
 	if (openParen != string::npos) {
 		for (int i = 0; i < sLineIn.length(); i++) {
 		//cout << "starting" << endl;
 			char queryChar = sLineIn[i];
 			if (queryChar == '(') {
-				parens.push(i);
+				if (i != sumOpenParen) {
+					parens.push(i);
+				}
 			} else if (queryChar == ')') {
+				if (i == sumCloseParen) {
+					cout << "sum continuing" << endl;
+					parens.top();
+					i++;
+					continue;
+				}
 				int leftParenIndex = parens.top();
 				int subQueryBeg = leftParenIndex + 1;
 				//cout << "open paren " << leftParenIndex << endl;
 				//cout << "close paren " << i << endl;
 				string query = sLineIn.substr(subQueryBeg, i - subQueryBeg);
-				//cout << "subquery " << query << endl;
+				cout << "subquery " << query << endl;
 				
 				int begTempTable = i;
 				while (!isalnum(sLineIn[begTempTable])) {
@@ -295,10 +317,9 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 			findSelectParen(sLineIn, insertSelectTable);
 		//}
 		
-		//cout << "subquery " << sLineIn << endl;
 		//return findSelectNew(sLineIn, "");
 	} else {
-		//cout << "query " << sLineIn << endl;
+		cout << "query " << sLineIn << endl;
 		
 		return findSelectNew(sLineIn, insertSelectTable);
 	}
@@ -687,12 +708,18 @@ bool Parser::findQuit(string sLineIn)
 bool Parser::checkParenthesis(string sLineIn)
 {
   int iBalance = 0;
+  size_t sum = sLineIn.find("SUM", 0);
+  int sumCount = 0;
+  while(sum != string::npos) {
+	sumCount++;
+	sum = sLineIn.find("SUM", sum+3);
+  }
   for (size_t i = 0; i < sLineIn.length(); ++i)
   {
     if (sLineIn[i] == '(')
     {
 		nestedLevel++;
-		if (nestedLevel > 3) {
+		if (nestedLevel > (3+sumCount)) {
 			cout << "ERROR: exceeded max of 3 nested subqueries" << endl;
 			return false;
 		}
