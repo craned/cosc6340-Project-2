@@ -990,7 +990,7 @@ void Engine::read(){
                 //int c2=stoi(line.substr(f5+1,f6-f5-1));
                 int comparision=0;
                  comparision=f5-f2;
-                if(((f2==string::npos)&&(f5!=string::npos))||comparision<0){
+                if(((f2==string::npos)&&(f5!=string::npos))||(comparision<0&&(f5!=string::npos))){
                 int c2=stoi(line.substr(f5+1,f6-f5-1));
                 c2=c2+6;
                 ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,"string",c2));
@@ -1014,7 +1014,7 @@ void Engine::read(){
                     comparision=0;
                     comparision=f5-f4;
 
-                    if(((f4==string::npos)&&(f5!=string::npos))||comparision<0){
+                    if(((f4==string::npos)&&(f5!=string::npos))||(comparision<0&&(f5!=string::npos))){
                     int c1=stoi(line.substr(f5+1,f6-f5-1));
                     c1=c1+6;
                     ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,"string",c1));
