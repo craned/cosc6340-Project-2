@@ -158,7 +158,7 @@ int Parser::parse(string sLineIn)
 	return 1;
 }
 
-bool Parser::semicolonExists(string sLineIn) 
+bool Parser::semicolonExists(string sLineIn)
 {
 	size_t semicolon = sLineIn.find(";");
 	if (semicolon == string::npos) {
@@ -187,9 +187,11 @@ bool Parser::findCreateTable(string sLineIn)
         //execute if '(' was found in the string
         if (iPosEnd != string::npos)
         {
+        	iPosStart += 6;
+        
             //get the table name
-            string sTableName = sLineIn.substr(iPosStart + CREATE_TABLE_SIZE,
-                                               iPosEnd - CREATE_TABLE_SIZE);
+            string sTableName = sLineIn.substr(iPosStart,
+                                               iPosEnd - iPosStart);
 
             //cout << "tableName create" << sTableName << endl;
 
