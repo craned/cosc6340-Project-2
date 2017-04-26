@@ -50,6 +50,9 @@ public:
     {
     }
     ;
+    void setName(string name){
+        sTableName=name;
+    }
     std::vector<std::tuple<int, std::string, bool, std::string, int> > getColumnNames()
     {
         return vColumnNames;
