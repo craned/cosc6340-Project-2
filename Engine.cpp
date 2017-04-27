@@ -855,9 +855,10 @@ void Engine::sortp(string sTableNameIn,int key) {
                     if(rowcounter==30||i==(rNum-1)) {
                         counter++;
                         if(!is_number(get<1>(row[key])))
-                        sort(arrang.begin(),arrang.end(),sortbyp);
+                        	sort(arrang.begin(),arrang.end(),sortbyp);
                         else
-                        sort(arrang.begin(),arrang.end(),sortbyi);
+                        	sort(arrang.begin(),arrang.end(),sortbyi);
+                        
                         string tempsortname= "tempsort" + to_string(counter);
                         cout<<tempsortname<<endl;
                         Table tempsort(tempsortname);
@@ -1039,6 +1040,60 @@ cout<<vTableList[i].getTNumOfRecords();
 
         }
     }
+}
+
+int Engine::sum(string tableName, string columnName)
+{
+cout << "sum function " << endl;
+	// get key of the column
+	Table table;
+	bool foundTable = false;
+	for (size_t i = 0; i < vTableList.size(); ++i) {
+        if (vTableList[i].getTableName() == tableName) {
+            table = vTableList[i];
+            foundTable = true;
+        }
+    }
+    if (!foundTable) {
+    	cout << "ERROR: could not find table " << tableName << " for SUM" << endl;
+    	return 0;
+    }
+    
+    int colIndex = -1;
+    vector<tuple<int, string, bool,string, int>> vColumnNames = table.getColumnNames();
+    for (int i = 0; i < vColumnNames.size(); i++) {
+    	if (get<3>(vColumnNames[i]) == "string") {
+    		cout << "ERROR: cannot perform sum on string" << endl;
+    		return 0;
+    	}
+		if (columnName == get<1>(vColumnNames[i])) {
+			colIndex = get<0>(vColumnNames[i]);
+			break;
+		}
+	}
+	if (colIndex == -1) {
+		cout << "ERROR: could not find " << columnName << endl;
+		return 0;
+	}
+    
+    int sum = 0;
+    for (int j = 0; j < table.getTNumOfRecords(); j++) {
+    	vector < std::tuple<int, std::string> > curRow = table.getRow(j);
+    	
+		for (size_t i = 0; i < curRow.size(); i++) {
+			int index = get<0>(curRow[i]);
+			if (colIndex == index) {
+		    	cout << "testing value " << endl;
+		    	cout << "actual value " << get<1>(curRow[i]) << endl;
+		    	sum += stoi(get<1>(curRow[i]));
+			}
+		    
+			//vColumnNamesIn[i]);
+		}
+    }
+    
+    
+    return sum;
 }
 
 bool Engine::is_number(const std::string& s)
