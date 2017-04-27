@@ -1036,7 +1036,15 @@ cout<<vTableList[i].getTNumOfRecords();
                     vTableList[i].printOutTheWholeTable();
                 }
             }
-
+                        for (size_t i = 0; i < vTableList.size(); ++i) {
+                        for (int c=1; c<=counter; ++c) {
+                        string tempsortmergename="tempsort"+to_string(c);
+                if (vTableList[i].getTableName() == tempsortmergename) {
+                      const char* na=tempsortmergename.c_str();
+                        remove(na);
+                }
+                }
+            }
         }
     }
 }
