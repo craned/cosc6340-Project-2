@@ -187,11 +187,13 @@ bool Parser::findCreateTable(string sLineIn)
         //execute if '(' was found in the string
         if (iPosEnd != string::npos)
         {
+        	iPosStart += 12;
+        
             //get the table name
             string sTableName = sLineIn.substr(iPosStart + CREATE_TABLE_SIZE,
                                                iPosEnd - CREATE_TABLE_SIZE);
 
-            //cout << "tableName create" << sTableName << endl;
+            cout << "tableName create" << sTableName << endl;
 
             //reposition the position values
             iPosStart = iPosEnd + 1;
@@ -207,7 +209,7 @@ bool Parser::findCreateTable(string sLineIn)
                 string sColumns = sLineIn.substr(iPosStart,
                                                  iPosEnd - iPosStart);
 
-                //cout << "columns " << sColumns << endl;
+                cout << "columns " << sColumns << endl;
 
                 //reposition the position values
                 iPosStart = iPosEnd;
@@ -221,7 +223,7 @@ bool Parser::findCreateTable(string sLineIn)
                     string sPrimaryKeys = sLineIn.substr(iPosStart,
                                                          iPosEnd - iPosStart);
 
-                    //cout << "primary keys " << sPrimaryKeys << endl;
+                    cout << "primary keys " << sPrimaryKeys << endl;
 
                     //remove the spaces from the name of the table
                     sTableName = Utilities::cleanSpaces(sTableName);
@@ -230,7 +232,7 @@ bool Parser::findCreateTable(string sLineIn)
                     e.createTable(sTableName, createColVector(sColumns),
                                     createVector(sPrimaryKeys));
                                     
-                    //cout << "table " << sTableName << " created " << endl;
+                    cout << "table " << sTableName << " created " << endl;
                     
                     return true;
                 }
@@ -252,8 +254,17 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 		//cout << "starting" << endl;
 			char queryChar = sLineIn[i];
 			if (queryChar == '(') {
-				parens.push(i);
+				if (i != sumOpenParen) {
+					cout << "found sumOpenParen" << endl;
+					parens.push(i);
+				}
 			} else if (queryChar == ')') {
+				if (i == sumCloseParen) {
+					cout << "sum continuing" << endl;
+					//parens.top();
+					//i++;
+					continue;
+				}
 				int leftParenIndex = parens.top();
 				int subQueryBeg = leftParenIndex + 1;
 				//cout << "open paren " << leftParenIndex << endl;

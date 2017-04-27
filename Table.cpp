@@ -66,38 +66,6 @@ void Table::displayTable()
     cout << "+----------------------";
   }
   cout << "\n";
-
-//  for (size_t i = 0; i < vRows.size(); ++i)
-//  {
-//
-//    for (size_t a = 0; a < vColumnNames.size(); ++a)
-//    {
-//      for (vector<tuple<int, string> >::iterator current =
-//              vRows[i].begin(); current != vRows[i].end(); ++current)
-//      {
-//        if (get < 0 > (*current) == get < 0 > (vColumnNames[a]))
-//        {
-//          string sCurrent = get < 1 > (*current);
-//          if (sCurrent.size() > COLUMN_WIDTH)
-//          {
-//            sCurrent.resize(COLUMN_WIDTH);
-//          }
-//          cout << " | " << setw(COLUMN_WIDTH) << left
-//                    << sCurrent;
-//
-//          break;
-//        }
-//      }
-//    }
-//
-//    cout << "\n ";
-//    for (size_t y = 0; y < vColumnNames.size(); ++y)
-//    {
-//      cout << "+----------------------";
-//    }
-//    cout << "\n";
-//  }
-//  cout << "\n";
 }
 
 /*******************************************************************************
@@ -126,22 +94,10 @@ tuple<int, string, bool, string> Table::getColumnIndex(
   return make_tuple(-1, "n/a", false, "n/a");
 }
 
+static int MAX_SPACES = 5;
+
 void Table::printOutTheWholeTable(){
     // Print the lines of the table for a pretty output
-    std::cout << "\n ";
-
-    for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "-----------------------";
-    }
-    std::cout << "\n";
-
-    std::cout << " | " << sTableName << "\n ";
-
-    for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "+----------------------";
-    }
     std::cout << "\n";
 
     // Determine how far to space the column bars
@@ -149,26 +105,14 @@ void Table::printOutTheWholeTable(){
     {
         //get the column values for printing
         std::string sColName = std::get < 1 > (vColumnNames[i]);
-        bool bPrimaryKey = std::get < 2 > (vColumnNames[i]);
-
-        //see if it is a primary key, for formatting
-        if (bPrimaryKey)
-        {
-            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
-                      << "*" + sColName + "*";
-        }
-        else
-        {
-            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left << sColName;
-        }
-
-    }
-    std::cout << "\n ";
-
-    // Print the row dividers for the number of columns
-    for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "+----------------------";
+		int numSpaces = MAX_SPACES - sColName.length();
+		
+		for (int i = 1; i <= numSpaces; i++) {
+			cout << " ";
+		}
+	
+		cout << sColName;
+		cout << " ";
     }
     std::cout << "\n";
 
@@ -176,29 +120,32 @@ void Table::printOutTheWholeTable(){
         for (size_t a = 0; a < vColumnNames.size(); ++a){
             std::vector < std::tuple<int, std::string> > row;
             row =getRow(i);
+            
             for(size_t z=0;z<row.size();z++) {
                 if (get<0>(row[z]) == get<0>(vColumnNames[a])) {
-                    string sCurrent = get<1>(row[z]);
-                    //cout << "sCurrent " << sCurrent << endl;
-                    if (sCurrent.size() > COLUMN_WIDTH) {
-                        sCurrent.resize(COLUMN_WIDTH);
-                    }
-                    std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
-                              << sCurrent;
+                	string sColName = get<1> (row[z]);
+					int numSpaces = MAX_SPACES - sColName.length();
+					
+                	if (get<3>(vColumnNames[z])=="string"){
+						cout << sColName;
+					}
+					for (int i = 1; i <= numSpaces; i++) {
+						cout << " ";
+					}
+					if (get<3>(vColumnNames[z])=="int"){
+						cout << sColName;
+					}
+					cout << " ";
 
                     break;
-
                 }
 
             }
         }
-        std::cout << "\n ";
-        for (size_t y = 0; y < vColumnNames.size(); ++y)
-        {
-            std::cout << "+----------------------";
-        }
-        std::cout << "\n";
+        
+        cout << "\n";
     }
+    
     std::cout<<"\n";
 }
 
@@ -212,24 +159,11 @@ void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
     for (size_t i = 0; i < vColumnNames.size(); ++i) {
         if(get<3>(vColumnNames[i])=="string") {
             get<1>(v[i])=Utilities::cleanSpaces(get<1>(v[i]));
-            //cout<<"get<1>(v[i]): "<<get<1>(v[i])<<endl;
-            //cout<<"size of get<1>(v[i]): "<<sizeof(get<1>(v[i]))<<endl;
-            //cout<<"get<1>(v[i]) size: "<<get<1>(v[i]).size()<<endl;
-            //cout<<"________"<<endl;
-            //string str = "'STRINGDS'";
-            //cout<<"string str = \"'STRINGDS'\";"<<endl;
-            //cout<<"’STRINGDS’: "<<str<<endl;
-            //cout<<"size of str: "<<sizeof(str)<<endl;
-            //cout<<"str size: "<<str.size()<<endl;
             writeStringToFile(get<1>(v[i]), get<4>(vColumnNames[i]), out);
-            //cout << "v" << i << ":" << get<1>(v[i]) << endl;
-
         }
         else if(get<3>(vColumnNames[i])=="int"){
             std::string::size_type sz;
-            //cout<<"sz: "<<sz<<endl;
             int value= stol(get<1>(v[i]),&sz);
-            //cout<<"size of this int: "<<sizeof(value)<<endl;
             writeIntToFile(value,out);
 
         }
@@ -245,9 +179,6 @@ vector < std::tuple<int, std::string> > Table::getRow(int iIndex) {
     std::vector < std::tuple<int, std::string> > vReturn;
     ifstream in;
     int recordSize=getRecordSize();
-//        if(iIndex>get<2>vSpecs){
-//            //error
-//        }else
     string tableName = sTableName + ".tbl";
     in.open(tableName, ios::binary | ios::in);
     in.seekg(recordSize*iIndex, ios::beg);
