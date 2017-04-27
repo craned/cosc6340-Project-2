@@ -1,0 +1,6 @@
+
+script01.sql
+SELECT J,K FROM R;
+executing  SELECT J,K FROM R;
+select Successful?: 1
+Finished reading sql script

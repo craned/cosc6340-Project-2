@@ -1,0 +1,10 @@
+
+script04.sql
+SELECT I,J
+FROM (SELECT I, J FROM S) X1
+WHERE I=2;
+executing  SELECT I,J FROM (SELECT I, J FROM S) X1 WHERE I=2;
+select Successful?: 1
+select Successful?: 1
+ERROR: no match for the query could be found
+Finished reading sql script

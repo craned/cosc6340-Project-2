@@ -12,11 +12,15 @@
 #include "fstream"
 #include "Utilities.h"
 #include "Table.h"
+#include <stdlib.h>
+#include <ctype.h>
+#include <algorithm>
 class SortTable
 {
 public:
 int primarykey;
 string value;
+int valuei;
 vector < std::tuple<int, std::string> > vrow;
 
 void getprimarykey(Table ob, int i){
@@ -34,7 +38,7 @@ void getprimarykey(Table ob, int i){
         } 
         
         } */
-        primarykey=0;
+        primarykey=i;
         
 }
 void getrow(Table ob, int i){
@@ -42,7 +46,16 @@ void getrow(Table ob, int i){
             vtemp=ob.getRow(i); 
             vrow=vtemp;
             value=get<1> (vtemp[primarykey]);
+            if(is_number(value)){
+            valuei=stoi(value);
+            }
                 
 }
+bool is_number(const std::string& s)
+{
+    return !s.empty() && std::find_if(s.begin(), 
+        s.end(), [](char c) { return !std::isdigit(c); }) == s.end();
+}
+
 };
 #endif

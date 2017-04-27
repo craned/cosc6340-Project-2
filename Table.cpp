@@ -126,10 +126,22 @@ tuple<int, string, bool, string> Table::getColumnIndex(
   return make_tuple(-1, "n/a", false, "n/a");
 }
 
-static int MAX_SPACES = 5;
-
 void Table::printOutTheWholeTable(){
     // Print the lines of the table for a pretty output
+    std::cout << "\n ";
+
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "-----------------------";
+    }
+    std::cout << "\n";
+
+    std::cout << " | " << sTableName << "\n ";
+
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "+----------------------";
+    }
     std::cout << "\n";
 
     // Determine how far to space the column bars
@@ -137,14 +149,26 @@ void Table::printOutTheWholeTable(){
     {
         //get the column values for printing
         std::string sColName = std::get < 1 > (vColumnNames[i]);
-		int numSpaces = MAX_SPACES - sColName.length();
-		
-		for (int i = 1; i <= numSpaces; i++) {
-			cout << " ";
-		}
-	
-		cout << sColName;
-		cout << " ";
+        bool bPrimaryKey = std::get < 2 > (vColumnNames[i]);
+
+        //see if it is a primary key, for formatting
+        if (bPrimaryKey)
+        {
+            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+                      << "*" + sColName + "*";
+        }
+        else
+        {
+            std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left << sColName;
+        }
+
+    }
+    std::cout << "\n ";
+
+    // Print the row dividers for the number of columns
+    for (size_t i = 0; i < vColumnNames.size(); ++i)
+    {
+        std::cout << "+----------------------";
     }
     std::cout << "\n";
 
@@ -152,32 +176,29 @@ void Table::printOutTheWholeTable(){
         for (size_t a = 0; a < vColumnNames.size(); ++a){
             std::vector < std::tuple<int, std::string> > row;
             row =getRow(i);
-            
             for(size_t z=0;z<row.size();z++) {
                 if (get<0>(row[z]) == get<0>(vColumnNames[a])) {
-                	string sColName = get<1> (row[z]);
-					int numSpaces = MAX_SPACES - sColName.length();
-					
-                	if (get<3>(vColumnNames[z])=="string"){
-						cout << sColName;
-					}
-					for (int i = 1; i <= numSpaces; i++) {
-						cout << " ";
-					}
-					if (get<3>(vColumnNames[z])=="int"){
-						cout << sColName;
-					}
-					cout << " ";
+                    string sCurrent = get<1>(row[z]);
+                    //cout << "sCurrent " << sCurrent << endl;
+                    if (sCurrent.size() > COLUMN_WIDTH) {
+                        sCurrent.resize(COLUMN_WIDTH);
+                    }
+                    std::cout << " | " << std::setw(COLUMN_WIDTH) << std::left
+                              << sCurrent;
 
                     break;
+
                 }
 
             }
         }
-        
-        cout << "\n";
+        std::cout << "\n ";
+        for (size_t y = 0; y < vColumnNames.size(); ++y)
+        {
+            std::cout << "+----------------------";
+        }
+        std::cout << "\n";
     }
-    
     std::cout<<"\n";
 }
 

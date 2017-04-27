@@ -24,7 +24,7 @@ void SelectQ::clearAll()
 
 void SelectQ::printAll()
 {
-	cout << "printing all" << endl;
+	/*cout << "printing all" << endl;
 	cout << "select cols " << getSelectCols() << endl;
 	cout << "from table " << getFromTable() << endl;
 	cout << "temp table " << getTempTable() << endl;
@@ -91,7 +91,7 @@ string SelectQ::getWhereFilter()
 
 void SelectQ::setOrderBy(string orderBy)
 {
-	this->orderBy = orderBy;
+	orderBy = orderBy;
 }
 string SelectQ::getOrderBy()
 {
@@ -100,7 +100,7 @@ string SelectQ::getOrderBy()
 
 void SelectQ::setGroupBy(string groupBy)
 {
-	this->groupBy = groupBy;
+	groupBy = groupBy;
 }
 string SelectQ::getGroupBy()
 {

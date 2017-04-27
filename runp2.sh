@@ -1,0 +1,12 @@
+dbms script=init01.sql; mv output.txt i1.txt 
+dbms script=init02.sql; mv output.txt i2.txt
+dbms script=script01.sql; mv output.txt o01.txt
+dbms script=script02.sql; mv output.txt o02.txt
+dbms script=script03.sql; mv output.txt o03.txt
+dbms script=script04.sql; mv output.txt o04.txt
+dbms script=script05.sql; mv output.txt o05.txt
+dbms script=script06.sql; mv output.txt o06.txt
+dbms script=script07.sql; mv output.txt o07.txt
+dbms script=script08.sql; mv output.txt o08.txt
+dbms script=script09.sql; mv output.txt o09.txt
+dbms script=script10.sql; mv output.txt o10.txt

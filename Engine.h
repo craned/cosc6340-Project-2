@@ -22,12 +22,12 @@
 using namespace std;
 
 class Engine {
-private:
-    //Declare private variables
-    
-public:
-    
-    //Declare class methods
+	private:
+	    //Declare private variables
+
+	public:
+
+	    //Declare class methods
     Engine() {};
     
     void createTable(string sTableNameIn,
@@ -39,7 +39,7 @@ public:
     void addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn);
     void getRow(string sTableNameIn,int iIndex);
     bool executeSelect(string tableName, vector < string > colNames,
-                       string tempTable, string whereFilter,
+    				   string tempTable, string whereFilter,
                        string joinTable, string joinFilter);
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
@@ -52,14 +52,14 @@ public:
     void writetofile();
     void read();
     bool createValidate(string sLineIn,string sTableNameIn);
-    void executeQuit();
+	void executeQuit();
     static bool sortbyp(const SortTable &lhs,const SortTable &rhs);
     void sortp(string sTableNameIn,int key);
     void insertFromSelect(string sTableNameFrom, string sTableNameTo );
     bool insertselectValidate(Table fromTable, Table toTable);
     bool is_number(const std::string& s);
-    static bool sortbyi(const SortTable &lhs,const SortTable &rhs);
-};
+     static bool sortbyi(const SortTable &lhs,const SortTable &rhs);
+	};
 
 #endif
 

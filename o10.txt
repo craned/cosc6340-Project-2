@@ -1,0 +1,12 @@
+
+script10.sql
+INSERT INTO R
+SELECT I,J FROM S WHERE J=4;
+executing  INSERT INTO R SELECT I,J FROM S WHERE J=4;
+select Successful?: 1
+sTableNameFrom insIntoR sTableNameTo R
+couldn't find the table
+SELECT I,J FROM R;
+executing  SELECT I,J FROM R;
+select Successful?: 1
+Finished reading sql script
