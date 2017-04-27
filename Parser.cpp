@@ -190,8 +190,8 @@ bool Parser::findCreateTable(string sLineIn)
         	iPosStart += 12;
         
             //get the table name
-            string sTableName = sLineIn.substr(iPosStart + CREATE_TABLE_SIZE,
-                                               iPosEnd - CREATE_TABLE_SIZE);
+            string sTableName = sLineIn.substr(iPosStart,
+                                               iPosEnd - iPosStart);
 
             cout << "tableName create" << sTableName << endl;
 

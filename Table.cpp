@@ -107,11 +107,16 @@ void Table::printOutTheWholeTable(){
         std::string sColName = std::get < 1 > (vColumnNames[i]);
 		int numSpaces = MAX_SPACES - sColName.length();
 		
+    	if (get<3>(vColumnNames[i])=="string"){
+			cout << sColName;
+		}
 		for (int i = 1; i <= numSpaces; i++) {
 			cout << " ";
 		}
-	
-		cout << sColName;
+		if (get<3>(vColumnNames[i])=="int"){
+			cout << sColName;
+		}
+		
 		cout << " ";
     }
     std::cout << "\n";
