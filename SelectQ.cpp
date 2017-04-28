@@ -91,7 +91,7 @@ string SelectQ::getWhereFilter()
 
 void SelectQ::setOrderBy(string orderBy)
 {
-	orderBy = orderBy;
+	this->orderBy = orderBy;
 }
 string SelectQ::getOrderBy()
 {
@@ -100,7 +100,7 @@ string SelectQ::getOrderBy()
 
 void SelectQ::setGroupBy(string groupBy)
 {
-	groupBy = groupBy;
+	this->groupBy = groupBy;
 }
 string SelectQ::getGroupBy()
 {
