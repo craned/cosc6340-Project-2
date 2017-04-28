@@ -1043,9 +1043,16 @@ cout<<vTableList[i].getTNumOfRecords();
                 if (vTableList[i].getTableName() == tempsortmergename) {
                       const char* na=tempsortmergename.c_str();
                         remove(na);
+                        vTableList.erase(vTableList.begin()+i);
                 }
                 }
             }
+            remove("tempsortf.tbl");
+                          for (size_t i = 0; i < vTableList.size(); ++i) {
+                    if (vTableList[i].getTableName() == "tempsortf") {
+                        vTableList.erase(vTableList.begin()+i);
+                    }
+                }
         }
     }
 }
