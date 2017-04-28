@@ -9,6 +9,7 @@
 #include <cstdio>
 #include "SortTable.h"
 #include <algorithm>
+#include <string>
 const int COLUMN_WIDTH = 20;
 /*******************************************************************************
  This function will take in a vector of column names and trailing primary keys,
@@ -623,6 +624,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     for(size_t k=0; k<colNames.size(); k++){
         colNames[k] = Utilities::cleanSpaces(colNames[k]);
     }
+    //cout << "SUM result: " << sum(sTableNameIn,"A", "") << endl;
     //CHANGE IT:
     //tempTable="";
     bool returnBool= true;
@@ -669,8 +671,10 @@ sortp(tPhseOneTableFromJoinTable.getTableName(),0);
                         tPhaseThree = selectClause(tPhaseTwo, colNames, tPhseOneTableFromOriginalTable,  tempTable, returnBool);
                         vTableList.push_back(tPhaseThree);
                         tPhaseThree.printOutTheWholeTable();
-                        cout<<"after sorting:"<<endl;
-                        sortp(tPhaseThree.getTableName(),0);
+                        if (returnBool) {
+	                        cout<<"after sorting1:"<<endl;
+                        	sortp(tPhaseThree.getTableName(),0);
+                        }
                         //tPhaseThree.distinct();
                         //deleting tables
                         deleteATable(tPhseOneTableFromOriginalTable);
@@ -714,8 +718,11 @@ sortp(tPhseOneTableFromJoinTable.getTableName(),0);
                 tPhaseThree = selectClause(tPhseOneTable, colNames, tCurrentTable,  tempTable, returnBool);
                 vTableList.push_back(tPhaseThree);
                 tPhaseThree.printOutTheWholeTable();
-                cout<<"after sorting:"<<endl;
-                sortp(tPhaseThree.getTableName(),0);
+                if (returnBool) {
+		            cout<<"after sorting2:"<<endl;
+		            sortp(tPhaseThree.getTableName(),0);
+                }
+                cout << "finished sorting" << endl;
                 //tPhaseThree.distinct();
                 //deleting tables
                 deleteATable(tPhseOneTable);
@@ -1057,9 +1064,9 @@ cout<<vTableList[i].getTNumOfRecords();
     }
 }
 
-int Engine::sum(string tableName, string columnName)
+int Engine::sum(string tableName, string columnName, string groupByCol)
 {
-cout << "sum function " << endl;
+	cout << "sum function " << endl;
 	// get key of the column
 	Table table;
 	bool foundTable = false;
@@ -1067,6 +1074,7 @@ cout << "sum function " << endl;
         if (vTableList[i].getTableName() == tableName) {
             table = vTableList[i];
             foundTable = true;
+            break;
         }
     }
     if (!foundTable) {
@@ -1075,38 +1083,66 @@ cout << "sum function " << endl;
     }
     
     int colIndex = -1;
+    int groupByIndex = -1;
     vector<tuple<int, string, bool,string, int>> vColumnNames = table.getColumnNames();
     for (int i = 0; i < vColumnNames.size(); i++) {
-    	if (get<3>(vColumnNames[i]) == "string") {
-    		cout << "ERROR: cannot perform sum on string" << endl;
-    		return 0;
-    	}
 		if (columnName == get<1>(vColumnNames[i])) {
+			if (get<3>(vColumnNames[i]) == "string") {
+				cout << "ERROR: cannot perform sum on char" << endl;
+				return 0;
+			}
+			
 			colIndex = get<0>(vColumnNames[i]);
-			break;
 		}
 	}
+    for (int i = 0; i < vColumnNames.size(); i++) {
+		if (groupByCol == get<1>(vColumnNames[i])) {
+			groupByIndex = get<0>(vColumnNames[i]);
+		}
+	}
+	
 	if (colIndex == -1) {
 		cout << "ERROR: could not find " << columnName << endl;
 		return 0;
 	}
     
     int sum = 0;
+    string oldValue = "";
     for (int j = 0; j < table.getTNumOfRecords(); j++) {
     	vector < std::tuple<int, std::string> > curRow = table.getRow(j);
+    	
+    	// find group by value first
+    	for (size_t i = 0; i < curRow.size(); i++) {
+			int index = get<0>(curRow[i]);
+			if (groupByIndex == index) {
+		    	//cout << "testing value " << endl;
+		    	//cout << "actual value " << get<1>(curRow[i]) << endl;
+		    	string curValue = get<1>(curRow[i]);
+		    	if (oldValue.compare(curValue) != 0) {
+		    		if (!oldValue.empty()) {
+		    			cout << "sum of rows " << oldValue << ":" << sum << endl;
+		    		}
+		    		oldValue = curValue;
+		    		sum = 0;
+		    	}
+		    	break;
+			}
+		}
     	
 		for (size_t i = 0; i < curRow.size(); i++) {
 			int index = get<0>(curRow[i]);
 			if (colIndex == index) {
-		    	cout << "testing value " << endl;
-		    	cout << "actual value " << get<1>(curRow[i]) << endl;
+		    	//cout << "testing value " << endl;
+		    	//cout << "actual value " << get<1>(curRow[i]) << endl;
 		    	sum += stoi(get<1>(curRow[i]));
+		    	break;
 			}
 		    
 			//vColumnNamesIn[i]);
 		}
     }
     
+    cout << "sum of rows " << oldValue << ":" << sum << endl;
     
     return sum;
 }

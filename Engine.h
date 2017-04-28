@@ -48,7 +48,7 @@ class Engine {
     Table whereClause(Table tCurrentTable,string whereFilter);
     Table selectClause(Table tNewTable,vector < string > colNames, Table originalTable,string tempTable, bool &returnBool);
     Table joinClause(Table originalTable,Table joinTable,string joinFilter, bool &returnBool);
-    int sum(string tableName, string columnName);
+    int sum(string tableName, string columnName, string groupByCol);
     //string delSpaces(string str);
     void writetofile();
     void read();

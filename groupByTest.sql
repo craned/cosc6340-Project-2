@@ -43,5 +43,5 @@ INSERT INTO T VALUES(38,'a');
 INSERT INTO T VALUES(40,'a');*/
 select * from t;
 select * from T
-order by K;
+group by K;
 Quit;

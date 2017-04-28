@@ -366,8 +366,8 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			string joinTable = "";
 			string joinFilter = "";
 			string whereFilter = "";
-			string groupBy = "";
-			string orderBy = "";
+			string groupBy = ""; 
+			string orderBy = ""; 
             
             // get the from table; we already know it exists
             if (iPosJoin != string::npos) {
@@ -449,36 +449,37 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			}
 			
 			// group by
-			if (iPosGroupBy != string::npos) {
-				//cout << "group by found " << endl;
-				iPosGroupBy += 8;
+			if (iPosGroupBy != string::npos) { 
+				//cout << "group by found " << endl; 
+				iPosGroupBy += 8; 
 
 				if (iPosOrderBy != string::npos) { 
 					//cout << "order by found after" << endl; 
-					groupBy = sLineIn.substr(iPosGroupBy, iPosOrderBy - iPosGroupBy);
+					groupBy = sLineIn.substr(iPosGroupBy, iPosOrderBy - iPosGroupBy); 
 					//cout << groupBy << endl; 
 				} else if (iPosSemiColon != string::npos) { 
-					groupBy = sLineIn.substr(iPosGroupBy, iPosSemiColon - iPosGroupBy);
+					groupBy = sLineIn.substr(iPosGroupBy, iPosSemiColon - iPosGroupBy); 
 				} else { 
-					groupBy = sLineIn.substr(iPosGroupBy, string::npos);
+					groupBy = sLineIn.substr(iPosGroupBy, string::npos); 
 				} 
 				
-				groupBy = Utilities::cleanSpaces(groupBy);
-				selectQ.setGroupBy(groupBy);
+				groupBy = Utilities::cleanSpaces(groupBy); 
+				//cout << groupBy << endl; 
+				selectQ.setGroupBy(groupBy); 
 			}
 			
-			// order by
-			if (iPosOrderBy != string::npos) {
-				//cout << "order by found " << endl;
-				iPosOrderBy += 8;
+			// order by 
+			if (iPosOrderBy != string::npos) { 
+				//cout << "order by found " << endl; 
+				iPosOrderBy += 8; 
 
-				if (iPosSemiColon != string::npos) {
-					orderBy = sLineIn.substr(iPosOrderBy, iPosSemiColon - iPosOrderBy);
-				} else {
-					orderBy = sLineIn.substr(iPosOrderBy, string::npos);
-				}
-				orderBy = Utilities::cleanSpaces(orderBy);
-				selectQ.setOrderBy(orderBy);
+				if (iPosSemiColon != string::npos) { 
+					orderBy = sLineIn.substr(iPosOrderBy, iPosSemiColon - iPosOrderBy); 
+				} else { 
+					orderBy = sLineIn.substr(iPosOrderBy, string::npos); 
+				} 
+				orderBy = Utilities::cleanSpaces(orderBy); 
+				selectQ.setOrderBy(orderBy); 
 			}
 			
 			selectQ.printAll();
