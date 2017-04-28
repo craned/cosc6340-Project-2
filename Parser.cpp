@@ -123,6 +123,7 @@ int Parser::parse(string sLineIn)
     //Output the line we are working with so we know we have the parsing correct
     //printf("\n%s\n", sLineIn.c_str());
     origQuery = sLineIn;
+    sLineIn = findAndReplaceSum(sLineIn);
     if (!checkParenthesis(sLineIn)) {
   		cout << "ERROR: the parentheses do not match" << endl;
   		return 0;
@@ -245,23 +246,23 @@ bool Parser::findCreateTable(string sLineIn)
 
 bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 {
-	 bool sumExists = false; 
+	/*bool sumExists = false; 
 	size_t sumMaybe = sLineIn.find("SUM", 0); 
 	size_t sumOpenParen = sLineIn.find("(", sumMaybe); 
 	size_t sumCloseParen = sLineIn.find(")", sumMaybe); 
 	if (sumMaybe != string::npos) { 
 		sumExists = true; 
-	} 
+	}//*/
 
 	size_t openParen = sLineIn.find("(", 0); 
-	cout << "sumMaybe " << sumMaybe << endl; 
+	/*cout << "sumMaybe " << sumMaybe << endl; 
 	cout << "openParen " << openParen << endl; 
 	if (sumMaybe < openParen) { 
 		sumMaybe += 5; 
 		cout << "sum less than openParen" << endl; 
 		openParen = sLineIn.find("(", sumMaybe+1); 
-	} 
-	//cout << "findSelectParen " << sLineIn << endl;
+	} //*/
+	cout << "findSelectParen " << sLineIn << endl;
 	
 	
 	if (openParen != string::npos) {
@@ -269,17 +270,17 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 		//cout << "starting" << endl;
 			char queryChar = sLineIn[i];
 			if (queryChar == '(') {
-				if (i != sumOpenParen) {
-					cout << "found sumOpenParen" << endl;
+				//if (i != sumOpenParen) {
+					//cout << "found sumOpenParen" << endl;
 					parens.push(i);
-				}
+				//}
 			} else if (queryChar == ')') {
-				if (i == sumCloseParen) {
-					cout << "sum continuing" << endl;
+				//if (i == sumCloseParen) {
+					//cout << "sum continuing" << endl;
 					//parens.top();
 					//i++;
-					continue;
-				}
+					//continue;
+				//}
 				int leftParenIndex = parens.top();
 				int subQueryBeg = leftParenIndex + 1;
 				//cout << "open paren " << leftParenIndex << endl;
@@ -660,6 +661,53 @@ bool Parser::findQuit(string sLineIn)
   }
 }
 
+string Parser::findAndReplaceSum(string sLineIn)
+{
+	size_t sum = sLineIn.find("SUM", 0);
+	int sumCount = 0;
+	cout << "looking for sum" << endl;
+	while(sum != string::npos) { 
+		size_t groupBy = sLineIn.find("GROUP BY", sum);
+		if (groupBy == string::npos) {
+			cout << "ERROR: SUM must be accompanied by GROUP BY" << endl;
+			return sLineIn;
+		}
+		sumCount++;
+		size_t sumStart = sum;
+		sum += 3;
+		while (sLineIn[sum] == ' ' ) {
+			sum++;
+		}
+
+		size_t sumClosingParen;
+		//cout << "looking for sum ( " << sum << endl;
+		if (sLineIn[sum] != '(') {
+			cout << "continuing " << endl;
+			sum = sLineIn.find("SUM", sum);
+			continue;
+		} else {
+			//cout << "looking for sum )" << endl;
+			sumClosingParen = sLineIn.find(')', sum); // don't add 1, messes colValue
+			//cout << "sumClosingParen " << sLineIn[sumClosingParen] << endl;
+			if (sumClosingParen == string::npos) {
+				sum = sLineIn.find("SUM", sum+3);
+				continue;
+			}
+		}
+		sum++;
+		string col = sLineIn.substr(sum, sumClosingParen - sum);
+		//cout << "col value " << col << endl;
+		//cout << "replacing sum sumStart" << sLineIn[sumStart] << endl;
+		//cout << "replacing sum sumClosingParen" << sLineIn[sumClosingParen] << endl;
+		sLineIn = sLineIn.replace(sumStart, sumClosingParen+1 - sumStart, "SUMTEAM06COL" + col);
+		cout << "new query " << sLineIn << endl;
+
+		sum = sLineIn.find("SUM", sum);
+	}
+	
+	return sLineIn;
+}
+
 /*******************************************************************************
  Function that sees if the parenthesis are balanced in a line
  *******************************************************************************/
@@ -667,19 +715,12 @@ bool Parser::checkParenthesis(string sLineIn)
 {
   int iBalance = 0;
   
-  size_t sum = sLineIn.find("SUM", 0); 
-  int sumCount = 0; 
-  while(sum != string::npos) { 
-  sumCount++; 
-  sum = sLineIn.find("SUM", sum+3); 
-  }
-  
   for (size_t i = 0; i < sLineIn.length(); ++i)
   {
     if (sLineIn[i] == '(')
     {
 		nestedLevel++;
-		if (nestedLevel > (3 + sumCount)) {
+		if (nestedLevel > 3) {
 			cout << "ERROR: exceeded max of 3 nested subqueries" << endl;
 			return false;
 		}
