@@ -134,9 +134,11 @@ int Parser::parse(string sLineIn)
 	selectQ.clearAll();
     //cout << "parenthesis ok" << endl;
     if (findCreateTable(sLineIn)) {
+    e.writetofile();
         //cout << "Created table " << sLineIn << endl;
     } else if (findInsertInto(sLineIn)) {
         //cout << "Values Inserted" << endl;
+        e.writetofile();
     } else if (findSelectParen(sLineIn, "")) {//findSelectNew(sLineIn, "")) {
     //} else if (findSelect(sLineIn)) {
     	//selectQ = new SelectQ();
@@ -565,8 +567,7 @@ bool Parser::findInsertInto(string sLineIn)
                 	vector<tuple<int, string> > rowVector = createRowVector(sRow);
 					//cout << "adding Row parser" << endl;
 		         	e.addRow(tableName, rowVector);
-					//cout << "addedRow parser" << endl;
-					
+					//cout << "addedRow parser" << endl;					
                 	return true;
                 } else {
                 	return false;

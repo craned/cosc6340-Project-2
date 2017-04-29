@@ -845,15 +845,15 @@ bool Engine::insertselectValidate(Table fromTable, Table toTable){
 
  }
  
-void Engine::sortp(string sTableNameIn,int key) {
+void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn index
     for (size_t t=0; t<vTableList.size(); t++) {
-        if (vTableList[t].getTableName() == sTableNameIn) {
+        if (vTableList[t].getTableName() == sTableNameIn) {// checking for the table to be sorted
             Table ob=vTableList[t];
             int rNum=ob.getTNumOfRecords();
             std::vector < SortTable> arrang;
             int counter=0;
             int rowcounter=0;
-            for (int i=0; i<rNum; i++) {
+            for (int i=0; i<rNum; i++) {//puting 30 records in the main memory
                 if(rowcounter<30) {
                     SortTable temp;
                     temp.getprimarykey(ob,key);
@@ -862,14 +862,14 @@ void Engine::sortp(string sTableNameIn,int key) {
                     row =ob.getRow(i);
                     arrang.push_back(temp);
                     rowcounter++;
-                    if(rowcounter==30||i==(rNum-1)) {
+                    if(rowcounter==30||i==(rNum-1)) {//performing sorting in main memory for those 30 records
                         counter++;
                         if(!is_number(get<1>(row[key])))
                         	sort(arrang.begin(),arrang.end(),sortbyp);
                         else
                         	sort(arrang.begin(),arrang.end(),sortbyi);
                         
-                        string tempsortname= "tempsort" + to_string(counter);
+                        string tempsortname= "tempsort" + to_string(counter);//storing the those sorted records in temporary table
                         cout<<tempsortname<<endl;
                         Table tempsort(tempsortname);
                         vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
@@ -893,14 +893,14 @@ void Engine::sortp(string sTableNameIn,int key) {
                 }
             }
             remove("tempsortf.tbl");
-
+//merging the temporary files
             for (size_t i = 0; i < vTableList.size(); ++i) {
                 if (vTableList[i].getTableName() == "tempsortf") {
                     vTableList.erase(vTableList.begin()+i);
                     cout<<"hello";
                 }
             }
-            for (int c=1; c<=counter; ++c) {
+            for (int c=1; c<=counter; ++c) {//going one 
                 cout<<c<<endl;
                 
               Table tempsortf;
@@ -1174,7 +1174,7 @@ void Engine::read(){
     int count=0;
     while(getline(infile,line)){
         size_t f;
-        if((f=line.find("tablename"))!=string::npos)
+        if((f=line.find("tablename"))!=string::npos) //reads the table name
         {
             //cout<<line;
             //cout<<"gr";
@@ -1187,7 +1187,7 @@ void Engine::read(){
                // cout<<tname;
             }
         }
-        else if(count==1)
+        else if(count==1)//reads the columns
         {
             
             count=2;
@@ -1254,7 +1254,7 @@ void Engine::read(){
             }
         }
         
-        else if(count==2){
+        else if(count==2){//reads primary key columns
             //cout<<line;
             count=3;
             size_t f1;
@@ -1293,7 +1293,7 @@ void Engine::read(){
                 
             }
         }
-        else if(count==3){
+        else if(count==3){//reads record size
             //cout<<"Asdfas";
             //cout<<line;
             count=4;
@@ -1312,7 +1312,7 @@ void Engine::read(){
                 //cout<<recordsize<<"\n";
             }
         }
-        else if(count==4){
+        else if(count==4){//reads total size of records
             
             //cout<<line;
             count=5;
@@ -1331,7 +1331,7 @@ void Engine::read(){
             }
             
         }
-        else if(count==5){
+        else if(count==5){//reads number of records
             
             //cout<<line;
             count=0;
@@ -1370,7 +1370,7 @@ void Engine::writetofile()
     outfile.open("catalog.txt",ios::out|ios::app);
     for(size_t i=0; i<vTableList.size();++i){
         //string name=cataloglist[i].getTableName();
-        outfile<<"tablename="<<vTableList[i].getTableName()<<'\n';
+        outfile<<"tablename="<<vTableList[i].getTableName()<<'\n';//writes the table name
         //cout<<"table";
         vector<tuple<int, string, bool, string, int > > col;
         col=vTableList[i].getColumnNames();
@@ -1379,7 +1379,7 @@ void Engine::writetofile()
             if(j<col.size()-1){
             if(get<3>(col[j])=="string"){
             int c=get<4>(col[j])-6;
-            outfile<<get<1>(col[j])<<":"<<"CHAR"<<"("<<c<<")"<<",";
+            outfile<<get<1>(col[j])<<":"<<"CHAR"<<"("<<c<<")"<<",";//writes the columnnames
         
             }
             else
@@ -1400,20 +1400,20 @@ void Engine::writetofile()
         outfile<<"\n"<<"primarykey=";
         for(size_t k=0;k<primarykey.size();++k){
             if(k<primarykey.size()-1)
-                outfile<<primarykey[k]<<",";
+                outfile<<primarykey[k]<<",";//writes the primary key columns
             else
                 outfile<<primarykey[k];
         }
         int recordsize;
         vTableList[i].calculateRecordSize();
         recordsize=vTableList[i].getTRecordSize();
-        outfile<<"\n"<<"recordsize="<<recordsize;
+        outfile<<"\n"<<"recordsize="<<recordsize;//write the record size
         int totalsize;
         vTableList[i].calculateTotalRecordSize();
         totalsize=vTableList[i].getTTotalSize();
-        outfile<<"\n"<<"totalsize="<<totalsize;
+        outfile<<"\n"<<"totalsize="<<totalsize;//write the total size;
         int nrecords;
-        nrecords=vTableList[i].getTNumOfRecords();
+        nrecords=vTableList[i].getTNumOfRecords();//write the total number of records
         outfile<<"\n"<<"records="<<nrecords<<"\n";
     }
     
@@ -1421,7 +1421,7 @@ void Engine::writetofile()
 }
 
 
-bool Engine::createValidate(string sLineIn,string sTableNameIn)
+bool Engine::createValidate(string sLineIn,string sTableNameIn)//validating the coulmns data type while inserting
 {
     vector < string > vReturn;
     int iPosStart = 0;
@@ -1436,9 +1436,7 @@ bool Engine::createValidate(string sLineIn,string sTableNameIn)
             ob=vTableList[i] ;
         }
     }
-    
-    
-    
+       
     //Check to see how many commas are in the string
     for (size_t i = 0; i < sLineIn.length(); ++i)
     {
