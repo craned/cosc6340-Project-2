@@ -40,7 +40,8 @@ class Engine {
     void getRow(string sTableNameIn,int iIndex);
     bool executeSelect(string tableName, vector < string > colNames,
     				   string tempTable, string whereFilter,
-                       string joinTable, string joinFilter);
+                       string joinTable, string joinFilter,
+                       string groupBy, string orderBy);
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
     void deleteATable(Table table);
@@ -48,7 +49,7 @@ class Engine {
     Table whereClause(Table tCurrentTable,string whereFilter);
     Table selectClause(Table tNewTable,vector < string > colNames, Table originalTable,string tempTable, bool &returnBool);
     Table joinClause(Table originalTable,Table joinTable,string joinFilter, bool &returnBool);
-    int sum(string tableName, string columnName);
+    int sum(string tableName, string columnName, string groupByCol);
     //string delSpaces(string str);
     void writetofile();
     void read();

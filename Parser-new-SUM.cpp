@@ -1,8 +1,7 @@
 /*******************************************************************************
- File: Engine.cpp
- Author: Amirreza Shirani
- Author: Devin Crane
- Author: sakhitha kanyadhara
+ File: Table.cpp
+
+ Author:Amirreza Shirani
  *******************************************************************************/
 
 #include "Parser.h"
@@ -113,20 +112,22 @@ string Parser::removeSpaces(string sLineIn)
 }
 
 /*******************************************************************************
- Parser hub that determines the appropriate parser function to call
+ Parse the line in and call the appropiate functions
  *******************************************************************************/
 int Parser::parse(string sLineIn)
 {
 	nestedLevel = 0;
+  //Declare and initialize variables
+  //string sTemp;
 
+    //Output the line we are working with so we know we have the parsing correct
+    //printf("\n%s\n", sLineIn.c_str());
     origQuery = sLineIn;
     sLineIn = findAndReplaceSum(sLineIn);
-    // Confirm matching parentheses
     if (!checkParenthesis(sLineIn)) {
   		cout << "ERROR: the parentheses do not match" << endl;
   		return 0;
   	}
-  	// Confirm semicolon existence
     if (!semicolonExists(sLineIn)) {
   		cout << "ERROR: there is no semicolon" << endl;
   		return 0;
@@ -158,7 +159,6 @@ int Parser::parse(string sLineIn)
 	return 1;
 }
 
-// Confirm semicolon existence
 bool Parser::semicolonExists(string sLineIn) 
 {
 	size_t semicolon = sLineIn.find(";");
@@ -168,14 +168,13 @@ bool Parser::semicolonExists(string sLineIn)
 	return true;
 }
 
-// Give dbms read access through parser
 void Parser::read(){
 	e.read();
 }
 
 /*******************************************************************************
  Function that sees if CREATE TABLE is in the string and executes the command
- correct format = CREATE TABLE T (COlUMNS, PRIMARY KEY ())
+ correct format = CREATE TABLE () PRIMARY KEY ()
  *******************************************************************************/
 bool Parser::findCreateTable(string sLineIn)
 {
@@ -186,10 +185,9 @@ bool Parser::findCreateTable(string sLineIn)
     {
         size_t iPosEnd = sLineIn.find("(", iPosStart + 1);
 
-        //Opening paren must be found in the string
+        //execute if '(' was found in the string
         if (iPosEnd != string::npos)
         {
-        	// Advance pointer
         	iPosStart += 12;
         
             //get the table name
@@ -208,18 +206,18 @@ bool Parser::findCreateTable(string sLineIn)
             //Execute if primary key was found in string
             if (iPosEnd != string::npos)
             {
-                //Get the column names
+                //get the column names
                 string sColumns = sLineIn.substr(iPosStart,
                                                  iPosEnd - iPosStart);
 
                 cout << "columns " << sColumns << endl;
 
-                //Reposition the pointer//*** resume comments
+                //reposition the position values
                 iPosStart = iPosEnd;
                 iPosStart = sLineIn.find("(", iPosEnd) + 1;
                 iPosEnd = sLineIn.find(")", iPosStart);
 
-                //Execute if close paren was found in the string
+                //execute if ')' was found in the string
                 if (iPosEnd != string::npos)
                 {
                     //get the primary keys
@@ -368,8 +366,8 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			string joinTable = "";
 			string joinFilter = "";
 			string whereFilter = "";
-			string groupBy = "";
-			string orderBy = "";
+			string groupBy = ""; 
+			string orderBy = ""; 
             
             // get the from table; we already know it exists
             if (iPosJoin != string::npos) {
@@ -451,36 +449,37 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			}
 			
 			// group by
-			if (iPosGroupBy != string::npos) {
-				//cout << "group by found " << endl;
-				iPosGroupBy += 8;
+			if (iPosGroupBy != string::npos) { 
+				//cout << "group by found " << endl; 
+				iPosGroupBy += 8; 
 
 				if (iPosOrderBy != string::npos) { 
 					//cout << "order by found after" << endl; 
-					groupBy = sLineIn.substr(iPosGroupBy, iPosOrderBy - iPosGroupBy);
+					groupBy = sLineIn.substr(iPosGroupBy, iPosOrderBy - iPosGroupBy); 
 					//cout << groupBy << endl; 
 				} else if (iPosSemiColon != string::npos) { 
-					groupBy = sLineIn.substr(iPosGroupBy, iPosSemiColon - iPosGroupBy);
+					groupBy = sLineIn.substr(iPosGroupBy, iPosSemiColon - iPosGroupBy); 
 				} else { 
-					groupBy = sLineIn.substr(iPosGroupBy, string::npos);
+					groupBy = sLineIn.substr(iPosGroupBy, string::npos); 
 				} 
 				
-				groupBy = Utilities::cleanSpaces(groupBy);
-				selectQ.setGroupBy(groupBy);
+				groupBy = Utilities::cleanSpaces(groupBy); 
+				//cout << groupBy << endl; 
+				selectQ.setGroupBy(groupBy); 
 			}
 			
-			// order by
-			if (iPosOrderBy != string::npos) {
-				//cout << "order by found " << endl;
-				iPosOrderBy += 8;
+			// order by 
+			if (iPosOrderBy != string::npos) { 
+				//cout << "order by found " << endl; 
+				iPosOrderBy += 8; 
 
-				if (iPosSemiColon != string::npos) {
-					orderBy = sLineIn.substr(iPosOrderBy, iPosSemiColon - iPosOrderBy);
-				} else {
-					orderBy = sLineIn.substr(iPosOrderBy, string::npos);
-				}
-				orderBy = Utilities::cleanSpaces(orderBy);
-				selectQ.setOrderBy(orderBy);
+				if (iPosSemiColon != string::npos) { 
+					orderBy = sLineIn.substr(iPosOrderBy, iPosSemiColon - iPosOrderBy); 
+				} else { 
+					orderBy = sLineIn.substr(iPosOrderBy, string::npos); 
+				} 
+				orderBy = Utilities::cleanSpaces(orderBy); 
+				selectQ.setOrderBy(orderBy); 
 			}
 			
 			selectQ.printAll();
@@ -489,9 +488,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 							selectQ.getTempTable(),
 							selectQ.getWhereFilter(),
  							selectQ.getJoinTable(),
-	                  		selectQ.getJoinFilter(),
-	                  		selectQ.getGroupBy(),
-	                  		selectQ.getOrderBy());//*/
+	                  		selectQ.getJoinFilter());//*/
 	        
 	        if (!result) {
 	        	return false;
