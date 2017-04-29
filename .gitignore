@@ -2,3 +2,5 @@
 *.o
 
 *.tbl
+
+\.idea/workspace\.xml

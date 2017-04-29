@@ -609,21 +609,38 @@ Table Engine::joinClause(Table originalTable,Table joinTable,string joinFilter, 
 //        return nJoinedTable;
 //    }
 }
+/******************************************************************************/
+/* Group by function */
+/******************************************************************************/
+Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol){
 
+}
+/******************************************************************************/
+/* order by function */
+/******************************************************************************/
+Table Engine::orderByClause(Table currentTable, string orderByCol){
+
+}
+
+/******************************************************************************/
+/* Main select function */
 /******************************************************************************/
 bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                            string tempTable,
                            string whereFilter,
                            string joinTable,
                            string joinFilter,
-                           string groupBy,
-                           string orderBy,
+                           string groupByCol,
+                           string orderByCol,
                            string sumCol) {
     sTableNameIn = Utilities::cleanSpaces(sTableNameIn);
     tempTable = Utilities::cleanSpaces(tempTable);
     whereFilter = Utilities::cleanSpaces(whereFilter);
     joinTable = Utilities::cleanSpaces(joinTable);
     joinFilter = Utilities::cleanSpaces(joinFilter);
+    groupByCol = Utilities::cleanSpaces(groupByCol);
+    orderByCol = Utilities::cleanSpaces(orderByCol);
+    sumCol = Utilities::cleanSpaces(sumCol);
     for(size_t k=0; k<colNames.size(); k++){
         colNames[k] = Utilities::cleanSpaces(colNames[k]);
     }
@@ -638,8 +655,6 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             if (tOriginalTable.getTableName() == sTableNameIn) {
                 cout << "current/original table:" << endl;
                 tOriginalTable.printOutTheWholeTable();
-                cout<<"asdfa";
-                sortp(tOriginalTable.getTableName(),0);
                 for (size_t i = 0; i < vTableList.size(); ++i) {
                     Table tJoinTable = vTableList[i];
                     //Execute if the table is found in the list
@@ -647,12 +662,10 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                         cout << "join table:" << endl;
                         //tJoinTable.printOutTheWholeTable();
                         //1
-                        sortp(tJoinTable.getTableName(),0);
                         Table tPhseOneTableFromOriginalTable;
                         Table tPhseOneTableFromJoinTable;
                         tPhseOneTableFromOriginalTable = whereClause(tOriginalTable, whereFilter);
                         tPhseOneTableFromJoinTable = whereClause(tJoinTable, whereFilter);
-sortp(tPhseOneTableFromJoinTable.getTableName(),0);
                         vTableList.push_back(tPhseOneTableFromOriginalTable);
                         //cout << "tPhseOneTableFromOriginalTable:" << endl;
                         //tPhseOneTableFromOriginalTable.printOutTheWholeTable();
@@ -667,15 +680,13 @@ sortp(tPhseOneTableFromJoinTable.getTableName(),0);
                         vTableList.push_back(tPhaseTwo);
                         //tPhaseTwo.printOutTheWholeTable();
 
-                        //3
+
+
                         Table tPhaseThree;
+
                         tPhaseThree = selectClause(tPhaseTwo, colNames, tPhseOneTableFromOriginalTable,  tempTable, returnBool);
                         vTableList.push_back(tPhaseThree);
                         tPhaseThree.printOutTheWholeTable();
-                        if (returnBool) {
-	                        cout<<"after sorting1:"<<endl;
-                        	sortp(tPhaseThree.getTableName(),0);
-                        }
                         //tPhaseThree.distinct();
                         //deleting tables
                         deleteATable(tPhseOneTableFromOriginalTable);

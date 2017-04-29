@@ -62,6 +62,9 @@ class Engine {
     bool insertselectValidate(Table fromTable, Table toTable);
     bool is_number(const std::string& s);
      static bool sortbyi(const SortTable &lhs,const SortTable &rhs);
+    Table groupByClause(Table currentTable, string groupByCol, string sumCol);
+    Table orderByClause(Table currentTable, string orderByCol);
+
 	};
 
 #endif
