@@ -609,17 +609,59 @@ Table Engine::joinClause(Table originalTable,Table joinTable,string joinFilter, 
 //        return nJoinedTable;
 //    }
 }
+
 /******************************************************************************/
 /* Group by function */
 /******************************************************************************/
 Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol){
-
+	// find group by index
+	int groupByIndex = -1;
+	for (int i = 0; i < vColumnNames.size(); i++) {
+		if (groupByCol == get<1>(vColumnNames[i])) {
+			groupByIndex = get<0>(vColumnNames[i]);
+		}
+	}
+	if (groupByIndex == -1) {
+		cout << "ERROR: " << groupByCol << " does not exist" << endl;
+		return;
+	}
+	
+	// sort values by group by index
+	sortp(currentTable.getTableName(), groupByIndex);
+	
+	// find index of sum column
+	int sumColIndex = -1;
+	for (int i = 0; i < vColumnNames.size(); i++) {
+		if (sumCol == get<1>(vColumnNames[i])) {
+			sumColIndex = get<0>(vColumnNames[i]);
+		}
+	}
+	if (sumColIndex == -1) {
+		cout << "ERROR: " << sumCol << " does not exist" << endl;
+		return;
+	}
+	
+	// sum up cumColIndex by groupByCol
+	sum(currentTable.getTableName(), sumCol, sumColIndex, groupByCol, groupByIndex);
 }
 /******************************************************************************/
 /* order by function */
 /******************************************************************************/
 Table Engine::orderByClause(Table currentTable, string orderByCol){
-
+	// find order by index
+	int orderByIndex = -1;
+	for (int i = 0; i < vColumnNames.size(); i++) {
+		if (groupByCol == get<1>(vColumnNames[i])) {
+			orderByIndex = get<0>(vColumnNames[i]);
+		}
+	}
+	if (orderByIndex == -1) {
+		cout << "ERROR: " << groupByCol << " does not exist" << endl;
+		return;
+	}
+	
+	// osrt values by order by index
+	sortp(currentTable.getTableName(), orderByIndex);
 }
 
 /******************************************************************************/
@@ -750,7 +792,29 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         }
 
     }
-    //cout<<"select Successful?: "<<returnBool<<endl;
+    /*
+    curTableStr = tempTable.getTableName();
+    Table groupBY;
+    if (groupBy) {
+    	groupBy = execGB(curTableStr, groupBYCOl, sumCOl);
+    	curTableStr = groupBy.getTablenmae();
+    }
+    
+    Table orderBY;
+    if (orderBy) {
+    	orderBy = execOB(curTableSTr, orderBYCOl);
+    	curTableStr = orderBy.getTablenmae();
+    }//*/
+    
+    
+    // delete temp tables that I made
+    // remaining tables
+    // select cols
+    // output final results
+    
+    
+    
+    cout<<"select Successful?: "<<returnBool<<endl;
     return returnBool;
 }
 
@@ -1078,7 +1142,8 @@ cout<<vTableList[i].getTNumOfRecords();
     }
 }
 
-int Engine::sum(string tableName, string columnName, string groupByCol)
+int Engine::sum(string tableName, string columnName, int foundColIndex,
+									string groupByCol, int foundGroupByIndex)
 {
 	cout << "sum function " << endl;
 	// get key of the column
@@ -1096,28 +1161,33 @@ int Engine::sum(string tableName, string columnName, string groupByCol)
     	return 0;
     }
     
-    int colIndex = -1;
-    int groupByIndex = -1;
     vector<tuple<int, string, bool,string, int>> vColumnNames = table.getColumnNames();
-    for (int i = 0; i < vColumnNames.size(); i++) {
-		if (columnName == get<1>(vColumnNames[i])) {
-			if (get<3>(vColumnNames[i]) == "string") {
-				cout << "ERROR: cannot perform sum on char" << endl;
-				return 0;
-			}
+    
+    if (foundColIndex == -1) {
+		int colIndex = -1;
+		for (int i = 0; i < vColumnNames.size(); i++) {
+			if (columnName == get<1>(vColumnNames[i])) {
+				if (get<3>(vColumnNames[i]) == "string") {
+					cout << "ERROR: cannot perform sum on char" << endl;
+					return 0;
+				}
 			
-			colIndex = get<0>(vColumnNames[i]);
+				colIndex = get<0>(vColumnNames[i]);
+			}
 		}
 	}
-    for (int i = 0; i < vColumnNames.size(); i++) {
-		if (groupByCol == get<1>(vColumnNames[i])) {
-			groupByIndex = get<0>(vColumnNames[i]);
+	if (foundGroupByIndex == -1) {
+		int groupByIndex = -1;
+		for (int i = 0; i < vColumnNames.size(); i++) {
+			if (groupByCol == get<1>(vColumnNames[i])) {
+				groupByIndex = get<0>(vColumnNames[i]);
+			}
 		}
-	}
 	
-	if (colIndex == -1) {
-		cout << "ERROR: could not find " << columnName << endl;
-		return 0;
+		if (colIndex == -1) {
+			cout << "ERROR: could not find " << columnName << endl;
+			return 0;
+		}
 	}
     
     int sum = 0;

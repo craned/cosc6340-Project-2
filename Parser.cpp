@@ -728,7 +728,7 @@ string Parser::findAndReplaceSum(string sLineIn)
 {
 	size_t sum = sLineIn.find("SUM", 0);
 	int sumCount = 0;
-	cout << "looking for sum" << endl;
+	//cout << "looking for sum" << endl;
 	while(sum != string::npos) { 
 		size_t groupBy = sLineIn.find("GROUP BY", sum);
 		if (groupBy == string::npos) {
