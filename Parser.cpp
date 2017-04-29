@@ -362,6 +362,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
             size_t iPosOn = sLineIn.find("ON", iPosStart);
 			size_t iPosGroupBy = sLineIn.find("GROUP BY", iPosStart);
 			size_t iPosOrderBy = sLineIn.find("ORDER BY", iPosStart);
+			size_t iPosSumCol = (colNames.find("SUMTEAM06COL"));
 			
 			string fromTable = "";
 			string joinTable = "";
@@ -369,6 +370,14 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			string whereFilter = "";
 			string groupBy = "";
 			string orderBy = "";
+			string sumCol = "";
+			
+			if (iPosSumCol != string::npos) {
+				iPosSumCol += 12;
+				size_t sumSpace = colNames.find(" ", iPosSumCol);
+				sumCol = colNames.substr(iPosSumCol, sumSpace - iPosSumCol);
+				selectQ.setSumCol(sumCol);
+			}
             
             // get the from table; we already know it exists
             if (iPosJoin != string::npos) {
@@ -490,7 +499,8 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
  							selectQ.getJoinTable(),
 	                  		selectQ.getJoinFilter(),
 	                  		selectQ.getGroupBy(),
-	                  		selectQ.getOrderBy());//*/
+	                  		selectQ.getOrderBy(),
+	                  		selectQ.getSumCol());//*/
 	        
 	        if (!result) {
 	        	return false;

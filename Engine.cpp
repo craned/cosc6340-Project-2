@@ -617,7 +617,8 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                            string joinTable,
                            string joinFilter,
                            string groupBy,
-                           string orderBy) {
+                           string orderBy,
+                           string sumCol) {
     sTableNameIn = Utilities::cleanSpaces(sTableNameIn);
     tempTable = Utilities::cleanSpaces(tempTable);
     whereFilter = Utilities::cleanSpaces(whereFilter);
