@@ -41,7 +41,8 @@ class Engine {
     bool executeSelect(string tableName, vector < string > colNames,
     				   string tempTable, string whereFilter,
                        string joinTable, string joinFilter,
-                       string groupBy, string orderBy);
+                       string groupBy, string orderBy,
+                       string sumCol);
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
     void deleteATable(Table table);

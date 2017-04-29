@@ -22,6 +22,7 @@ class SelectQ {
 	    string whereFilter = "";
 	    string orderBy = "";
 	    string groupBy = "";
+	    string sumCol = "";
 
 	public:
 
@@ -54,6 +55,9 @@ class SelectQ {
 	    
 	    void setGroupBy(string groupBy);
 	    string getGroupBy();
+	    
+	    void setSumCol(string sumCol);
+	    string getSumCol();
 	        
 };
 

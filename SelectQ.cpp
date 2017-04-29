@@ -20,6 +20,7 @@ void SelectQ::clearAll()
 	setWhereFilter("");
 	setOrderBy("");
 	setGroupBy("");
+	setSumCol("");
 }
 
 void SelectQ::printAll()
@@ -32,7 +33,8 @@ void SelectQ::printAll()
 	cout << "join filter " << getJoinFilter() << endl;
 	cout << "where filter " << getWhereFilter() << endl;
 	cout << "order by " << getOrderBy() << endl;
-	cout << "group by " << getGroupBy() << endl;//*/
+	cout << "group by " << getGroupBy() << endl;
+	cout << "sum col " << getSumCol() << endl;//*/
 }
 	   
 void SelectQ::setSelectCols(string cols)
@@ -105,5 +107,14 @@ void SelectQ::setGroupBy(string groupBy)
 string SelectQ::getGroupBy()
 {
 	return groupBy;
+}
+
+void SelectQ::setSumCol(string sumCol)
+{
+	this->sumCol = sumCol;
+}
+string SelectQ::getSumCol()
+{
+	return sumCol;
 }
 
