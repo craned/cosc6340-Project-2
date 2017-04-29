@@ -943,7 +943,7 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                         	sort(arrang.begin(),arrang.end(),sortbyi);
                         
                         string tempsortname= "tempsort" + to_string(counter);//storing the those sorted records in temporary table
-                        cout<<tempsortname<<endl;
+                        //cout<<tempsortname<<endl;
                         Table tempsort(tempsortname);
                         vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
                         for (size_t kl = 0; kl < vColumnNamesIn.size(); ++kl) {
@@ -953,9 +953,9 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                         tempsort.setTNumOfRecords(0);
                         tempsort.setTRecordSize(0);
                         tempsort.setTTotalSize(0);
-                        cout<<arrang.size();
+                        //cout<<arrang.size();
                         for (size_t k = 0; k < arrang.size(); ++k) {
-                            cout<<get<1>(arrang[k].vrow[0])<<endl;
+                          //  cout<<get<1>(arrang[k].vrow[0])<<endl;
                             tempsort.addRow(arrang[k].vrow);
                         }
                         vTableList.push_back(tempsort);
@@ -969,23 +969,23 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
 //merging the temporary files
             for (size_t i = 0; i < vTableList.size(); ++i) {
                 if (vTableList[i].getTableName() == "tempsortf") {
-                    vTableList.erase(vTableList.begin()+i);
-                    cout<<"hello";
+                    vTableList.erase(vTableList.begin()+i);//removing the temsortf table if it already exists
+                    //cout<<"hello";
                 }
             }
-            for (int c=1; c<=counter; ++c) {//going one 
-                cout<<c<<endl;
+            for (int c=1; c<=counter; ++c) {//going through all the temporary tables one by one and merging them to tempsortmerge
+                //cout<<c<<endl;
                 
               Table tempsortf;
               int present=0;   
                 for (size_t i = 0; i < vTableList.size(); ++i) {
                     if (vTableList[i].getTableName() == "tempsortf") {
                         tempsortf=vTableList[i];
-                        cout<<"asdfasf";
+                        //cout<<"asdfasf";
                         present=1;
                     }
                 }
-                if(present==0){
+                if(present==0){//for the first temporary table 
                             vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
                 for (size_t i = 0; i < vColumnNamesIn.size(); ++i) {
                 tempsortf.addColumn(vColumnNamesIn[i]);
@@ -995,8 +995,8 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                 tempsortf.setTTotalSize(0);
                 }
                 remove("tempsorttemp.tbl");
-                Table tempsorttemp("tempsorttemp");
-                string tempsortmergename="tempsort"+to_string(c);
+                Table tempsorttemp("tempsorttemp");//storing the merged results in tempsorttemp
+                string tempsortmergename="tempsort"+to_string(c);//temporary sorted table
                 cout<<tempsortmergename;
                 Table tempsortmerge;
                 vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
@@ -1015,7 +1015,7 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                         cout<<"present"<<endl;
                     }
                 }
-                cout<<tempsortf.getTNumOfRecords()<<endl;
+                //cout<<tempsortf.getTNumOfRecords()<<endl;
                 if( tempsortf.getTNumOfRecords()==0) {
                     while(r2 < tempsortmerge.getTNumOfRecords()) {
                         vector < std::tuple<int, std::string> > vrow2;
@@ -1040,10 +1040,11 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                             vector < std::tuple<int, std::string> > vrow2;
                             vrow1=tempsortf.getRow(r1);
                             vrow2=tempsortmerge.getRow(r2);
-                            if(!is_number(get<1> (vrow1[key]))){
+                            if(!is_number(get<1> (vrow1[key]))){//if the coulumn is string
                             string value1=get<1> (vrow1[key]);
                             string value2=get<1> (vrow2[key]);
-                                                       if(value1.compare(value2)<0) {
+                                                       if(value1.compare(value2)<0) {//comparing the two records based on the column
+                                                       //if the record in the tempsortf file is less than the sorted table then that record is written to tempsorttemp
                                 tempsorttemp.addRow(vrow1);
                                 cout<<value1<<endl;
                                 r1++;
@@ -1053,7 +1054,7 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                                 r2++;
                             }
                             }
-                            if(is_number(get<1> (vrow1[key]))){
+                            if(is_number(get<1> (vrow1[key]))){//if the column is integer
                             int value1=stoi(get<1> (vrow1[key]));
                             int value2=stoi(get<1> (vrow2[key]));
                                                        if(value1<value2) {
@@ -1095,9 +1096,7 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                     }
                     
                     }
-                    
-                    
-                }
+               }
                 for (size_t i = 0; i < vTableList.size(); ++i) {
                     if (vTableList[i].getTableName() == "tempsortf") {
                         vTableList.erase(vTableList.begin()+i);
@@ -1109,17 +1108,19 @@ void Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn 
                         char oldname[]="tempsorttemp.tbl";
                         char newname[]="tempsortf.tbl";
                         rename(oldname,newname);
-                        const char* na=tempsortmergename.c_str();
-                        remove(na);
+                        //const char* na=tempsortmergename.c_str();
+                        //remove(na);
                 vTableList.push_back(tempsorttemp);
                 
             }
+            //printing the sorted file
             for (size_t i = 0; i < vTableList.size(); ++i) {
                 if (vTableList[i].getTableName() == "tempsortf") {
 cout<<vTableList[i].getTNumOfRecords();
                     vTableList[i].printOutTheWholeTable();
                 }
             }
+            //removing the temporary sorted tables
                         for (size_t i = 0; i < vTableList.size(); ++i) {
                         for (int c=1; c<=counter; ++c) {
                         string tempsortmname="tempsort"+to_string(c);
@@ -1132,7 +1133,7 @@ cout<<vTableList[i].getTNumOfRecords();
                 }
                 }
             }
-            remove("tempsortf.tbl");
+           // remove("tempsortf.tbl");
                           for (size_t i = 0; i < vTableList.size(); ++i) {
                     if (vTableList[i].getTableName() == "tempsortf") {
                         vTableList.erase(vTableList.begin()+i);
