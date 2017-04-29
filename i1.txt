@@ -1,0 +1,41 @@
+
+init01.sql
+
+CREATE TABLE S(I INT,J INT,PRIMARY KEY(I));
+executing   CREATE TABLE S(I INT,J INT,PRIMARY KEY(I));
+key I
+column name I
+TABLE SI created successfully
+CREATE TABLE R(J INT,K INT,PRIMARY KEY(J));
+executing  CREATE TABLE R(J INT,K INT,PRIMARY KEY(J));
+existing table: SI
+key J
+column name J
+TABLE R created successfully
+INSERT INTO S VALUES(1,1);
+executing  INSERT INTO S VALUES(1,1);
+ERROR: no match for the query could be found
+INSERT INTO S VALUES(2,3);
+executing  INSERT INTO S VALUES(2,3);
+ERROR: no match for the query could be found
+INSERT INTO S VALUES(3,2);
+executing  INSERT INTO S VALUES(3,2);
+ERROR: no match for the query could be found
+INSERT INTO S VALUES(4,3);
+executing  INSERT INTO S VALUES(4,3);
+ERROR: no match for the query could be found
+INSERT INTO S VALUES(5,4);
+executing  INSERT INTO S VALUES(5,4);
+ERROR: no match for the query could be found
+INSERT INTO S VALUES(6,4);
+executing  INSERT INTO S VALUES(6,4);
+ERROR: no match for the query could be found
+INSERT INTO R VALUES(1,1);
+executing  INSERT INTO R VALUES(1,1);
+INSERT INTO R VALUES(2,0);
+executing  INSERT INTO R VALUES(2,0);
+INSERT INTO R VALUES(3,1);
+executing  INSERT INTO R VALUES(3,1);
+INSERT INTO R VALUES(4,3);
+executing  INSERT INTO R VALUES(4,3);
+Finished reading sql script

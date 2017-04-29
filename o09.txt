@@ -1,0 +1,14 @@
+
+script09.sql
+SELECT I,K
+FROM (SELECT I,J FROM S)V JOIN
+(SELECT J,K FROM R)Z
+ON V.J=Z.J 
+WHERE K=1;
+executing  SELECT I,K FROM (SELECT I,J FROM S)V JOIN (SELECT J,K FROM R)Z ON V.J=Z.J  WHERE K=1;
+select Successful?: 1
+select Successful?: 1
+select Successful?: 1
+select Successful?: 1
+ERROR: no match for the query could be found
+Finished reading sql script

@@ -1,0 +1,8 @@
+
+script02.sql
+SELECT I,J
+FROM S
+WHERE I=1; 
+executing  SELECT I,J FROM S WHERE I=1;
+select Successful?: 1
+Finished reading sql script

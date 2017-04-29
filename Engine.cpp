@@ -62,6 +62,8 @@ void Engine::createTable(string sTableNameIn,
             t.setPrimaryKey(vKeys[i]);
         }
         
+        cout << "TABLE " << sTableNameIn << " created successfully" << endl;
+        
         //push table into the table list
         vTableList.push_back(t);
     }
@@ -92,7 +94,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     vtemp=tb.getRow(i);
                     string giventemp=get<1> (vRowIn[iColumnIndex]);
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
-                        cout<<"duplicate primary key";
+                        cout<<"ERROR: duplicate primary key";
                         isFoundTable = true;
                         return;
                     }
@@ -631,18 +633,21 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             if (tOriginalTable.getTableName() == sTableNameIn) {
                 cout << "current/original table:" << endl;
                 tOriginalTable.printOutTheWholeTable();
+                cout<<"asdfa";
+                sortp(tOriginalTable.getTableName(),0);
                 for (size_t i = 0; i < vTableList.size(); ++i) {
                     Table tJoinTable = vTableList[i];
                     //Execute if the table is found in the list
                     if (tJoinTable.getTableName() == joinTable) {
                         cout << "join table:" << endl;
-                        tJoinTable.printOutTheWholeTable();
+                        //tJoinTable.printOutTheWholeTable();
                         //1
+                        sortp(tJoinTable.getTableName(),0);
                         Table tPhseOneTableFromOriginalTable;
                         Table tPhseOneTableFromJoinTable;
                         tPhseOneTableFromOriginalTable = whereClause(tOriginalTable, whereFilter);
                         tPhseOneTableFromJoinTable = whereClause(tJoinTable, whereFilter);
-
+sortp(tPhseOneTableFromJoinTable.getTableName(),0);
                         vTableList.push_back(tPhseOneTableFromOriginalTable);
                         //cout << "tPhseOneTableFromOriginalTable:" << endl;
                         //tPhseOneTableFromOriginalTable.printOutTheWholeTable();
@@ -662,8 +667,8 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                         tPhaseThree = selectClause(tPhaseTwo, colNames, tPhseOneTableFromOriginalTable,  tempTable, returnBool);
                         vTableList.push_back(tPhaseThree);
                         tPhaseThree.printOutTheWholeTable();
-                        cout<<"after sorting/distinct rows:"<<endl;
-                        sortp(tPhaseThree.getTableName());
+                        cout<<"after sorting:"<<endl;
+                        sortp(tPhaseThree.getTableName(),0);
                         //tPhaseThree.distinct();
                         //deleting tables
                         deleteATable(tPhseOneTableFromOriginalTable);
@@ -707,8 +712,8 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                 tPhaseThree = selectClause(tPhseOneTable, colNames, tCurrentTable,  tempTable, returnBool);
                 vTableList.push_back(tPhaseThree);
                 tPhaseThree.printOutTheWholeTable();
-                cout<<"after sorting/distinct rows:"<<endl;
-                sortp(tPhaseThree.getTableName());
+                cout<<"after sorting:"<<endl;
+                sortp(tPhaseThree.getTableName(),0);
                 //tPhaseThree.distinct();
                 //deleting tables
                 deleteATable(tPhseOneTable);
@@ -817,120 +822,299 @@ bool Engine::insertselectValidate(Table fromTable, Table toTable){
  ****************************************************************************/
  bool Engine::sortbyp(const SortTable &lhs,const SortTable &rhs)
  {
- 
+
  return lhs.value<rhs.value;
- 
+
+ }
+  bool Engine::sortbyi(const SortTable &lhs,const SortTable &rhs)
+ {
+
+ return lhs.valuei<rhs.valuei;
+
  }
  
- void Engine::sortp(string sTableNameIn){
- 
- 
- for (size_t i=0; i<vTableList.size(); i++){
- if (vTableList[i].getTableName() == sTableNameIn){
- Table ob=vTableList[i];
- int rNum=ob.getTNumOfRecords();
- std::vector < SortTable> arrang;
- for(int i=0;i<rNum;i++){
- SortTable temp;
- temp.getprimarykey(ob,i);
- temp.getrow(ob,i);
- std::vector < std::tuple<int, std::string> > row;
-  row =ob.getRow(i);
-  int rowcounter=0;
-            for(int j=i+1; j<rNum; j++) {
-            std::vector < std::tuple<int, std::string> > row2;
-             row2 =ob.getRow(j);
+void Engine::sortp(string sTableNameIn,int key) {
+    for (size_t t=0; t<vTableList.size(); t++) {
+        if (vTableList[t].getTableName() == sTableNameIn) {
+            Table ob=vTableList[t];
+            int rNum=ob.getTNumOfRecords();
+            std::vector < SortTable> arrang;
             int counter=0;
-            for(size_t z=0;z<row.size();z++) {
-                if (get<1>(row[z]) == get<1>(row2[z])) {
-                    counter=counter+1;
+            int rowcounter=0;
+            for (int i=0; i<rNum; i++) {
+                if(rowcounter<30) {
+                    SortTable temp;
+                    temp.getprimarykey(ob,key);
+                    temp.getrow(ob,i);
+                    std::vector < std::tuple<int, std::string> > row;
+                    row =ob.getRow(i);
+                    arrang.push_back(temp);
+                    rowcounter++;
+                    if(rowcounter==30||i==(rNum-1)) {
+                        counter++;
+                        if(!is_number(get<1>(row[key])))
+                        	sort(arrang.begin(),arrang.end(),sortbyp);
+                        else
+                        	sort(arrang.begin(),arrang.end(),sortbyi);
+                        
+                        string tempsortname= "tempsort" + to_string(counter);
+                        cout<<tempsortname<<endl;
+                        Table tempsort(tempsortname);
+                        vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
+                        for (size_t kl = 0; kl < vColumnNamesIn.size(); ++kl) {
 
+                            tempsort.addColumn(vColumnNamesIn[kl]);
+                        }
+                        tempsort.setTNumOfRecords(0);
+                        tempsort.setTRecordSize(0);
+                        tempsort.setTTotalSize(0);
+                        cout<<arrang.size();
+                        for (size_t k = 0; k < arrang.size(); ++k) {
+                            cout<<get<1>(arrang[k].vrow[0])<<endl;
+                            tempsort.addRow(arrang[k].vrow);
+                        }
+                        vTableList.push_back(tempsort);
+                        rowcounter=0;
+                        arrang.clear();
+                        tempsortname="";
+                    }
+                }
+            }
+            remove("tempsortf.tbl");
+
+            for (size_t i = 0; i < vTableList.size(); ++i) {
+                if (vTableList[i].getTableName() == "tempsortf") {
+                    vTableList.erase(vTableList.begin()+i);
+                    cout<<"hello";
+                }
+            }
+            for (int c=1; c<=counter; ++c) {
+                cout<<c<<endl;
+                
+              Table tempsortf;
+              int present=0;   
+                for (size_t i = 0; i < vTableList.size(); ++i) {
+                    if (vTableList[i].getTableName() == "tempsortf") {
+                        tempsortf=vTableList[i];
+                        cout<<"asdfasf";
+                        present=1;
+                    }
+                }
+                if(present==0){
+                            vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
+                for (size_t i = 0; i < vColumnNamesIn.size(); ++i) {
+                tempsortf.addColumn(vColumnNamesIn[i]);
+                }
+                                tempsortf.setTNumOfRecords(0);
+                tempsortf.setTRecordSize(0);
+                tempsortf.setTTotalSize(0);
+                }
+                remove("tempsorttemp.tbl");
+                Table tempsorttemp("tempsorttemp");
+                string tempsortmergename="tempsort"+to_string(c);
+                cout<<tempsortmergename;
+                Table tempsortmerge;
+                vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
+                for (size_t kl = 0; kl < vColumnNamesIn.size(); ++kl) {
+
+                    tempsorttemp.addColumn(vColumnNamesIn[kl]);
+                }
+                tempsorttemp.setTNumOfRecords(0);
+                tempsorttemp.setTRecordSize(0);
+                tempsorttemp.setTTotalSize(0);
+                int r1=0;
+                int r2=0;
+                for (size_t i = 0; i < vTableList.size(); ++i) {
+                    if (vTableList[i].getTableName() == tempsortmergename) {
+                        tempsortmerge=vTableList[i];
+                        cout<<"present"<<endl;
+                    }
+                }
+                cout<<tempsortf.getTNumOfRecords()<<endl;
+                if( tempsortf.getTNumOfRecords()==0) {
+                    while(r2 < tempsortmerge.getTNumOfRecords()) {
+                        vector < std::tuple<int, std::string> > vrow2;
+                        vrow2=tempsortmerge.getRow(r2);
+                        tempsorttemp.addRow(vrow2);
+                        cout<<get<1>(vrow2[0])<<endl;
+                        r2++;
+                    }
+                    cout<<tempsorttemp.getTNumOfRecords();
                 }
 
+                else {
+                    cout<<"entered else";
+                    cout<<tempsortf.getTNumOfRecords()<<endl;
+                    cout<<tempsortmerge.getTNumOfRecords()<<endl;
+                    cout<<r1<<r2;
+                    
+                    while(r1 < tempsortf.getTNumOfRecords()&&r2 < tempsortmerge.getTNumOfRecords()) {
+                    cout<<r1;
+                        
+                            vector < std::tuple<int, std::string> > vrow1;
+                            vector < std::tuple<int, std::string> > vrow2;
+                            vrow1=tempsortf.getRow(r1);
+                            vrow2=tempsortmerge.getRow(r2);
+                            if(!is_number(get<1> (vrow1[key]))){
+                            string value1=get<1> (vrow1[key]);
+                            string value2=get<1> (vrow2[key]);
+                                                       if(value1.compare(value2)<0) {
+                                tempsorttemp.addRow(vrow1);
+                                cout<<value1<<endl;
+                                r1++;
+                            } else {
+                                tempsorttemp.addRow(vrow2);
+                                cout<<value2<<endl;
+                                r2++;
+                            }
+                            }
+                            if(is_number(get<1> (vrow1[key]))){
+                            int value1=stoi(get<1> (vrow1[key]));
+                            int value2=stoi(get<1> (vrow2[key]));
+                                                       if(value1<value2) {
+                                tempsorttemp.addRow(vrow1);
+                                cout<<value1<<endl;
+                                r1++;
+                            } else {
+                                tempsorttemp.addRow(vrow2);
+                                cout<<value2<<endl;
+                                r2++;
+                            }
+                            }
+ 
+                            //cout<<value1.compare(value2);*/
+                        
+                    }
+                    cout<<endl;
+                    cout<<"add";
+                    cout<<r1<<tempsortf.getTNumOfRecords()<<endl;
+                    cout<<r2<<tempsortmerge.getTNumOfRecords()<<endl;
+                    if(r1<tempsortf.getTNumOfRecords()){
+                    for(int p=r1;p<tempsortf.getTNumOfRecords();p++)
+                    {
+                    cout<<"enter 1";
+                    vector < std::tuple<int, std::string> > vrow1;
+                    vrow1=tempsortf.getRow(p);
+                    tempsorttemp.addRow(vrow1);
+                               // cout<<value1;
+                    }
+                    }
+                    if(r2<tempsortmerge.getTNumOfRecords()){
+                    for(int p=r2;p<tempsortmerge.getTNumOfRecords();p++)
+                    {
+                            vector < std::tuple<int, std::string> > vrow2;
+                    vrow2=tempsortmerge.getRow(p);
+                    tempsorttemp.addRow(vrow2);
+                                //cout<<value1;
+                                cout<<"enter 2";
+                    }
+                    
+                    }
+                    
+                    
+                }
+                for (size_t i = 0; i < vTableList.size(); ++i) {
+                    if (vTableList[i].getTableName() == "tempsortf") {
+                        vTableList.erase(vTableList.begin()+i);
+                    }
+                }
+                tempsorttemp.setName("tempsortf");
+                        cout<<tempsorttemp.getTableName();
+                        remove("tempsortf.tbl");
+                        char oldname[]="tempsorttemp.tbl";
+                        char newname[]="tempsortf.tbl";
+                        rename(oldname,newname);
+                        const char* na=tempsortmergename.c_str();
+                        remove(na);
+                vTableList.push_back(tempsorttemp);
+                
             }
-            if(counter!=row.size()){
-            rowcounter=rowcounter+1;
-             //arrang.push_back(temp);
+            for (size_t i = 0; i < vTableList.size(); ++i) {
+                if (vTableList[i].getTableName() == "tempsortf") {
+cout<<vTableList[i].getTNumOfRecords();
+                    vTableList[i].printOutTheWholeTable();
+                }
             }
-            
- 
- }
- if(rowcounter==rNum-i-1){
- arrang.push_back(temp);
- }
- 
- }
- 
- sort(arrang.begin(),arrang.end(),sortbyp);
- vector<tuple<int, string, bool, string, int > > vColumnNames;
- vColumnNames=ob.getColumnNames();
- 
-    for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "-----------------------";
-    }
-    std::cout << "\n";
-
-    std::cout << " | " << sTableNameIn << "\n ";
-
-    for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "+----------------------";
-    }
-    std::cout << "\n";
- 
- 
- for (size_t i = 0; i < vColumnNames.size(); ++i)
- {
- //get the column values for printing
- std::string sColName = std::get < 1 > (vColumnNames[i]);
- bool bPrimaryKey = std::get < 2 > (vColumnNames[i]);
- 
- //see if it is a primary key, for formatting
- if (bPrimaryKey)
- {
-cout << " | " << setw(COLUMN_WIDTH) << left
-                << "*" + sColName + "*";
- }
- else
- {
-  cout << " | " << setw(COLUMN_WIDTH) << left << sColName;
-
- }
- 
- }
- cout<<"\n";
-     for (size_t i = 0; i < vColumnNames.size(); ++i)
-    {
-        std::cout << "+----------------------";
-    }
-    std::cout << "\n";
- 
- for(int i=0;i<arrang.size();i++)
- {
- SortTable st=arrang[i];
- vector < std::tuple<int, std::string> > vrow;
- vrow=st.vrow;
- for(int j=0;j<vrow.size();j++){
- cout << " | " << setw(COLUMN_WIDTH) << left <<get<1>(vrow[j]);
- }
-         std::cout << "\n ";
-        for (size_t y = 0; y < vColumnNames.size(); ++y)
-        {
-            std::cout << "+----------------------";
+                        for (size_t i = 0; i < vTableList.size(); ++i) {
+                        for (int c=1; c<=counter; ++c) {
+                        string tempsortmergename="tempsort"+to_string(c);
+                if (vTableList[i].getTableName() == tempsortmergename) {
+                      const char* na=tempsortmergename.c_str();
+                        remove(na);
+                        vTableList.erase(vTableList.begin()+i);
+                }
+                }
+            }
+            remove("tempsortf.tbl");
+                          for (size_t i = 0; i < vTableList.size(); ++i) {
+                    if (vTableList[i].getTableName() == "tempsortf") {
+                        vTableList.erase(vTableList.begin()+i);
+                    }
+                }
         }
-        std::cout << "\n";
- 
- }
- 
- 
- 
- }
- }
- 
- }
- 
- 
+    }
+}
+
+int Engine::sum(string tableName, string columnName)
+{
+cout << "sum function " << endl;
+	// get key of the column
+	Table table;
+	bool foundTable = false;
+	for (size_t i = 0; i < vTableList.size(); ++i) {
+        if (vTableList[i].getTableName() == tableName) {
+            table = vTableList[i];
+            foundTable = true;
+        }
+    }
+    if (!foundTable) {
+    	cout << "ERROR: could not find table " << tableName << " for SUM" << endl;
+    	return 0;
+    }
+    
+    int colIndex = -1;
+    vector<tuple<int, string, bool,string, int>> vColumnNames = table.getColumnNames();
+    for (int i = 0; i < vColumnNames.size(); i++) {
+    	if (get<3>(vColumnNames[i]) == "string") {
+    		cout << "ERROR: cannot perform sum on string" << endl;
+    		return 0;
+    	}
+		if (columnName == get<1>(vColumnNames[i])) {
+			colIndex = get<0>(vColumnNames[i]);
+			break;
+		}
+	}
+	if (colIndex == -1) {
+		cout << "ERROR: could not find " << columnName << endl;
+		return 0;
+	}
+    
+    int sum = 0;
+    for (int j = 0; j < table.getTNumOfRecords(); j++) {
+    	vector < std::tuple<int, std::string> > curRow = table.getRow(j);
+    	
+		for (size_t i = 0; i < curRow.size(); i++) {
+			int index = get<0>(curRow[i]);
+			if (colIndex == index) {
+		    	cout << "testing value " << endl;
+		    	cout << "actual value " << get<1>(curRow[i]) << endl;
+		    	sum += stoi(get<1>(curRow[i]));
+			}
+		    
+			//vColumnNamesIn[i]);
+		}
+    }
+    
+    
+    return sum;
+}
+
+bool Engine::is_number(const std::string& s)
+{
+    return !s.empty() && std::find_if(s.begin(), 
+        s.end(), [](char c) { return !std::isdigit(c); }) == s.end();
+}
+
  
  
  /*****************************************************************************
@@ -978,15 +1162,14 @@ void Engine::read(){
                 
                 size_t f3;
                 f3=line.find(":");
-                f5=line.find("(");
-                
+                f5=line.find("(");                
                 f6=line.find(")");
                 coltemp=line.substr(f1+1,f2-f1-1);
                // cout<<line.substr(f5+1,f6-f5-1);
                 //int c2=stoi(line.substr(f5+1,f6-f5-1));
                 int comparision=0;
                  comparision=f5-f2;
-                if(((f2==string::npos)&&(f5!=string::npos))||comparision<0){
+                if(((f2==string::npos)&&(f5!=string::npos))||(comparision<0&&f5!=string::npos)){
                 int c2=stoi(line.substr(f5+1,f6-f5-1));
                 c2=c2+6;
                 ob.addColumn(make_tuple(seq,line.substr(f1+1,f3-f1-1),false,"string",c2));
@@ -1010,7 +1193,7 @@ void Engine::read(){
                     comparision=0;
                     comparision=f5-f4;
 
-                    if(((f4==string::npos)&&(f5!=string::npos))||comparision<0){
+                    if(((f4==string::npos)&&(f5!=string::npos))||(comparision<0&&f5!=string::npos)){
                     int c1=stoi(line.substr(f5+1,f6-f5-1));
                     c1=c1+6;
                     ob.addColumn(make_tuple(seq,line.substr(f2+1,f3-f2-1),false,"string",c1));

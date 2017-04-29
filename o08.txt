@@ -1,0 +1,10 @@
+
+script08.sql
+SELECT I,J
+FROM (SELECT I,J FROM S WHERE J=4)Y 
+WHERE I=5;
+executing  SELECT I,J FROM (SELECT I,J FROM S WHERE J=4)Y  WHERE I=5;
+select Successful?: 1
+select Successful?: 1
+ERROR: no match for the query could be found
+Finished reading sql script

@@ -1,0 +1,8 @@
+
+script07.sql
+SELECT A,L.J,K
+FROM L JOIN R ON L.J=R.J;
+executing  SELECT A,L.J,K FROM L JOIN R ON L.J=R.J;
+select Successful?: 1
+select Successful?: 1
+Finished reading sql script

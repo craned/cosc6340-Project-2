@@ -1,284 +1,554 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-CREATE TABLE T (C1 INT, C2 CHAR(5), PRIMARY KEY(C1));INSERT INTO T VALUES('q','AS');select C1 FROM T WHERE C1=1;QUIT;
-=======
-create table t (c1 int, c2 char(6), primary key (c2));insert into t values (1, 'test');show table t;show tables;select a,b,c,d from deep join j;select a from (select a,b from (select a,b,c,d from deep join (select a,b,c from jn) tt on t.a = t1.b) t1) t3s;quit;
->>>>>>> Stashed changes
-=======
 
-test.sql
-CREATE TABLE T (K INT, A INT, C CHAR(100), PRIMARY KEY(A));
-executing  CREATE TABLE T (K INT, A INT, C CHAR(100), PRIMARY KEY(A));
-parenthesis ok
+script01.sql
+drop table s;
+executing  DROP TABLE S;
+Drop table
+drop table z;
+executing  DROP TABLE Z;
+Drop table
+drop table t;
+executing  DROP TABLE T;
+Drop table
+drop table k;
+executing  DROP TABLE K;
+Drop table
+CREATE TABLE T (A INT, C CHAR(1), PRIMARY KEY(A));
+executing  CREATE TABLE T (A INT, C CHAR(1), PRIMARY KEY(A));
 key A
-column name K
 column name A
-CREATE TABLE S (I INT, B INT, D CHAR(3), PRIMARY KEY(I));
-executing  CREATE TABLE S (I INT, B INT, D CHAR(3), PRIMARY KEY(I));
-tableparenthesis ok
-existing table: T
-key I
-column name I
-CREATE TABLE Z (K INT, C CHAR(1), PRIMARY KEY(K));
-executing  CREATE TABLE Z (K INT, C CHAR(1), PRIMARY KEY(K));
-tabletableparenthesis ok
-existing table: T
-existing table: S
-key K
-column name K
-INSERT INTO T VALUES(1,1,'A');
-executing  INSERT INTO T VALUES(1,1,'A');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO T VALUES(2,1,'A');
-executing  INSERT INTO T VALUES(2,1,'A');
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO T VALUES(1,1,'A');
-executing  INSERT INTO T VALUES(1,1,'A');
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO T VALUES(2,1,'A');
-executing  INSERT INTO T VALUES(2,1,'A');
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO T VALUES(3,2,'A');
-executing  INSERT INTO T VALUES(3,2,'A');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO T VALUES(4,3,'A');
-executing  INSERT INTO T VALUES(4,3,'A');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO T VALUES(5,4,'A');
-executing  INSERT INTO T VALUES(5,4,'A');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO T VALUES(6,1,'B');
-executing  INSERT INTO T VALUES(6,1,'B');
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO T VALUES(7,1,'C');
-executing  INSERT INTO T VALUES(7,1,'C');
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO T VALUES(8,5,'a');
-executing  INSERT INTO T VALUES(8,5,'a');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO T VALUES(9,6,'a');
-executing  INSERT INTO T VALUES(9,6,'a');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO T VALUES(3,2,'Ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh’);
-executing  INSERT INTO T VALUES(3,2,'Ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh’);
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO S VALUES(2,1,'ABA');
-executing  INSERT INTO S VALUES(2,1,'ABA');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO S VALUES(1,1,’ACA');
-executing  INSERT INTO S VALUES(1,1,’ACA');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO S VALUES(1,1,’ADA');
-executing  INSERT INTO S VALUES(1,1,’ADA');
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO S VALUES(5,1,'ACM');
-executing  INSERT INTO S VALUES(5,1,'ACM');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO S VALUES(6,1,'mba');
-executing  INSERT INTO S VALUES(6,1,'mba');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO S VALUES(1,1,’ABC');
-executing  INSERT INTO S VALUES(1,1,’ABC');
-tabletabletableparenthesis ok
-duplicate primary keyValues Inserted
-INSERT INTO S VALUES(8,3,'ABA');
-executing  INSERT INTO S VALUES(8,3,'ABA');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO S VALUES(9,2,'AAA');
-executing  INSERT INTO S VALUES(9,2,'AAA');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO S VALUES(0,3,'BBB');
-executing  INSERT INTO S VALUES(0,3,'BBB');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO Z VALUES(8,'D'); 
-executing  INSERT INTO Z VALUES(8,'D');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO Z VALUES(9,'D'); 
-executing   INSERT INTO Z VALUES(9,'D');
-tabletabletableparenthesis ok
-Values Inserted
-INSERT INTO Z VALUES(10,'D');
-executing   INSERT INTO Z VALUES(10,'D');
-tabletabletableparenthesis ok
-Values Inserted
-SELECT A, C, D FROM T JOIN S ON T.A=S.I;
-executing  SELECT A, C, D FROM T JOIN S ON T.A=S.I;
-tabletabletableparenthesis ok
-iPosJoin 23 T J
-iPosLParen 18446744073709551615
-checking join clause
-end printall
-printing all
-select cols A,C,D
-from table T 
-temp table 
-join table S
-join filter T.A=S.I
-where filter 
-orderBy 
-groupBy 
+TABLE T created successfully
+INSERT INTO T VALUES(1,'A');
+executing  INSERT INTO T VALUES(1,'A');
+INSERT INTO T VALUES(2,'A');
+executing  INSERT INTO T VALUES(2,'A');
+INSERT INTO T VALUES(3,'A');
+executing  INSERT INTO T VALUES(3,'A');
+INSERT INTO T VALUES(4,'A');
+executing  INSERT INTO T VALUES(4,'A');
+INSERT INTO T VALUES(9,'A');
+executing  INSERT INTO T VALUES(9,'A');
+INSERT INTO T VALUES(6,'B');
+executing  INSERT INTO T VALUES(6,'B');
+INSERT INTO T VALUES(7,'C');
+executing  INSERT INTO T VALUES(7,'C');
+INSERT INTO T VALUES(8,'a');
+executing  INSERT INTO T VALUES(8,'a');
+INSERT INTO T VALUES(9,'a');
+executing  INSERT INTO T VALUES(9,'a');
+ERROR: duplicate primary keyINSERT INTO T VALUES(10,'A');
+executing  INSERT INTO T VALUES(10,'A');
+INSERT INTO T VALUES(12,'A');
+executing  INSERT INTO T VALUES(12,'A');
+INSERT INTO T VALUES(13,'A');
+executing  INSERT INTO T VALUES(13,'A');
+INSERT INTO T VALUES(14,'A');
+executing  INSERT INTO T VALUES(14,'A');
+INSERT INTO T VALUES(15,'A');
+executing  INSERT INTO T VALUES(15,'A');
+INSERT INTO T VALUES(16,'B');
+executing  INSERT INTO T VALUES(16,'B');
+INSERT INTO T VALUES(17,'C');
+executing  INSERT INTO T VALUES(17,'C');
+INSERT INTO T VALUES(18,'a');
+executing  INSERT INTO T VALUES(18,'a');
+INSERT INTO T VALUES(19,'a');
+executing  INSERT INTO T VALUES(19,'a');
+INSERT INTO T VALUES(20,'A');
+executing  INSERT INTO T VALUES(20,'A');
+INSERT INTO T VALUES(21,'A');
+executing  INSERT INTO T VALUES(21,'A');
+INSERT INTO T VALUES(22,'A');
+executing  INSERT INTO T VALUES(22,'A');
+INSERT INTO T VALUES(23,'A');
+executing  INSERT INTO T VALUES(23,'A');
+INSERT INTO T VALUES(24,'A');
+executing  INSERT INTO T VALUES(24,'A');
+INSERT INTO T VALUES(25,'A');
+executing  INSERT INTO T VALUES(25,'A');
+INSERT INTO T VALUES(26,'B');
+executing  INSERT INTO T VALUES(26,'B');
+INSERT INTO T VALUES(27,'C');
+executing  INSERT INTO T VALUES(27,'C');
+INSERT INTO T VALUES(28,'a');
+executing  INSERT INTO T VALUES(28,'a');
+INSERT INTO T VALUES(29,'a');
+executing  INSERT INTO T VALUES(29,'a');
+INSERT INTO T VALUES(30,'a');
+executing  INSERT INTO T VALUES(30,'a');
+INSERT INTO T VALUES(31,'A');
+executing  INSERT INTO T VALUES(31,'A');
+INSERT INTO T VALUES(32,'A');
+executing  INSERT INTO T VALUES(32,'A');
+INSERT INTO T VALUES(33,'A');
+executing  INSERT INTO T VALUES(33,'A');
+INSERT INTO T VALUES(34,'A');
+executing  INSERT INTO T VALUES(34,'A');
+INSERT INTO T VALUES(35,'A');
+executing  INSERT INTO T VALUES(35,'A');
+INSERT INTO T VALUES(36,'B');
+executing  INSERT INTO T VALUES(36,'B');
+INSERT INTO T VALUES(37,'C');
+executing  INSERT INTO T VALUES(37,'C');
+INSERT INTO T VALUES(38,'a');
+executing  INSERT INTO T VALUES(38,'a');
+INSERT INTO T VALUES(40,'a');
+executing  INSERT INTO T VALUES(40,'a');
+select * from t;
+executing  SELECT * FROM T;
 current/original table:
 
- ---------------------------------------------------------------------
+ ----------------------------------------------
  | T
- +----------------------+----------------------+----------------------
- | K                    | *A*                  | C                   
- +----------------------+----------------------+----------------------
- | 1                    | 1                    | A                   
- +----------------------+----------------------+----------------------
- | 3                    | 2                    | A                   
- +----------------------+----------------------+----------------------
- | 4                    | 3                    | A                   
- +----------------------+----------------------+----------------------
- | 5                    | 4                    | A                   
- +----------------------+----------------------+----------------------
- | 8                    | 5                    | a                   
- +----------------------+----------------------+----------------------
- | 9                    | 6                    | a                   
- +----------------------+----------------------+----------------------
+ +----------------------+----------------------
+ | *A*                  | C                   
+ +----------------------+----------------------
+ | 1                    | A                   
+ +----------------------+----------------------
+ | 2                    | A                   
+ +----------------------+----------------------
+ | 3                    | A                   
+ +----------------------+----------------------
+ | 4                    | A                   
+ +----------------------+----------------------
+ | 9                    | A                   
+ +----------------------+----------------------
+ | 6                    | B                   
+ +----------------------+----------------------
+ | 7                    | C                   
+ +----------------------+----------------------
+ | 8                    | a                   
+ +----------------------+----------------------
+ | 10                   | A                   
+ +----------------------+----------------------
+ | 12                   | A                   
+ +----------------------+----------------------
+ | 13                   | A                   
+ +----------------------+----------------------
+ | 14                   | A                   
+ +----------------------+----------------------
+ | 15                   | A                   
+ +----------------------+----------------------
+ | 16                   | B                   
+ +----------------------+----------------------
+ | 17                   | C                   
+ +----------------------+----------------------
+ | 18                   | a                   
+ +----------------------+----------------------
+ | 19                   | a                   
+ +----------------------+----------------------
+ | 20                   | A                   
+ +----------------------+----------------------
+ | 21                   | A                   
+ +----------------------+----------------------
+ | 22                   | A                   
+ +----------------------+----------------------
+ | 23                   | A                   
+ +----------------------+----------------------
+ | 24                   | A                   
+ +----------------------+----------------------
+ | 25                   | A                   
+ +----------------------+----------------------
+ | 26                   | B                   
+ +----------------------+----------------------
+ | 27                   | C                   
+ +----------------------+----------------------
+ | 28                   | a                   
+ +----------------------+----------------------
+ | 29                   | a                   
+ +----------------------+----------------------
+ | 30                   | a                   
+ +----------------------+----------------------
+ | 31                   | A                   
+ +----------------------+----------------------
+ | 32                   | A                   
+ +----------------------+----------------------
+ | 33                   | A                   
+ +----------------------+----------------------
+ | 34                   | A                   
+ +----------------------+----------------------
+ | 35                   | A                   
+ +----------------------+----------------------
+ | 36                   | B                   
+ +----------------------+----------------------
+ | 37                   | C                   
+ +----------------------+----------------------
+ | 38                   | a                   
+ +----------------------+----------------------
+ | 40                   | a                   
+ +----------------------+----------------------
 
-join table:
+tPhseOneTable:
 
- ---------------------------------------------------------------------
- | S
- +----------------------+----------------------+----------------------
- | *I*                  | B                    | D                   
- +----------------------+----------------------+----------------------
- | 2                    | 1                    | ABA                 
- +----------------------+----------------------+----------------------
- | 1                    | 1                    | ACA                 
- +----------------------+----------------------+----------------------
- | 5                    | 1                    | ACM                 
- +----------------------+----------------------+----------------------
- | 6                    | 1                    | mba                 
- +----------------------+----------------------+----------------------
- | 8                    | 3                    | ABA                 
- +----------------------+----------------------+----------------------
- | 9                    | 2                    | AAA                 
- +----------------------+----------------------+----------------------
- | 0                    | 3                    | BBB                 
- +----------------------+----------------------+----------------------
-
-tPhseOneTableFromOriginalTable:
-
- ---------------------------------------------------------------------
+ ----------------------------------------------
  | wT
- +----------------------+----------------------+----------------------
- | K                    | *A*                  | C                   
- +----------------------+----------------------+----------------------
- | 1                    | 1                    | A                   
- +----------------------+----------------------+----------------------
- | 3                    | 2                    | A                   
- +----------------------+----------------------+----------------------
- | 4                    | 3                    | A                   
- +----------------------+----------------------+----------------------
- | 5                    | 4                    | A                   
- +----------------------+----------------------+----------------------
- | 8                    | 5                    | a                   
- +----------------------+----------------------+----------------------
- | 9                    | 6                    | a                   
- +----------------------+----------------------+----------------------
+ +----------------------+----------------------
+ | *A*                  | C                   
+ +----------------------+----------------------
+ | 1                    | A                   
+ +----------------------+----------------------
+ | 2                    | A                   
+ +----------------------+----------------------
+ | 3                    | A                   
+ +----------------------+----------------------
+ | 4                    | A                   
+ +----------------------+----------------------
+ | 9                    | A                   
+ +----------------------+----------------------
+ | 6                    | B                   
+ +----------------------+----------------------
+ | 7                    | C                   
+ +----------------------+----------------------
+ | 8                    | a                   
+ +----------------------+----------------------
+ | 10                   | A                   
+ +----------------------+----------------------
+ | 12                   | A                   
+ +----------------------+----------------------
+ | 13                   | A                   
+ +----------------------+----------------------
+ | 14                   | A                   
+ +----------------------+----------------------
+ | 15                   | A                   
+ +----------------------+----------------------
+ | 16                   | B                   
+ +----------------------+----------------------
+ | 17                   | C                   
+ +----------------------+----------------------
+ | 18                   | a                   
+ +----------------------+----------------------
+ | 19                   | a                   
+ +----------------------+----------------------
+ | 20                   | A                   
+ +----------------------+----------------------
+ | 21                   | A                   
+ +----------------------+----------------------
+ | 22                   | A                   
+ +----------------------+----------------------
+ | 23                   | A                   
+ +----------------------+----------------------
+ | 24                   | A                   
+ +----------------------+----------------------
+ | 25                   | A                   
+ +----------------------+----------------------
+ | 26                   | B                   
+ +----------------------+----------------------
+ | 27                   | C                   
+ +----------------------+----------------------
+ | 28                   | a                   
+ +----------------------+----------------------
+ | 29                   | a                   
+ +----------------------+----------------------
+ | 30                   | a                   
+ +----------------------+----------------------
+ | 31                   | A                   
+ +----------------------+----------------------
+ | 32                   | A                   
+ +----------------------+----------------------
+ | 33                   | A                   
+ +----------------------+----------------------
+ | 34                   | A                   
+ +----------------------+----------------------
+ | 35                   | A                   
+ +----------------------+----------------------
+ | 36                   | B                   
+ +----------------------+----------------------
+ | 37                   | C                   
+ +----------------------+----------------------
+ | 38                   | a                   
+ +----------------------+----------------------
+ | 40                   | a                   
+ +----------------------+----------------------
 
-tPhseOneTableFromJoinTable:
+tableName: wT
+colNames: *
 
- ---------------------------------------------------------------------
- | wS
- +----------------------+----------------------+----------------------
- | *I*                  | B                    | D                   
- +----------------------+----------------------+----------------------
- | 2                    | 1                    | ABA                 
- +----------------------+----------------------+----------------------
- | 1                    | 1                    | ACA                 
- +----------------------+----------------------+----------------------
- | 5                    | 1                    | ACM                 
- +----------------------+----------------------+----------------------
- | 6                    | 1                    | mba                 
- +----------------------+----------------------+----------------------
- | 8                    | 3                    | ABA                 
- +----------------------+----------------------+----------------------
- | 9                    | 2                    | AAA                 
- +----------------------+----------------------+----------------------
- | 0                    | 3                    | BBB                 
- +----------------------+----------------------+----------------------
-
-join between tables: wT and wS
-leftSideCondition: T.A
-rightSideCondition: S.I
-leftTable T
-leftColumn A
-rightTable S
-rightColumn I
-get<1>(vJoinTableColumn[i]: I
-rightColumn: I
-get<1>(vJoinTableColumn[i]: B
-rightColumn: I
-get<1>(vJoinTableColumn[i]: D
-rightColumn: I
-
- -------------------------------------------------------------------------------------------------------------------
- | JwTwS
- +----------------------+----------------------+----------------------+----------------------+----------------------
- | K                    | *A*                  | C                    | B                    | D                   
- +----------------------+----------------------+----------------------+----------------------+----------------------
- | 1                    | 1                    | A                    | 1                    | ACA                 
- +----------------------+----------------------+----------------------+----------------------+----------------------
- | 3                    | 2                    | A                    | 1                    | ABA                 
- +----------------------+----------------------+----------------------+----------------------+----------------------
- | 8                    | 5                    | a                    | 1                    | ACM                 
- +----------------------+----------------------+----------------------+----------------------+----------------------
- | 9                    | 6                    | a                    | 1                    | mba                 
- +----------------------+----------------------+----------------------+----------------------+----------------------
-
-tableName: JwTwS
-colNames: A
-colNames: C
-colNames: D
-
- ---------------------------------------------------------------------
- | sJwTwS
- +----------------------+----------------------+----------------------
- | *A*                  | C                    | D                   
- +----------------------+----------------------+----------------------
- | 1                    | A                    | ACA                 
- +----------------------+----------------------+----------------------
- | 2                    | A                    | ABA                 
- +----------------------+----------------------+----------------------
- | 5                    | a                    | ACM                 
- +----------------------+----------------------+----------------------
- | 6                    | a                    | mba                 
- +----------------------+----------------------+----------------------
+ ----------------------------------------------
+ | swT
+ +----------------------+----------------------
+ | *A*                  | C                   
+ +----------------------+----------------------
+ | 1                    | A                   
+ +----------------------+----------------------
+ | 2                    | A                   
+ +----------------------+----------------------
+ | 3                    | A                   
+ +----------------------+----------------------
+ | 4                    | A                   
+ +----------------------+----------------------
+ | 9                    | A                   
+ +----------------------+----------------------
+ | 6                    | B                   
+ +----------------------+----------------------
+ | 7                    | C                   
+ +----------------------+----------------------
+ | 8                    | a                   
+ +----------------------+----------------------
+ | 10                   | A                   
+ +----------------------+----------------------
+ | 12                   | A                   
+ +----------------------+----------------------
+ | 13                   | A                   
+ +----------------------+----------------------
+ | 14                   | A                   
+ +----------------------+----------------------
+ | 15                   | A                   
+ +----------------------+----------------------
+ | 16                   | B                   
+ +----------------------+----------------------
+ | 17                   | C                   
+ +----------------------+----------------------
+ | 18                   | a                   
+ +----------------------+----------------------
+ | 19                   | a                   
+ +----------------------+----------------------
+ | 20                   | A                   
+ +----------------------+----------------------
+ | 21                   | A                   
+ +----------------------+----------------------
+ | 22                   | A                   
+ +----------------------+----------------------
+ | 23                   | A                   
+ +----------------------+----------------------
+ | 24                   | A                   
+ +----------------------+----------------------
+ | 25                   | A                   
+ +----------------------+----------------------
+ | 26                   | B                   
+ +----------------------+----------------------
+ | 27                   | C                   
+ +----------------------+----------------------
+ | 28                   | a                   
+ +----------------------+----------------------
+ | 29                   | a                   
+ +----------------------+----------------------
+ | 30                   | a                   
+ +----------------------+----------------------
+ | 31                   | A                   
+ +----------------------+----------------------
+ | 32                   | A                   
+ +----------------------+----------------------
+ | 33                   | A                   
+ +----------------------+----------------------
+ | 34                   | A                   
+ +----------------------+----------------------
+ | 35                   | A                   
+ +----------------------+----------------------
+ | 36                   | B                   
+ +----------------------+----------------------
+ | 37                   | C                   
+ +----------------------+----------------------
+ | 38                   | a                   
+ +----------------------+----------------------
+ | 40                   | a                   
+ +----------------------+----------------------
 
 after sorting:
+tempsort1
+301
+2
+3
+4
+6
+7
+8
+9
+10
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+tempsort2
+733
+34
+35
+36
+37
+38
+40
+1
+tempsort1present
+0
+1
+2
+3
+4
+6
+7
+8
+9
+10
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+30tempsortf2
+asdfasftempsort2present
+30
+entered else30
+7
+0001
+12
+23
+34
+46
+57
+68
+79
+810
+912
+1013
+1114
+1215
+1316
+1417
+1518
+1619
+1720
+1821
+1922
+2023
+2124
+2225
+2326
+2427
+2528
+2629
+2730
+2831
+2932
+
+add3030
+07
+enter 2enter 2enter 2enter 2enter 2enter 2enter 2tempsortf37
+ ----------------------------------------------
+ | tempsortf
+ +----------------------+----------------------
+ | *A*                  | C                   
+ +----------------------+----------------------
+ | 1                    | A                   
+ +----------------------+----------------------
+ | 2                    | A                   
+ +----------------------+----------------------
+ | 3                    | A                   
+ +----------------------+----------------------
+ | 4                    | A                   
+ +----------------------+----------------------
+ | 6                    | B                   
+ +----------------------+----------------------
+ | 7                    | C                   
+ +----------------------+----------------------
+ | 8                    | a                   
+ +----------------------+----------------------
+ | 9                    | A                   
+ +----------------------+----------------------
+ | 10                   | A                   
+ +----------------------+----------------------
+ | 12                   | A                   
+ +----------------------+----------------------
+ | 13                   | A                   
+ +----------------------+----------------------
+ | 14                   | A                   
+ +----------------------+----------------------
+ | 15                   | A                   
+ +----------------------+----------------------
+ | 16                   | B                   
+ +----------------------+----------------------
+ | 17                   | C                   
+ +----------------------+----------------------
+ | 18                   | a                   
+ +----------------------+----------------------
+ | 19                   | a                   
+ +----------------------+----------------------
+ | 20                   | A                   
+ +----------------------+----------------------
+ | 21                   | A                   
+ +----------------------+----------------------
+ | 22                   | A                   
+ +----------------------+----------------------
+ | 23                   | A                   
+ +----------------------+----------------------
+ | 24                   | A                   
+ +----------------------+----------------------
+ | 25                   | A                   
+ +----------------------+----------------------
+ | 26                   | B                   
+ +----------------------+----------------------
+ | 27                   | C                   
+ +----------------------+----------------------
+ | 28                   | a                   
+ +----------------------+----------------------
+ | 29                   | a                   
+ +----------------------+----------------------
+ | 30                   | a                   
+ +----------------------+----------------------
+ | 31                   | A                   
+ +----------------------+----------------------
+ | 32                   | A                   
+ +----------------------+----------------------
+ | 33                   | A                   
+ +----------------------+----------------------
+ | 34                   | A                   
+ +----------------------+----------------------
+ | 35                   | A                   
+ +----------------------+----------------------
+ | 36                   | B                   
+ +----------------------+----------------------
+ | 37                   | C                   
+ +----------------------+----------------------
+ | 38                   | a                   
+ +----------------------+----------------------
+ | 40                   | a                   
+ +----------------------+----------------------
+
+File successfully deleted
+File successfully deleted
 remaining tables: T
-remaining tables: S
-remaining tables: Z
+remaining tables: tempsort1
+remaining tables: tempsort2
+remaining tables: tempsortf
 select Successful?: 1
+select C from T
+order by K;
+executing  SELECT C FROM T ORDER BY K;
 select Successful?: 1
-Select found
-Quit;
-executing  QUIT;
-tabletabletableparenthesis ok
-Finished
+Quit
+ERROR:  QUIT not executed. No semicolon could be found.
+ERROR:  QUIT not executed. No semicolon could be found.
+ERROR:  QUIT not executed. No semicolon could be found.
+ERROR:  QUIT not executed. No semicolon could be found.
+ERROR:  QUIT not executed. No semicolon could be found.
 Finished reading sql script
->>>>>>> Stashed changes

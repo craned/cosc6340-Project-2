@@ -17,6 +17,8 @@
 #include "Table.h"
 #include "Utilities.h"
 #include "SortTable.h"
+#include <stdlib.h>
+#include <ctype.h>
 using namespace std;
 
 class Engine {
@@ -46,15 +48,18 @@ class Engine {
     Table whereClause(Table tCurrentTable,string whereFilter);
     Table selectClause(Table tNewTable,vector < string > colNames, Table originalTable,string tempTable, bool &returnBool);
     Table joinClause(Table originalTable,Table joinTable,string joinFilter, bool &returnBool);
+    int sum(string tableName, string columnName);
     //string delSpaces(string str);
     void writetofile();
     void read();
     bool createValidate(string sLineIn,string sTableNameIn);
 	void executeQuit();
     static bool sortbyp(const SortTable &lhs,const SortTable &rhs);
-    void sortp(string sTableNameIn);
+    void sortp(string sTableNameIn,int key);
     void insertFromSelect(string sTableNameFrom, string sTableNameTo );
     bool insertselectValidate(Table fromTable, Table toTable);
+    bool is_number(const std::string& s);
+     static bool sortbyi(const SortTable &lhs,const SortTable &rhs);
 	};
 
 #endif

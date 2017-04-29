@@ -1,0 +1,8 @@
+
+script03.sql
+SELECT J,K
+FROM R
+WHERE J=0;
+executing  SELECT J,K FROM R WHERE J=0;
+select Successful?: 1
+Finished reading sql script
