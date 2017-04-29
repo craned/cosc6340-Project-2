@@ -1,7 +1,7 @@
 /*******************************************************************************
  File: Table.cpp
 
- Author:Amirreza Shirani
+ Author: Devin Crane
  *******************************************************************************/
 
 #include "Parser.h"
@@ -112,22 +112,20 @@ string Parser::removeSpaces(string sLineIn)
 }
 
 /*******************************************************************************
- Parse the line in and call the appropiate functions
+ Parser hub that determines the appropriate parser function to call
  *******************************************************************************/
 int Parser::parse(string sLineIn)
 {
 	nestedLevel = 0;
-  //Declare and initialize variables
-  //string sTemp;
 
-    //Output the line we are working with so we know we have the parsing correct
-    //printf("\n%s\n", sLineIn.c_str());
     origQuery = sLineIn;
     sLineIn = findAndReplaceSum(sLineIn);
+    // Confirm matching parentheses
     if (!checkParenthesis(sLineIn)) {
   		cout << "ERROR: the parentheses do not match" << endl;
   		return 0;
   	}
+  	// Confirm semicolon existence
     if (!semicolonExists(sLineIn)) {
   		cout << "ERROR: there is no semicolon" << endl;
   		return 0;
@@ -159,6 +157,7 @@ int Parser::parse(string sLineIn)
 	return 1;
 }
 
+// Confirm semicolon existence
 bool Parser::semicolonExists(string sLineIn) 
 {
 	size_t semicolon = sLineIn.find(";");
@@ -168,13 +167,14 @@ bool Parser::semicolonExists(string sLineIn)
 	return true;
 }
 
+// Give dbms read access through parser
 void Parser::read(){
 	e.read();
 }
 
 /*******************************************************************************
  Function that sees if CREATE TABLE is in the string and executes the command
- correct format = CREATE TABLE () PRIMARY KEY ()
+ correct format = CREATE TABLE T (COlUMNS, PRIMARY KEY ())
  *******************************************************************************/
 bool Parser::findCreateTable(string sLineIn)
 {
@@ -185,9 +185,10 @@ bool Parser::findCreateTable(string sLineIn)
     {
         size_t iPosEnd = sLineIn.find("(", iPosStart + 1);
 
-        //execute if '(' was found in the string
+        //Opening paren must be found in the string
         if (iPosEnd != string::npos)
         {
+        	// Advance pointer
         	iPosStart += 12;
         
             //get the table name
@@ -206,18 +207,18 @@ bool Parser::findCreateTable(string sLineIn)
             //Execute if primary key was found in string
             if (iPosEnd != string::npos)
             {
-                //get the column names
+                //Get the column names
                 string sColumns = sLineIn.substr(iPosStart,
                                                  iPosEnd - iPosStart);
 
                 cout << "columns " << sColumns << endl;
 
-                //reposition the position values
+                //Reposition the pointer//*** resume comments
                 iPosStart = iPosEnd;
                 iPosStart = sLineIn.find("(", iPosEnd) + 1;
                 iPosEnd = sLineIn.find(")", iPosStart);
 
-                //execute if ')' was found in the string
+                //Execute if close paren was found in the string
                 if (iPosEnd != string::npos)
                 {
                     //get the primary keys
@@ -487,7 +488,9 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 							selectQ.getTempTable(),
 							selectQ.getWhereFilter(),
  							selectQ.getJoinTable(),
-	                  		selectQ.getJoinFilter());//*/
+	                  		selectQ.getJoinFilter(),
+	                  		selectQ.getGroupBy(),
+	                  		selectQ.getOrderBy());//*/
 	        
 	        if (!result) {
 	        	return false;

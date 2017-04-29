@@ -40,7 +40,8 @@ class Engine {
     void getRow(string sTableNameIn,int iIndex);
     bool executeSelect(string tableName, vector < string > colNames,
     				   string tempTable, string whereFilter,
-                       string joinTable, string joinFilter);
+                       string joinTable, string joinFilter,
+                       string groupBy, string orderBy);
     void deleteATable(string tableName);
     static int convertCharToInt(char* val);
     void deleteATable(Table table);
