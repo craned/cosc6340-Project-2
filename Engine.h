@@ -58,7 +58,7 @@ class Engine {
     bool createValidate(string sLineIn,string sTableNameIn);
 	void executeQuit();
     static bool sortbyp(const SortTable &lhs,const SortTable &rhs);
-    void sortp(string sTableNameIn,int key);
+    string sortp(string sTableNameIn,int key);
     void insertFromSelect(string sTableNameFrom, string sTableNameTo );
     bool insertselectValidate(Table fromTable, Table toTable);
     bool is_number(const std::string& s);
