@@ -42,6 +42,6 @@ INSERT INTO T VALUES(37,'C');
 INSERT INTO T VALUES(38,'a');
 INSERT INTO T VALUES(40,'a');*/
 select * from t;
-select * from T
-order by C;
+select SUM(A) from T
+GROUP by C;
 Quit;
