@@ -1,6 +1,12 @@
 tablename=T
 column=K:INT,A:INT,C:CHAR(1)
-primarykey=A
+primarykey=K
 recordsize=12
-totalsize=60
-records=5
+totalsize=96
+records=8
+tablename=S
+column=I:INT,B:INT,D:CHAR(3)
+primarykey=I
+recordsize=12
+totalsize=120
+records=10

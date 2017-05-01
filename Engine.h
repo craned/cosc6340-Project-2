@@ -49,7 +49,7 @@ class Engine {
     void dropTable(string sTableNameIn);
     Table whereClause(string tCurrentTableStr,string whereFilter);
     Table selectClause(string tNewTableStr,vector < string > colNames, string originalTableStr, bool &returnBool);
-    Table joinClause(Table originalTable,Table joinTable,string joinFilter, bool &returnBool);
+    Table joinClause(string originalTableStr,string joinTableStr,string joinFilter, bool &returnBool);
     Table sum(Table tableName, string columnName, int foundColIndex,
     							string groupByCol, int foundGroupByIndex);
     //string delSpaces(string str);
