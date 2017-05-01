@@ -632,7 +632,7 @@ Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol
 	}
 	
 	// sort values by group by index
-	//sortp(currentTable.getTableName(), groupByIndex);
+	sortp(currentTable.getTableName(), groupByIndex);
 	
 	// find index of sum column
 	int sumColIndex = -1;
@@ -1187,12 +1187,22 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
     	return gBTable;
     }
     
+    int newSumIndex = 0;
+    int newGroupByIndex = 0;
+    if (colIndex < groupByIndex) {
+    	newGroupByIndex = 1;
+    } else if (groupByIndex < colIndex) {
+    	newSumIndex = 1;
+    }
+    
+    
     vector<tuple<int, string, bool,string, int>> vColumnNames = curTable.getColumnNames();
     
+    // check the index
 	for (int i = 0; i < vColumnNames.size(); i++) {
 		if (colIndex == get<0>(vColumnNames[i])) {
 			gBTable.addColumn(
-				make_tuple(i, 
+				make_tuple(newSumIndex, 
 						get<1>(vColumnNames[i]),
 						get<2>(vColumnNames[i]),
 						get<3>(vColumnNames[i]),
@@ -1203,7 +1213,7 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 	for (int i = 0; i < vColumnNames.size(); i++) {
 		if (groupByIndex == get<0>(vColumnNames[i])) {
 			gBTable.addColumn(
-				make_tuple(i,
+				make_tuple(newGroupByIndex,
 						get<1>(vColumnNames[i]),
 						get<2>(vColumnNames[i]),
 						get<3>(vColumnNames[i]),
@@ -1230,18 +1240,20 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 			if (groupByIndex == index) {
 		    	string curValue = get<1>(curRow[i]);
 		    	if (oldValue.compare(curValue) != 0) {
-					cout << "values are equal" << endl;
 		    		if (!oldValue.empty()) {
 			    		cout << "oldValue !empty" << endl;
 			            vector<tuple<int, string> > row;
-			            cout << "created empty row" << endl;
 						// loop over all rows
-						row.push_back(make_tuple(newIndex, to_string(sum)));// get<1> of row tuple (int, string)
+						cout << "newIndex " << newIndex << endl;
+						cout << "sum " << sum << endl;
+						row.push_back(make_tuple(newSumIndex, to_string(sum)));// get<1> of row tuple (int, string)
+						cout << "pushing " << oldValue << " index " << newIndex << endl;
+						row.push_back(make_tuple(newGroupByIndex, oldValue));
 						cout << "pushed row" << endl;
 						gBTable.addRow(row);
 						cout << "added row" << endl;
 			            newIndex++;
-		    			cout << "sum of rows " << oldValue << ":" << sum << endl;
+		    			cout << "sum of rows1 " << oldValue << ":" << sum << endl;
 		    		}
 		    		oldValue = curValue;
 		    		sum = 0;
@@ -1250,6 +1262,7 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 			}
 		}
     	
+    	// now find sum value
 		for (size_t i = 0; i < curRow.size(); i++) {
 			int index = get<0>(curRow[i]);
 			if (colIndex == index) {
@@ -1257,6 +1270,10 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 		    	string actualValue = get<1>(curRow[i]);
 		    	//cout << "actual value " << actualValue  << endl;
 		    	sum += stoi(actualValue);
+		    	
+		    	//if (j == (curTable.getTNumOfRecords()-1)) {
+		    	//}
+		    	
 		    	break;
 			}
 		    
@@ -1264,10 +1281,17 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 		}
     }
     
-    vector<std::tuple<int, std::string> > row;
-	row.push_back(make_tuple(newIndex, to_string(sum)));// get<1> of row tuple (int, string)
-	gBTable.addRow(row);
-    cout << "sum of rows " << oldValue << ":" << sum << endl;
+	vector<std::tuple<int, std::string> > rowEnd;
+	cout << "sum to string " << to_string(sum) << endl;
+	rowEnd.push_back(make_tuple(newSumIndex, to_string(sum)));
+	cout << "pushing " << oldValue << " index " << newIndex << endl;
+	rowEnd.push_back(make_tuple(newGroupByIndex, oldValue));
+	
+	//row.push_back(make_tuple(seq, get<1>(tNewTable.getRow(j)[l])));
+	gBTable.addRow(rowEnd);
+	cout << "sum of rows2 " << oldValue << ":" << sum << endl;
+    
+    gBTable.printOutTheWholeTable();
     
     return gBTable;
 }

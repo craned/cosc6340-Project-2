@@ -447,7 +447,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			if (iPosWhere != string::npos) {
 				iPosWhere += 5;
 				
-				if (iPosGroupBy != string::npos) { 
+				if (iPosGroupBy != string::npos) {
 					whereFilter = sLineIn.substr(iPosWhere, iPosGroupBy - iPosWhere); 
 				} else if (iPosOrderBy != string::npos) { 
 					whereFilter = sLineIn.substr(iPosWhere, iPosOrderBy - iPosWhere); 
