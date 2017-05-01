@@ -1,12 +1,12 @@
-SELECT * FROM T where C='A' group BY 'test' ORDER BY 'test1';
-SELECT * FROM T where C='A';
-SELECT * FROM T where C='A' ORDER BY 'test1';
-SELECT * FROM T where C='A' group BY 'test';
-SELECT * FROM T group BY 'test';
-SELECT * FROM T order BY 'test';
-SELECT * FROM T join u on a=6 group BY 'test';
-SELECT * FROM T join u on a=6 order BY 'test';
-select x.k,y.c,x.c
-from (select * from t where c='a') x
-join (select k, c from z) y on y.k=x.k;
+CREATE TABLE T (K INT, A INT, C CHAR(1), PRIMARY KEY(K));
+INSERT INTO T VALUES(1,1,'A');
+INSERT INTO T VALUES(2,1,'A');
+INSERT INTO T VALUES(3,2,'A');
+INSERT INTO T VALUES(4,3,'A');
+INSERT INTO T VALUES(9,4,’A’);
+INSERT INTO T VALUES(6,1,'B');
+INSERT INTO T VALUES(7,1,'C');
+INSERT INTO T VALUES(8,5,'a');
+INSERT INTO T VALUES(9,6,'a');
+SELECT * 
 Quit;

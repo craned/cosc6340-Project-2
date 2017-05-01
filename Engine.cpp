@@ -223,41 +223,29 @@ int Engine::convertCharToInt(char* val)
 }
 
 /******************************************************************************/
-Table Engine::whereClause(Table tCurrentTable, string whereFilter){
+Table Engine::whereClause(string tCurrentTableStr, string whereFilter){
 
-    string sTableNameOut = "w"+tCurrentTable.getTableName();
+    Table tCurrentTable;
+    for(int h=0; h<vTableList.size();h++){
+        if(vTableList[h].getTableName()==tCurrentTableStr){
+            tCurrentTable=vTableList[h];
+        }
+    }
+
+    string sTableNameOut = "w"+ tCurrentTableStr;
     Table tNewTable(sTableNameOut);
     tNewTable.setTNumOfRecords(0);
 
     if(whereFilter!="") {
-        //cout << "where in table: " << tCurrentTable.getTableName() << endl;
-        //spliting up the where condition
         string delimiter = "=";
         string leftSideCondition = whereFilter.substr(0, whereFilter.find(delimiter));
         string rightSideCondition = whereFilter.substr(whereFilter.find(delimiter) + delimiter.length(),
                                                        whereFilter.length());
-        //cout << "leftSideCondition " << leftSideCondition << endl;
-        //cout << "rightSideCondition " << rightSideCondition << endl;
-        string tableName ="";// tCurrentTable.getTableName();
-        string columnName = leftSideCondition;
-        std::size_t foundDOT = whereFilter.find(".", 0);
-        //if it has a DOT
-        if (foundDOT != std::string::npos) {
-            cout << "where is in the form of TABLE.COLUMN" << endl;
-            //seperate
-            string delimiterDot = ".";
-            tableName = leftSideCondition.substr(0, leftSideCondition.find(delimiterDot));
-            columnName = leftSideCondition.substr(leftSideCondition.find(delimiterDot) + delimiterDot.length(),
-                                                  leftSideCondition.length());
-        }else{
-            for(int j=0;j<tCurrentTable.getColumnNames().size();j++){
-                if(columnName==get<1>(tCurrentTable.getColumnNames()[j])){
-                    tableName=tCurrentTable.getTableName();
-                }
-            }
-        }
+        string tableName = "";
+        tableName= realTableVal(leftSideCondition);
+        string columnName = realColVal(leftSideCondition);
 
-        if (tableName == tCurrentTable.getTableName()) {
+        if (tableName == tCurrentTableStr or tableName=="") {
             int iColumnIndex = -1;
             //Input the column names and types into the new table, then determine
             //the rows to copy over
@@ -295,53 +283,63 @@ Table Engine::whereClause(Table tCurrentTable, string whereFilter){
             //not for this table:
         else{
             cout<<"ERROR: " << columnName <<" does not exist in table "<< tCurrentTable.getTableName()<<endl;
-            //add columns:
-            vector<tuple<int, string, bool, string, int> > vNames =
-                    tCurrentTable.getColumnNames();
-            for (size_t a = 0; a < vNames.size(); ++a) {
-                if ((int) a == get<0>(vNames[a])) {
-                    tNewTable.addColumn(vNames[a]);
-                }
-            }
-            //adding rows
-            for(int i=0; i<tCurrentTable.getTNumOfRecords(); i++){
-                tNewTable.addRow(tCurrentTable.getRow(i));
-            }
-            return tNewTable;
+//            //add columns:
+//            vector<tuple<int, string, bool, string, int> > vNames =
+//                    tCurrentTable.getColumnNames();
+//            for (size_t a = 0; a < vNames.size(); ++a) {
+//                if ((int) a == get<0>(vNames[a])) {
+//                    tNewTable.addColumn(vNames[a]);
+//                }
+//            }
+//            //adding rows
+//            for(int i=0; i<tCurrentTable.getTNumOfRecords(); i++){
+//                tNewTable.addRow(tCurrentTable.getRow(i));
+//            }
+//            return tNewTable;
         }
 
     }
-    //has no where filter:
-    else{
-        //add columns:
-        vector<tuple<int, string, bool, string, int> > vNames =
-                tCurrentTable.getColumnNames();
-        for (size_t a = 0; a < vNames.size(); ++a) {
-            if ((int) a == get<0>(vNames[a])) {
-                tNewTable.addColumn(vNames[a]);
-            }
-        }
-        //adding rows
-        for(int i=0; i<tCurrentTable.getTNumOfRecords(); i++){
-            tNewTable.addRow(tCurrentTable.getRow(i));
-        }
-        return tNewTable;
-    }
+//    //has no where filter:
+//    else{
+//        //add columns:
+//        vector<tuple<int, string, bool, string, int> > vNames =
+//                tCurrentTable.getColumnNames();
+//        for (size_t a = 0; a < vNames.size(); ++a) {
+//            if ((int) a == get<0>(vNames[a])) {
+//                tNewTable.addColumn(vNames[a]);
+//            }
+//        }
+//        //adding rows
+//        for(int i=0; i<tCurrentTable.getTNumOfRecords(); i++){
+//            tNewTable.addRow(tCurrentTable.getRow(i));
+//        }
+//        return tNewTable;
+//    }
 
 }
 /******************************************************************************/
-Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table originalTable, string tempTable, bool &returnBool){
-    
+Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTableStr, bool &returnBool){
 
+
+    Table tNewTable;
+    Table originalTable;
+    for(int p=0;p<vTableList.size();p++){
+        if(vTableList[p].getTableName()==tNewTableStr){
+            tNewTable=vTableList[p];
+        }
+        if(vTableList[p].getTableName()==originalTableStr){
+            originalTable=vTableList[p];
+        }
+    }
 //    cout<<"tableName: "<<tNewTable.getTableName()<<endl;
 //    for(size_t i=0;i<colNames.size();i++){
 //        cout<<"colNames: "<<colNames[i]<<endl;
 //    }
-    string name = "s"+tNewTable.getTableName();
-    if(tempTable!=""){
-        name=tempTable;
-        vSTemplist.push_back(tempTable);
-    }
+    string name = "s"+tNewTableStr;
+//    if(tempTable!=""){
+//        name=tempTable;
+//        vSTemplist.push_back(tempTable);
+//    }
     //make a temp table
 
     Table tNewNewTable(name);
@@ -365,43 +363,45 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
 
         for (size_t x = 0; x < colNames.size(); x++) {
             bool isColumnFound=false;
-            std::size_t foundDOT =colNames[x].find(".",0);
-            //if it has a DOT
-            if (foundDOT != std::string::npos) {
-                cout<<"select is in the form of TABLE.COLUMN"<<endl;
-                //seperate
-                string delimiter = ".";
-                string tableName = colNames[x].substr(0, colNames[x].find(delimiter));
-                string columnName = colNames[x].substr(colNames[x].find(delimiter) + delimiter.length(),
-                                                       colNames[x].length());
-                //if this is the first table:
-
-                //string originalTableName="w"+originalTable.getTableName();
+            string tableName = "";
+            string columnName = "";
+            tableName = realTableVal(colNames[x]);
+            columnName = realColVal(colNames[x]);
+//            std::size_t foundDOT =colNames[x].find(".",0);
+//            //if it has a DOT
+//            if (foundDOT != std::string::npos) {
+//                cout<<"select is in the form of TABLE.COLUMN"<<endl;
+//                //seperate
+//                string delimiter = ".";
+//                string tableName = colNames[x].substr(0, colNames[x].find(delimiter));
+//                string columnName = colNames[x].substr(colNames[x].find(delimiter) + delimiter.length(),
+//                                                       colNames[x].length());
+//                //if this is the first table:
+//
+//                //string originalTableName="w"+originalTable.getTableName();
                 string wtableName="w"+tableName;
                 cout<<"tableName "<<tableName<<endl;
                 cout<<"originalTable.getTableName() "<<originalTable.getTableName()<<endl;
-                if((tableName)== originalTable.getTableName() or wtableName==originalTable.getTableName()){
-
-                    cout<<"columnName "<<columnName<<endl;
-
+                if((tableName)== originalTable.getTableName() or wtableName==originalTable.getTableName() or tableName=="") {
+                    cout << "columnName " << columnName << endl;
                     for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
                         //cout<<"get<1>(tNewTable.getColumnNames()[i]) "<<get<1>(tNewTable.getColumnNames()[i])<<endl;
                         if (columnName == get<1>(tNewTable.getColumnNames()[i])) {
                             if (i < originalTable.getColumnNames().size()) {
                                 tNewNewTable.addColumn(
-                                                       make_tuple(seq, get<1>(tNewTable.getColumnNames()[i]),
-                                                                  get<2>(tNewTable.getColumnNames()[i]),
-                                                                  get<3>(tNewTable.getColumnNames()[i]),
-                                                                  get<4>(tNewTable.getColumnNames()[i])));
+                                        make_tuple(seq, get<1>(tNewTable.getColumnNames()[i]),
+                                                   get<2>(tNewTable.getColumnNames()[i]),
+                                                   get<3>(tNewTable.getColumnNames()[i]),
+                                                   get<4>(tNewTable.getColumnNames()[i])));
                                 seq++;
                                 indexes.push_back(get<0>(tNewTable.getColumnNames()[i]));
                                 isColumnFound = true;
                             }
                         }
                     }
-                    if (!isColumnFound){
+                    if (!isColumnFound) {
                         cout << "ERROR: wrong column selected for select-clause!" << endl;
-                        returnBool=false;
+                        returnBool = false;
                     }
                 }else{
                     for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
@@ -424,24 +424,24 @@ Table Engine::selectClause(Table tNewTable,vector < string > colNames, Table ori
                     }
                 }
                 //when we have no dot in select statement
-            } else {
-                for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
-                    if (colNames[x] == get<1>(tNewTable.getColumnNames()[i])) {
-                        tNewNewTable.addColumn(
-                                               make_tuple(seq, get<1>(tNewTable.getColumnNames()[i]),
-                                                          get<2>(tNewTable.getColumnNames()[i]),
-                                                          get<3>(tNewTable.getColumnNames()[i]),
-                                                          get<4>(tNewTable.getColumnNames()[i])));
-                        seq++;
-                        indexes.push_back(get<0>(tNewTable.getColumnNames()[i]));
-                        isColumnFound = true;
-                    }
-                }
-                if (!isColumnFound){
-                    cout << "ERROR: wrong column selected for select-clause!" << endl;
-                    returnBool=false;
-                }
-            }
+//            } else {
+//                for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
+//                    if (colNames[x] == get<1>(tNewTable.getColumnNames()[i])) {
+//                        tNewNewTable.addColumn(
+//                                               make_tuple(seq, get<1>(tNewTable.getColumnNames()[i]),
+//                                                          get<2>(tNewTable.getColumnNames()[i]),
+//                                                          get<3>(tNewTable.getColumnNames()[i]),
+//                                                          get<4>(tNewTable.getColumnNames()[i])));
+//                        seq++;
+//                        indexes.push_back(get<0>(tNewTable.getColumnNames()[i]));
+//                        isColumnFound = true;
+//                    }
+//                }
+//                if (!isColumnFound){
+//                    cout << "ERROR: wrong column selected for select-clause!" << endl;
+//                    returnBool=false;
+//                }
+//            }
         }
 
         for (int j = 0; j < tNewTable.getTNumOfRecords(); j++) {
@@ -701,154 +701,247 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     for(size_t k=0; k<colNames.size(); k++){
         colNames[k] = Utilities::cleanSpaces(colNames[k]);
     }
-    //cout << "SUM result: " << sum(sTableNameIn,"A", "") << endl;
-    //CHANGE IT:
-    //tempTable="";
+
+    ///////////
     bool returnBool= true;
-    if(joinFilter != "") {
-        for (size_t i = 0; i < vTableList.size(); ++i) {
-            Table tOriginalTable = vTableList[i];
-            //Execute if the table is found in the list
-            if (tOriginalTable.getTableName() == sTableNameIn) {
-                cout << "current/original table:" << endl;
-                tOriginalTable.printOutTheWholeTable();
-                for (size_t i = 0; i < vTableList.size(); ++i) {
-                    Table tJoinTable = vTableList[i];
-                    //Execute if the table is found in the list
-                    if (tJoinTable.getTableName() == joinTable) {
-                        cout << "join table:" << endl;
-                        //tJoinTable.printOutTheWholeTable();
-                        //1
-                        Table tPhseOneTableFromOriginalTable;
-                        Table tPhseOneTableFromJoinTable;
-                        tPhseOneTableFromOriginalTable = whereClause(tOriginalTable, whereFilter);
-                        tPhseOneTableFromJoinTable = whereClause(tJoinTable, whereFilter);
-                        vTableList.push_back(tPhseOneTableFromOriginalTable);
-                        //cout << "tPhseOneTableFromOriginalTable:" << endl;
-                        //tPhseOneTableFromOriginalTable.printOutTheWholeTable();
-
-                        vTableList.push_back(tPhseOneTableFromJoinTable);
-                        //cout << "tPhseOneTableFromJoinTable:" << endl;
-                        //tPhseOneTableFromJoinTable.printOutTheWholeTable();
-
-                        //2
-                        Table tPhaseTwo;
-                        tPhaseTwo = joinClause(tPhseOneTableFromOriginalTable, tPhseOneTableFromJoinTable, joinFilter, returnBool);
-                        vTableList.push_back(tPhaseTwo);
-                        //tPhaseTwo.printOutTheWholeTable();
-
-
-
-                        Table tPhaseThree;
-
-                        tPhaseThree = selectClause(tPhaseTwo, colNames, tPhseOneTableFromOriginalTable,  tempTable, returnBool);
-                        vTableList.push_back(tPhaseThree);
-                        tPhaseThree.printOutTheWholeTable();
-                        //tPhaseThree.distinct();
-                        //deleting tables
-                        deleteATable(tPhseOneTableFromOriginalTable);
-                        deleteATable(tPhseOneTableFromJoinTable);
-                        deleteATable(tPhaseTwo);
-                        if(tempTable ==""){
-                            deleteATable(tPhaseThree);
-                        }
-
-                        //remaining tables:
-                        for (size_t i = 0; i < vTableList.size(); i++) {
-                            cout << "remaining tables: " << vTableList[i].getTableName() << endl;
-                        }
-                    }
-                }
-            }
+    string curTableStr= sTableNameIn;
+    string curJoinTablestr = joinTable;
+    Table whereTableOriginal;
+    Table whereTableJoin;
+    if(!whereFilter.empty()){
+        whereTableOriginal=whereClause(curTableStr, whereFilter);
+        vTableList.push_back(whereTableOriginal);
+        curTableStr=whereTableOriginal.getTableName();
+        if(!joinFilter.empty()){
+            whereTableJoin= whereClause(curJoinTablestr, whereFilter);
+            vTableList.push_back(whereTableJoin);
+            curJoinTablestr = whereTableJoin.getTableName();
         }
-        //cout<<"select Successful?: "<<returnBool<<endl;
     }
-    else{
-        for (size_t i = 0; i < vTableList.size(); ++i) {
-            Table tCurrentTable = vTableList[i];
-            //Execute if the table is found in the list
-            if (tCurrentTable.getTableName() == sTableNameIn) {
-                //printout the current table
-                //cout << "current/original table:" << endl;
-                //tCurrentTable.printOutTheWholeTable();
-                //1
-                Table tPhseOneTable;
-                tPhseOneTable = whereClause(tCurrentTable, whereFilter);
-                vTableList.push_back(tPhseOneTable);
-                //cout<<"tPhseOneTable:"<<endl;
-                //tPhseOneTable.printOutTheWholeTable();
-                //2
-//                Table tPhaseTwo;
-//                tPhaseTwo = joinClause(tPhseOneTable, joinTable, joinFilter);
-//                vTableList.push_back(tPhaseTwo);
-//                tPhaseTwo.printOutTheWholeTable();
-                //3
-                Table tPhaseThree;
-                tPhaseThree = selectClause(tPhseOneTable, colNames, tCurrentTable,  tempTable, returnBool);
-                vTableList.push_back(tPhaseThree);
-                tPhaseThree.printOutTheWholeTable();
-                if (returnBool) {
-		            cout<<"after sorting2:"<<endl;
-		            sortp(tPhaseThree.getTableName(),0);
-                }
-                cout << "finished sorting" << endl;
-                //tPhaseThree.distinct();
-                //deleting tables
-                deleteATable(tPhseOneTable);
-                //deleteATable(tPhaseTwo);
-                if(tempTable ==""){
-                    deleteATable(tPhaseThree);
-                }
-                //remaining tables:
-                for (size_t i = 0; i < vTableList.size(); i++) {
-                    cout << "remaining tables: " << vTableList[i].getTableName() << endl;
-                }
-            }
-        }
 
+    Table joinedTable;
+    if(!joinFilter.empty()){
+        joinedTable=joinClause(curTableStr, curJoinTablestr, joinFilter, returnBool);
+        vTableList.push_back(joinedTable);
+        curTableStr=joinedTable.getTableName();
     }
-    
-    Table temp;
-	for (size_t i = 0; i < vTableList.size(); ++i) {
-		temp = vTableList[i];
-		//Execute if the table is found in the list
-		if (temp.getTableName() == sTableNameIn) {
-			break;
-		}
-	}
-		
-		
-    string curTableStr = "";//tempTable.getTableName();
-    Table groupBy;
-    cout << "groupByCol " << groupByCol << endl;
+
+    Table selectTable;
+    selectTable = selectClause(curTableStr, colNames, curTableStr,  tempTable, returnBool);
+    vTableList.push_back(selectTable);
+    curTableStr=selectTable.getTableName();
+
+    Table groupByTable;
     if (!groupByCol.empty()) {
-    	cout << "groupByCol not empty" << endl;
-    	groupBy = groupByClause(temp, groupByCol, sumCol);
-    	curTableStr = groupBy.getTableName();
+        groupByTable = groupByClause(curTableStr, groupByCol, sumCol);
+        curTableStr = groupByTable.getTableName();
     }
-    
-    Table orderBy;
+    Table orderByTable;
     if (!orderByCol.empty()) {
-    	orderBy = orderByClause(temp, orderByCol);
-    	curTableStr = orderBy.getTableName();
-    }//*/
-    
-    
-    // delete temp tables that I made
-    // remaining tables
-    // select cols
-    // output final results
-    
-    
-    
-    cout<<"select Successful?: "<<returnBool<<endl;
-    return returnBool;
-}
+        orderByTable = orderByClause(curTableStr, orderByCol);
+        curTableStr = orderByTable.getTableName();
+    }
 
+
+
+    if(whereTableOriginal.getTableName()!=curTableStr){
+        deleteATable(whereTableOriginal);
+    }
+    if(whereTableJoin.getTableName() != curTableStr){
+        deleteATable(whereTableJoin);
+    }
+    if(joinedTable.getTableName() != curTableStr){
+        deleteATable(joinedTable);
+    }
+    if(selectTable.getTableName() != curTableStr){
+        deleteATable(selectTable);
+    }
+    if(groupByTable.getTableName() != curTableStr){
+        deleteATable(groupByTable);
+    }
+    if(orderByTable.getTableName() != curTableStr){
+        deleteATable(orderByTable);
+    }
+
+    for(int j=0; j<vTableList.size();j++){
+        if(vTableList[j].getTableName()==curTableStr){
+            vTableList[j].printOutTheWholeTable();
+            if(tempTable ==""){
+                deleteATable(vTableList[j]);
+            } else{
+                vTableList[j].setName(tempTable);
+            }
+        }
+    }
+
+
+    return returnBool;
+
+
+//    if(joinFilter != "") {
+//        for (size_t i = 0; i < vTableList.size(); ++i) {
+//            Table tOriginalTable = vTableList[i];
+//            //Execute if the table is found in the list
+//            if (tOriginalTable.getTableName() == sTableNameIn) {
+//                cout << "current/original table:" << endl;
+//                //tOriginalTable.printOutTheWholeTable();
+//                for (size_t i = 0; i < vTableList.size(); ++i) {
+//                    Table tJoinTable = vTableList[i];
+//                    //Execute if the table is found in the list
+//                    if (tJoinTable.getTableName() == joinTable) {
+//                        cout << "join table:" << endl;
+//                        //tJoinTable.printOutTheWholeTable();
+//                        //1
+//                        Table tPhseOneTableFromOriginalTable;
+//                        Table tPhseOneTableFromJoinTable;
+//                        tPhseOneTableFromOriginalTable = whereClause(tOriginalTable, whereFilter);
+//                        tPhseOneTableFromJoinTable = whereClause(tJoinTable, whereFilter);
+//                        vTableList.push_back(tPhseOneTableFromOriginalTable);
+//                        //cout << "tPhseOneTableFromOriginalTable:" << endl;
+//                        //tPhseOneTableFromOriginalTable.printOutTheWholeTable();
+//
+//                        vTableList.push_back(tPhseOneTableFromJoinTable);
+//                        //cout << "tPhseOneTableFromJoinTable:" << endl;
+//                        //tPhseOneTableFromJoinTable.printOutTheWholeTable();
+//
+//                        //2
+//                        Table tPhaseTwo;
+//                        tPhaseTwo = joinClause(tPhseOneTableFromOriginalTable, tPhseOneTableFromJoinTable, joinFilter, returnBool);
+//                        vTableList.push_back(tPhaseTwo);
+//                        //tPhaseTwo.printOutTheWholeTable();
+//
+//
+//
+//                        Table tPhaseThree;
+//                        tPhaseThree = selectClause(tPhaseTwo, colNames, tPhseOneTableFromOriginalTable,  tempTable, returnBool);
+//                        vTableList.push_back(tPhaseThree);
+//                        tPhaseThree.printOutTheWholeTable();
+//
+//
+//
+//
+//                        deleteATable(tPhseOneTableFromOriginalTable);
+//                        deleteATable(tPhseOneTableFromJoinTable);
+//                        deleteATable(tPhaseTwo);
+//                        if(tempTable ==""){
+//                            deleteATable(tPhaseThree);
+//                        }
+//
+//                        //remaining tables:
+//                        for (size_t i = 0; i < vTableList.size(); i++) {
+//                            cout << "remaining tables: " << vTableList[i].getTableName() << endl;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        //cout<<"select Successful?: "<<returnBool<<endl;
+//    }
+//    else{
+//        for (size_t i = 0; i < vTableList.size(); ++i) {
+//            Table tCurrentTable = vTableList[i];
+//            //Execute if the table is found in the list
+//            if (tCurrentTable.getTableName() == sTableNameIn) {
+//                //printout the current table
+//                //cout << "current/original table:" << endl;
+//                //tCurrentTable.printOutTheWholeTable();
+//                //1
+//                Table tPhseOneTable;
+//                tPhseOneTable = whereClause(tCurrentTable, whereFilter);
+//                vTableList.push_back(tPhseOneTable);
+//                //cout<<"tPhseOneTable:"<<endl;
+//                //tPhseOneTable.printOutTheWholeTable();
+//                //2
+////                Table tPhaseTwo;
+////                tPhaseTwo = joinClause(tPhseOneTable, joinTable, joinFilter);
+////                vTableList.push_back(tPhaseTwo);
+////                tPhaseTwo.printOutTheWholeTable();
+//                //3
+//                Table tPhaseThree;
+//                tPhaseThree = selectClause(tPhseOneTable, colNames, tCurrentTable,  tempTable, returnBool);
+//                vTableList.push_back(tPhaseThree);
+//                tPhaseThree.printOutTheWholeTable();
+//                if (returnBool) {
+//		            cout<<"after sorting2:"<<endl;
+//		            sortp(tPhaseThree.getTableName(),0);
+//                }
+//                cout << "finished sorting" << endl;
+//                //tPhaseThree.distinct();
+//                //deleting tables
+//                deleteATable(tPhseOneTable);
+//                //deleteATable(tPhaseTwo);
+//                if(tempTable ==""){
+//                    deleteATable(tPhaseThree);
+//                }
+//                //remaining tables:
+//                for (size_t i = 0; i < vTableList.size(); i++) {
+//                    cout << "remaining tables: " << vTableList[i].getTableName() << endl;
+//                }
+//            }
+//        }
+//
+//    }
+//    /*
+//    curTableStr = tempTable.getTableName();
+//    Table groupBY;
+//    if (groupBy) {
+//    	groupBy = execGB(curTableStr, groupBYCOl, sumCOl);
+//    	curTableStr = groupBy.getTablenmae();
+//    }
+//
+//    Table orderBY;
+//    if (orderBy) {
+//    	orderBy = execOB(curTableSTr, orderBYCOl);
+//    	curTableStr = orderBy.getTablenmae();
+//    }//*/
+//
+//
+//    // delete temp tables that I made
+//    // remaining tables
+//    // select cols
+//    // output final results
+//
+//
+//
+//    cout<<"select Successful?: "<<returnBool<<endl;
+//    return returnBool;
+}
+/*****************************************************************************
+   realColVal takes a column name and returns the pure col name
+   ****************************************************************************/
+string Engine::realColVal(string col){
+    string delimiter = ".";
+    std::size_t foundDOT = col.find(delimiter, 0);
+    //if it has a DOT
+    if (foundDOT != std::string::npos) {
+        cout << "col is in the form of TABLE.COLUMN" << endl;
+        string table = col.substr(0, col.find(delimiter));
+        string column = col.substr(col.find(delimiter) + delimiter.length(),
+                                   col.length());
+        return column;
+    }else{
+        return col;
+    }
+
+}
+/*****************************************************************************
+   realTableVal takes a column name and returns the table name before the column
+   ****************************************************************************/
+string Engine::realTableVal(string col){
+    string delimiter = ".";
+    std::size_t foundDOT = col.find(delimiter, 0);
+    //if it has a DOT
+    if (foundDOT != std::string::npos) {
+        cout << "col is in the form of TABLE.COLUMN" << endl;
+        string table = col.substr(0, col.find(delimiter));
+        string column = col.substr(col.find(delimiter) + delimiter.length(),
+                                   col.length());
+        return table;
+    }
+}
 void Engine::deleteATable(Table table){
     dropTable(table.getTableName());
 }
-
 /*****************************************************************************
    DROP the table with the given name
    ****************************************************************************/
