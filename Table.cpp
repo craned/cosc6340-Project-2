@@ -218,8 +218,8 @@ void Table::deleteATable(string tableName){
     const char* tName=name.c_str();
     if( remove( tName ) != 0 )
         cout << "ERROR: could not delete file" << endl;
-    else
-        cout << "File successfully deleted" << endl;
+    //else
+        //cout << "File successfully deleted" << endl;
 }
 
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)

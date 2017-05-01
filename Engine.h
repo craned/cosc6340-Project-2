@@ -47,9 +47,9 @@ class Engine {
     static int convertCharToInt(char* val);
     void deleteATable(Table table);
     void dropTable(string sTableNameIn);
-    Table whereClause(Table tCurrentTable,string whereFilter);
-    Table selectClause(Table tNewTable,vector < string > colNames, Table originalTable,string tempTable, bool &returnBool);
-    Table joinClause(Table originalTable,Table joinTable,string joinFilter, bool &returnBool);
+    Table whereClause(string tCurrentTableStr,string whereFilter);
+    Table selectClause(string tNewTableStr,vector < string > colNames, string originalTableStr, bool &returnBool);
+    Table joinClause(string originalTableStr,string joinTableStr,string joinFilter, bool &returnBool);
     Table sum(Table tableName, string columnName, int foundColIndex,
     							string groupByCol, int foundGroupByIndex);
     //string delSpaces(string str);
@@ -58,13 +58,16 @@ class Engine {
     bool createValidate(string sLineIn,string sTableNameIn);
 	void executeQuit();
     static bool sortbyp(const SortTable &lhs,const SortTable &rhs);
-    string sortp(string sTableNameIn,int key);
+    Table sortp(string sTableNameIn,int key);
     void insertFromSelect(string sTableNameFrom, string sTableNameTo );
     bool insertselectValidate(Table fromTable, Table toTable);
     bool is_number(const std::string& s);
      static bool sortbyi(const SortTable &lhs,const SortTable &rhs);
     Table groupByClause(Table currentTable, string groupByCol, string sumCol);
     Table orderByClause(Table currentTable, string orderByCol);
+    string realColVal(string col);
+    string realTableVal(string col);
+
 
 	};
 
