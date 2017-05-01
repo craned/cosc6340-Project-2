@@ -629,26 +629,29 @@ Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol
 	}
 	
 	// sort values by group by index
-	sortp(currentTable.getTableName(), groupByIndex);
+	temp = sortp(currentTable.getTableName(), groupByIndex);
 	
 	// find index of sum column
-	int sumColIndex = -1;
-	for (int i = 0; i < vColumnNames.size(); i++) {
-		if (sumCol == get<1>(vColumnNames[i])) {
-			sumColIndex = get<0>(vColumnNames[i]);
+	if (!sumCol.empty()) {
+		int sumColIndex = -1;
+		for (int i = 0; i < vColumnNames.size(); i++) {
+			if (sumCol == get<1>(vColumnNames[i])) {
+				sumColIndex = get<0>(vColumnNames[i]);
+			}
 		}
+		if (sumColIndex == -1) {
+			cout << "ERROR: " << sumCol << " does not exist" << endl;
+			return temp;
+		}
+
+		// sum up cumColIndex by groupByCol
+		temp = sum(temp, sumCol, sumColIndex,
+											groupByCol, groupByIndex);
 	}
-	if (sumColIndex == -1) {
-		cout << "ERROR: " << sumCol << " does not exist" << endl;
-		return temp;
-	}
-	
-	// sum up cumColIndex by groupByCol
-	temp = sum(currentTable, sumCol, sumColIndex,
-										groupByCol, groupByIndex);
 	
 	return temp;
 }
+
 /******************************************************************************/
 /* order by function */
 /******************************************************************************/
@@ -671,7 +674,7 @@ Table Engine::orderByClause(Table currentTable, string orderByCol)
 	}
 	
 	// sort values by order by index
-	sortp(currentTable.getTableName(), orderByIndex);
+	temp = sortp(currentTable.getTableName(), orderByIndex);
 	
 	return temp;
 }
