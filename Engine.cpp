@@ -922,7 +922,7 @@ bool Engine::insertselectValidate(Table fromTable, Table toTable){
 
  }
  
-string Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn index
+Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn index
     for (size_t t=0; t<vTableList.size(); t++) {
         if (vTableList[t].getTableName() == sTableNameIn) {// checking for the table to be sorted
             Table ob=vTableList[t];
@@ -1138,7 +1138,18 @@ cout<<vTableList[i].getTNumOfRecords();
                 }
             }
            // remove("tempsortf.tbl");
-          return("tempsortf");
+           Table returntable;
+           for (size_t i = 0; i < vTableList.size(); ++i) {
+                    if (vTableList[i].getTableName() == "tempsortf") {
+                        vTableList[i].setName("tempsortf"+sTableNameIn);
+                        returntable=vTableList[i];
+                    }
+                }
+                                   char oldname[]="tempsortf.tbl";
+                        string newname="tempsortf"+sTableNameIn+".tbl";
+                        const char* newnam=newname.c_str();
+                        rename(oldname,newnam);
+          return(returntable);
         }
     }
 }
