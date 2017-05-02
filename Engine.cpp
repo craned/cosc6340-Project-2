@@ -333,7 +333,7 @@ Table Engine::whereClause(string tCurrentTableStr, string whereFilter){
 
 }
 /******************************************************************************/
-Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTablestr, bool &returnBool, string tempTable){
+Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTablestr, bool &returnBool, string tempTable, string sumCol){
 
 
     Table tNewTable;
@@ -371,6 +371,10 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
     //selectionS
     } else {
         for (size_t x = 0; x < colNames.size(); x++) {
+            size_t found = colNames[x].find("SUMTEAM06COL");
+            if (found!=std::string::npos) {
+                colNames[x]=sumCol;
+            }
             bool isColumnFound=false;
             string tableName = "";
             string columnName = "";
@@ -740,7 +744,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     }
 
     Table selectTable;
-    selectTable = selectClause(curTableStr, colNames, sTableNameIn, returnBool, tempTable);
+    selectTable = selectClause(curTableStr, colNames, sTableNameIn, returnBool, tempTable, sumCol);
     vTableList.push_back(selectTable);
     curTableStr=selectTable.getTableName();
     //!
@@ -778,16 +782,16 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     if(orderByTable.getTableName() != curTableStr){
         deleteATable(orderByTable);
     }
-    cout<<"curTableStr "<<curTableStr<<endl;
+    //cout<<"curTableStr "<<curTableStr<<endl;
     for(int j=0; j<vTableList.size();j++){
         if(vTableList[j].getTableName()==curTableStr){
             if(tempTable ==""){
                 vTableList[j].printOutTheWholeTable();
                 deleteATable(vTableList[j]);
-                cout<<vTableList[j].getTableName()<<" got deleted"<<endl;
+                //cout<<vTableList[j].getTableName()<<" got deleted"<<endl;
             } else{
                 //vTableList[j].setName(tempTable);
-                cout<<"the new table's name is "<<vTableList[j].getTableName()<<endl;
+                //cout<<"the new table's name is "<<vTableList[j].getTableName()<<endl;
             }
         }
     }
