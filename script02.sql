@@ -1,3 +1,0 @@
-SELECT I,J
-FROM S
-WHERE I=1; 

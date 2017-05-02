@@ -1,3 +1,0 @@
-SELECT J,K
-FROM R
-WHERE J=0;

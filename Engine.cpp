@@ -333,7 +333,7 @@ Table Engine::whereClause(string tCurrentTableStr, string whereFilter){
 
 }
 /******************************************************************************/
-Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTablestr, bool &returnBool){
+Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTablestr, bool &returnBool, string tempTable){
 
 
     Table tNewTable;
@@ -346,8 +346,12 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
             originalTable=vTableList[p];
         }
     }
-
     string name = "s"+tNewTableStr;
+    if(tempTable !=""){
+        name = tempTable;
+        vSTemplist.push_back(name);
+    }
+
     Table tNewNewTable(name);
     tNewNewTable.setTNumOfRecords(0);
     vector<int> indexes;
@@ -713,12 +717,14 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         vTableList.push_back(whereTableOriginal);
         curTableStr=whereTableOriginal.getTableName();
         //!
+        //cout<<"WHERE FILTER"<<endl;
         //whereTableOriginal.printOutTheWholeTable();
         if(!joinFilter.empty()){
             whereTableJoin= whereClause(curJoinTablestr, whereFilter);
             vTableList.push_back(whereTableJoin);
             curJoinTablestr = whereTableJoin.getTableName();
             //!
+            //cout<<"WHERE FILTER ON JOIN "<<endl;
             //whereTableJoin.printOutTheWholeTable();
         }
     }
@@ -729,14 +735,16 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         vTableList.push_back(joinedTable);
         curTableStr=joinedTable.getTableName();
         //!
+        //cout<<"JOIN TABLE"<<endl;
         //joinedTable.printOutTheWholeTable();
     }
 
     Table selectTable;
-    selectTable = selectClause(curTableStr, colNames, sTableNameIn, returnBool);
+    selectTable = selectClause(curTableStr, colNames, sTableNameIn, returnBool, tempTable);
     vTableList.push_back(selectTable);
     curTableStr=selectTable.getTableName();
     //!
+    //cout<<"SELECT TABLE"<<endl;
     //selectTable.printOutTheWholeTable();
 
     Table groupByTable;
@@ -770,22 +778,22 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     if(orderByTable.getTableName() != curTableStr){
         deleteATable(orderByTable);
     }
-
+    cout<<"curTableStr "<<curTableStr<<endl;
     for(int j=0; j<vTableList.size();j++){
         if(vTableList[j].getTableName()==curTableStr){
             if(tempTable ==""){
                 vTableList[j].printOutTheWholeTable();
                 deleteATable(vTableList[j]);
+                cout<<vTableList[j].getTableName()<<" got deleted"<<endl;
             } else{
-                vTableList[j].setName(tempTable);
+                //vTableList[j].setName(tempTable);
+                cout<<"the new table's name is "<<vTableList[j].getTableName()<<endl;
             }
         }
     }
 
 
     return returnBool;
-
-
 
 }
 /*****************************************************************************

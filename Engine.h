@@ -48,7 +48,7 @@ class Engine {
     void deleteATable(Table table);
     void dropTable(string sTableNameIn);
     Table whereClause(string tCurrentTableStr,string whereFilter);
-    Table selectClause(string tNewTableStr,vector < string > colNames, string originalTableStr, bool &returnBool);
+    Table selectClause(string tNewTableStr,vector < string > colNames, string originalTableStr, bool &returnBool, string tempTable);
     Table joinClause(string originalTableStr,string joinTableStr,string joinFilter, bool &returnBool);
     Table sum(Table tableName, string columnName, int foundColIndex,
     							string groupByCol, int foundGroupByIndex);

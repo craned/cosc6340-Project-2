@@ -1,2 +1,0 @@
-SELECT I,K 
-FROM S JOIN R ON S.J=R.J;

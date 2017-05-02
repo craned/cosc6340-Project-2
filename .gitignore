@@ -4,3 +4,9 @@
 *.tbl
 
 \.idea/workspace\.xml
+
+dbms
+
+*.sql
+
+output\.txt
