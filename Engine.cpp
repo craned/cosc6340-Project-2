@@ -371,7 +371,8 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
     //selectionS
     } else {
         for (size_t x = 0; x < colNames.size(); x++) {
-            size_t found = colNames[x].find("SUMTEAM06COL");
+        	string sumPlaceholder = "SUMTEAM06COL";
+            size_t found = colNames[x].find(sumPlaceholder);
             if (found!=std::string::npos) {
                 colNames[x]=sumCol;
             }
@@ -382,6 +383,9 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
             columnName = realColVal(colNames[x]);
             //cout<<"tableName "<<tableName<<endl;
             //cout<<"columnName "<<columnName<<endl;
+            if (columnName.find(sumPlaceholder) != string::npos) {
+            	columnName = columnName.substr(sumPlaceholder.length(), string::npos);
+            }
 
                 string wtableName="w"+tableName;
                 //when there is no table name
@@ -640,6 +644,7 @@ Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol
 	temp = sortp(currentTable.getTableName(), groupByIndex);
 	
 	// find index of sum column
+	Table finalGB;
 	if (!sumCol.empty()) {
 		int sumColIndex = -1;
 		for (int i = 0; i < vColumnNames.size(); i++) {
@@ -653,11 +658,14 @@ Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol
 		}
 
 		// sum up cumColIndex by groupByCol
-		temp = sum(temp, sumCol, sumColIndex,
+		finalGB = sum(temp, sumCol, sumColIndex,
 											groupByCol, groupByIndex);
+	} else {
+		return temp;
 	}
 	
-	return temp;
+	deleteATable(temp);
+	return finalGB;
 }
 
 /******************************************************************************/
@@ -753,12 +761,16 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
 
     Table groupByTable;
     if (!groupByCol.empty()) {
-        groupByTable = groupByClause(curTableStr, groupByCol, sumCol);
+        groupByTable = groupByClause(selectTable, groupByCol, sumCol);
         curTableStr = groupByTable.getTableName();
     }
     Table orderByTable;
     if (!orderByCol.empty()) {
-        orderByTable = orderByClause(curTableStr, orderByCol);
+    	if (!groupByCol.empty()) {
+        	orderByTable = orderByClause(groupByTable, orderByCol);
+        } else {
+        	orderByTable = orderByClause(selectTable, orderByCol);
+        }
         curTableStr = orderByTable.getTableName();
     }
 
@@ -1174,8 +1186,9 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 {
 	cout << "sum function " << endl;
 	// get key of the column
-    Table gBTable("groupByOuterTable.tbl");
+    Table gBTable("groupByOuterTable");
     gBTable.setTNumOfRecords(0);
+    vTableList.push_back(gBTable);
     Table table;
 	bool foundTable = false;
 	for (size_t i = 0; i < vTableList.size(); ++i) {
