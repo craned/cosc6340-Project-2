@@ -74,6 +74,7 @@ public:
     void projection(string sRestOfLine, string sTableNameOut);
     void select(string sNewTableName, string sRestOfLine);
     void read();
+    void write();
 
 };
 

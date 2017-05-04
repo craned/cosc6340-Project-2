@@ -895,8 +895,8 @@ void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
             for(int j=0;j<vTableList.size();j++) {
                 if(sTableNameTo==vTableList[j].getTableName()) {
                     Table toTable = vTableList[j];
-                    insertvalidate=insertselectValidate(fromTable, toTable);
-                    if(insertvalidate==true)
+                    insertvalidate=insertselectValidate(fromTable, toTable);//checking whether the rows from select can be inserted in to table
+                    if(insertvalidate==true)//if the insertvalidate is true then the each record from the select is inserted to the table 
                     for (int k = 0; k < fromTable.getTNumOfRecords(); k++) {
                         addRow(toTable.getTableName(),fromTable.getRow(k));
                         foundTable= true;
@@ -912,19 +912,19 @@ void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
 /*****************************************************************************
 insertselectValidate
  ****************************************************************************/
-bool Engine::insertselectValidate(Table fromTable, Table toTable){
+bool Engine::insertselectValidate(Table fromTable, Table toTable){//checking whether the rows from select can be inserted in to table
     bool validateinsert = false;
     bool foundTable = false;
 
 
           vector<tuple<int, string, bool, string, int > > fromcolumn;
-          fromcolumn=fromTable.getColumnNames();
+          fromcolumn=fromTable.getColumnNames();//column names of the temporary table created due to select are retreived 
 
                         vector<tuple<int, string, bool, string, int > > tocolumn;
-                        tocolumn=toTable.getColumnNames();
+                        tocolumn=toTable.getColumnNames();//column names of the table to be inserted is retrieved 
                     for (int k = 0; k < tocolumn.size(); k++) {
-                        if(get<3>(tocolumn[k])!=get<3>(fromcolumn[k])){
-                        validateinsert=false;
+                        if(get<3>(tocolumn[k])!=get<3>(fromcolumn[k])){// the data types of the columns is checked 
+                        validateinsert=false;//if the alteast one data type doesnt match then the validateinsert is false
                         return validateinsert;
                         }
                     }
@@ -939,13 +939,13 @@ bool Engine::insertselectValidate(Table fromTable, Table toTable){
  bool Engine::sortbyp(const SortTable &lhs,const SortTable &rhs)
  {
 
- return lhs.value<rhs.value;
+ return lhs.value<rhs.value;//sorting the string data type
 
  }
   bool Engine::sortbyi(const SortTable &lhs,const SortTable &rhs)
  {
 
- return lhs.valuei<rhs.valuei;
+ return lhs.valuei<rhs.valuei;//sorting the int data type
 
  }
  
@@ -1028,7 +1028,7 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                 remove("tempsorttemp.tbl");
                 Table tempsorttemp("tempsorttemp");//storing the merged results in tempsorttemp
                 string tempsortmergename="tempsort"+to_string(c);//temporary sorted table
-                cout<<tempsortmergename;
+                //cout<<tempsortmergename;
                 Table tempsortmerge;
                 vector<tuple<int, string, bool, string, int > > vColumnNamesIn=ob.getColumnNames();
                 for (size_t kl = 0; kl < vColumnNamesIn.size(); ++kl) {
@@ -1043,7 +1043,7 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                 for (size_t i = 0; i < vTableList.size(); ++i) {
                     if (vTableList[i].getTableName() == tempsortmergename) {
                         tempsortmerge=vTableList[i];
-                        cout<<"present"<<endl;
+                        //cout<<"present"<<endl;
                     }
                 }
                 //cout<<tempsortf.getTNumOfRecords()<<endl;
@@ -1052,20 +1052,20 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                         vector < std::tuple<int, std::string> > vrow2;
                         vrow2=tempsortmerge.getRow(r2);
                         tempsorttemp.addRow(vrow2);
-                        cout<<get<1>(vrow2[0])<<endl;
+                        //cout<<get<1>(vrow2[0])<<endl;
                         r2++;
                     }
-                    cout<<tempsorttemp.getTNumOfRecords();
+                    //cout<<tempsorttemp.getTNumOfRecords();
                 }
 
                 else {
-                    cout<<"entered else";
-                    cout<<tempsortf.getTNumOfRecords()<<endl;
-                    cout<<tempsortmerge.getTNumOfRecords()<<endl;
-                    cout<<r1<<r2;
+                    //cout<<"entered else";
+                    //cout<<tempsortf.getTNumOfRecords()<<endl;
+                    //cout<<tempsortmerge.getTNumOfRecords()<<endl;
+                    //cout<<r1<<r2;
                     
                     while(r1 < tempsortf.getTNumOfRecords()&&r2 < tempsortmerge.getTNumOfRecords()) {
-                    cout<<r1;
+                    //cout<<r1;
                         
                             vector < std::tuple<int, std::string> > vrow1;
                             vector < std::tuple<int, std::string> > vrow2;
@@ -1077,11 +1077,11 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                                                        if(value1.compare(value2)<0) {//comparing the two records based on the column
                                                        //if the record in the tempsortf file is less than the sorted table then that record is written to tempsorttemp
                                 tempsorttemp.addRow(vrow1);
-                                cout<<value1<<endl;
+                               // cout<<value1<<endl;
                                 r1++;
                             } else {
                                 tempsorttemp.addRow(vrow2);
-                                cout<<value2<<endl;
+                                //cout<<value2<<endl;
                                 r2++;
                             }
                             }
@@ -1090,11 +1090,11 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                             int value2=stoi(get<1> (vrow2[key]));
                                                        if(value1<value2) {
                                 tempsorttemp.addRow(vrow1);
-                                cout<<value1<<endl;
+                                //cout<<value1<<endl;
                                 r1++;
                             } else {
                                 tempsorttemp.addRow(vrow2);
-                                cout<<value2<<endl;
+                                //cout<<value2<<endl;
                                 r2++;
                             }
                             }
@@ -1102,14 +1102,14 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                             //cout<<value1.compare(value2);*/
                         
                     }
-                    cout<<endl;
-                    cout<<"add";
-                    cout<<r1<<tempsortf.getTNumOfRecords()<<endl;
-                    cout<<r2<<tempsortmerge.getTNumOfRecords()<<endl;
+                    //cout<<endl;
+                    //cout<<"add";
+                    //cout<<r1<<tempsortf.getTNumOfRecords()<<endl;
+                    //cout<<r2<<tempsortmerge.getTNumOfRecords()<<endl;
                     if(r1<tempsortf.getTNumOfRecords()){
                     for(int p=r1;p<tempsortf.getTNumOfRecords();p++)
                     {
-                    cout<<"enter 1";
+                    //cout<<"enter 1";
                     vector < std::tuple<int, std::string> > vrow1;
                     vrow1=tempsortf.getRow(p);
                     tempsorttemp.addRow(vrow1);
@@ -1134,7 +1134,7 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                     }
                 }
                 tempsorttemp.setName("tempsortf");
-                        cout<<tempsorttemp.getTableName();
+                      //  cout<<tempsorttemp.getTableName();
                         remove("tempsortf.tbl");
                         char oldname[]="tempsorttemp.tbl";
                         char newname[]="tempsortf.tbl";
@@ -1158,7 +1158,7 @@ cout<<vTableList[i].getTNumOfRecords();
                 if (vTableList[i].getTableName() == tempsortmname) {
                       tempsortmname=tempsortmname+".tbl";
                       const char* na=tempsortmname.c_str();
-                      cout<<tempsortmname;
+                      //cout<<tempsortmname;
                         remove(na);
                         vTableList.erase(vTableList.begin()+i);
                 }
