@@ -15,7 +15,7 @@
 #include "Table.h"
 
 const int COLUMN_WIDTH = 20;
-fstream outputFile;
+//fstream outputFile;
 
 /*******************************************************************************
  Display the table
@@ -95,8 +95,10 @@ tuple<int, string, bool, string> Table::getColumnIndex(
 }
 
 void Table::printOutTheWholeTable(){
+	ofstream outFile("output.txt", fstream::out | fstream::app);
     // Print the lines of the table for a pretty output
-    std::cout << "\n";
+    bool toFile = true;
+    toFile ? outFile << "\n" : std::cout << "\n";
 	int PADDING = 6;
 
     // Determine how far to space the column bars
@@ -116,21 +118,21 @@ void Table::printOutTheWholeTable(){
 		//cout << "here columns1" << endl;
     	if (get<3>(vColumnNames[i])=="string") {
     		//cout << "string numspaces " << numSpaces << endl;
-			cout << sColName;
+			toFile ? outFile << sColName : cout << sColName;
 			//cout << "here columns2" << endl;
 		}
 		for (int j = 1; j <= numSpaces; j++) {
 			//cout << j << "j";
-			cout << " ";
+			toFile ? outFile << " " : cout << " ";
 			//cout << "here columns3" << endl;
 		}
 		if (get<3>(vColumnNames[i])=="int"){
-			cout << sColName;
+			toFile ? outFile << sColName : cout << sColName;
 		}
 		
-		cout << " ";
+		toFile ? outFile << " " : cout << " ";
     }
-    std::cout << "\n";
+    toFile ? outFile << "\n" : cout << "\n";
 
     for(int i=0; i<tNumOfRecords; i++) {
         for (size_t a = 0; a < vColumnNames.size(); a++){
@@ -152,17 +154,17 @@ void Table::printOutTheWholeTable(){
 						//cout << "here records2" << endl;
                 	if (get<3>(vColumnNames[a])=="string"){
 						//cout << "here records3" << endl;
-						cout << sColName;
+						toFile ? outFile << sColName : cout << sColName;
 					//	numSpaces = std::get < 4 > (vColumnNames[i]);
 					}
 					for (int j = 1; j <= numSpaces; j++) {
 						//cout << "here records4" << endl;
-						cout << " ";
+						toFile ? outFile << " " : cout << " ";
 					}
 					if (get<3>(vColumnNames[a])=="int"){
-						cout << sColName;
+						toFile ? outFile << sColName : cout << sColName;
 					}
-					cout << " ";
+					toFile ? outFile << " " : cout << " ";
 
                     break;
                 }
@@ -170,10 +172,10 @@ void Table::printOutTheWholeTable(){
             }
         }
         
-        cout << "\n";
+        toFile ? outFile << "\n" : cout << "\n";
     }
     
-    std::cout<<"\n";
+    toFile ? outFile << "\n" : cout << "\n";
 }
 
 void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
