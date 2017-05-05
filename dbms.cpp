@@ -218,8 +218,9 @@ int main(int argc, char *argv[]) {
     //std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
     //std::cout.rdbuf(out.rdbuf());
 
-	//ofstream outFile;
-	//outFile.open("output.txt");
+	ofstream outFile ("output.txt", fstream::out);
+	outFile << "";
+	
 	parser = new Parser();
 	parser->read();
     
