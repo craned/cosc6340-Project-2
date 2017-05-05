@@ -334,7 +334,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
             size_t iPosSemiColon = sLineIn.find(";", iPosStart);
 			size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
 			size_t iPosWhere = sLineIn.find("WHERE", iPosStart);
-            size_t iPosOn = sLineIn.find("ON", iPosStart);
+            size_t iPosOn = sLineIn.find(" ON ", iPosStart);
 			size_t iPosGroupBy = sLineIn.find("GROUP BY", iPosStart);
 			size_t iPosOrderBy = sLineIn.find("ORDER BY", iPosStart);
 			size_t iPosSumCol = (colNames.find("SUMTEAM06COL"));
@@ -413,13 +413,13 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				!joinTable.empty())
 			{
 				//cout << "checking join filter" << endl;
-				iPosOn += 2;
+				iPosOn += 3;
 				if (iPosWhere != string::npos) {
 					joinFilter = sLineIn.substr(iPosOn, iPosWhere - iPosOn);
 				} else if (iPosGroupBy != string::npos) { 
-					joinFilter = sLineIn.substr(iPosJoin, iPosGroupBy - iPosJoin); 
+					joinFilter = sLineIn.substr(iPosOn, iPosGroupBy - iPosOn);
 				} else if (iPosOrderBy != string::npos) { 
-					joinFilter = sLineIn.substr(iPosJoin, iPosOrderBy - iPosJoin);
+					joinFilter = sLineIn.substr(iPosOn, iPosOrderBy - iPosOn);
 				} else if (iPosSemiColon != string::npos) {
 					joinFilter = sLineIn.substr(iPosOn, iPosSemiColon - iPosOn);
 				} else {
