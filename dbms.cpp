@@ -18,7 +18,7 @@ string scriptFile = "";
 
 const string OUTPUT_FILE = "output.txt";
 
-//extern ofstream outFile;
+//ofstream out;
 
 string const CREATE_TABLE = "CREATE TABLE ";
 string const INSERT_INTO = "INSERT INTO ";
@@ -129,13 +129,13 @@ void parseScriptFile(string scriptFile) {
             if (line.find("\n") != string::npos) {
                 line = line.substr(0, line.find('\n'));
             }
-            //cout << line << endl;
+            cout << line << endl;
             queries += " " + toUpper(line);
             size_t firstSemicolon = queries.find(';', 0);
             if (firstSemicolon != string::npos) {
                 firstSemicolon++;
                 string query = queries.substr(0, firstSemicolon);
-                //cout << "executing " << query << endl;
+                cout << "executing " << query << endl;
                 parser->parse(query);
                 queries = queries.substr(firstSemicolon,
                 						queries.length() - firstSemicolon);
@@ -214,15 +214,12 @@ int main(int argc, char *argv[]) {
     //out.open("out2.txt", ios::out);
     //ofstream cout(OUTPUT_FILE);
     //std::cout.rdbuf(cout.rdbuf());
-    //ofstream out("output.txt");
-    //std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-    //std::cout.rdbuf(out.rdbuf());
+    std::ofstream out("output.txt");
+    std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+    std::cout.rdbuf(out.rdbuf());
 
-	//ofstream outFile;
-	//outFile.open("output.txt");
-	parser = new Parser();
-	parser->read();
-    
+parser = new Parser();
+parser->read();
     if (argc != 2) {
         cout << "usage: dbms script=<filename> OR dbms \"<SQL query>\"" << endl;
         if (!sqlQuery.empty()) {
@@ -235,9 +232,9 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     
-    //out.open(OUTPUT_FILE, ios::out);
+    out.open(OUTPUT_FILE, ios::out);
     
-    //cout.rdbuf(out.rdbuf());
+    cout.rdbuf(out.rdbuf());
 
    // parser = new Parser();
 
@@ -259,8 +256,8 @@ int main(int argc, char *argv[]) {
     }
     
 
-    //std::cout.rdbuf(coutbuf);
-      // out.close();
+    std::cout.rdbuf(coutbuf);
+       out.close();
     return 0;
 }
 
