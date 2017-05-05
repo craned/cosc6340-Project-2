@@ -95,7 +95,13 @@ tuple<int, string, bool, string> Table::getColumnIndex(
 }
 
 void Table::printOutTheWholeTable(){
-	ofstream outFile("output.txt", fstream::out | fstream::app);
+	ofstream outFile;
+	outFile.open("output.txt", fstream::out | fstream::app);
+	if (!outFile.is_open()) {
+		cout << "file not open" << endl;
+	} else {
+		cout << "file is open" << endl;
+	}
     // Print the lines of the table for a pretty output
     bool toFile = true;
     toFile ? outFile << "\n" : std::cout << "\n";

@@ -466,7 +466,7 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
             tNewNewTable.addRow(row);
         }
 //        cout<<"at the end of the select"<<endl;
-//        tNewNewTable.printOutTheWholeTable();
+        tNewNewTable.printOutTheWholeTable();
         return tNewNewTable;
     }
 }
@@ -812,7 +812,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     for(int j=0; j<vTableList.size();j++){
         if(vTableList[j].getTableName()==curTableStr){
             if(tempTable ==""){
-                //vTableList[j].printOutTheWholeTable();
+                vTableList[j].printOutTheWholeTable();
                 deleteATable(vTableList[j]);
                 //cout<<vTableList[j].getTableName()<<" got deleted"<<endl;
             } else{
