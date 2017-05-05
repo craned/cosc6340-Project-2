@@ -417,9 +417,9 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				if (iPosWhere != string::npos) {
 					joinFilter = sLineIn.substr(iPosOn, iPosWhere - iPosOn);
 				} else if (iPosGroupBy != string::npos) { 
-					joinTable = sLineIn.substr(iPosJoin, iPosGroupBy - iPosJoin); 
+					joinFilter = sLineIn.substr(iPosJoin, iPosGroupBy - iPosJoin); 
 				} else if (iPosOrderBy != string::npos) { 
-					joinTable = sLineIn.substr(iPosJoin, iPosOrderBy - iPosJoin);
+					joinFilter = sLineIn.substr(iPosJoin, iPosOrderBy - iPosJoin);
 				} else if (iPosSemiColon != string::npos) {
 					joinFilter = sLineIn.substr(iPosOn, iPosSemiColon - iPosOn);
 				} else {
