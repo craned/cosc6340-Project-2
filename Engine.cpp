@@ -1308,7 +1308,7 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 		for (size_t i = 0; i < curRow.size(); i++) {
 			int index = get<0>(curRow[i]);
 			if (colIndex == index) {
-		    	cout << "testing value " << endl;
+		    	//cout << "testing value " << endl;
 		    	string actualValue = get<1>(curRow[i]);
 		    	//cout << "actual value " << actualValue  << endl;
 		    	sum += stoi(actualValue);
