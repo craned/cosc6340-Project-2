@@ -176,6 +176,8 @@ void Table::printOutTheWholeTable(){
     }
     
     toFile ? outFile << "\n" : cout << "\n";
+    
+    outFile.close();
 }
 
 void Table::addRow( std::vector<std::tuple<int, std::string> > v) {

@@ -11,13 +11,15 @@
 #include <algorithm>
 #include <string>
 const int COLUMN_WIDTH = 20;
-/*******************************************************************************
- This function will take in a vector of column names and trailing primary keys,
- and an integer specifying how many columns are in the vector.
- *******************************************************************************/
 
+//List of our all table:
 vector<Table> vTableList;
+//List of our temp tables:
 vector<string> vSTemplist;
+/*******************************************************************************
+ ***createTable()***
+ This function takes care of creating tables
+ *******************************************************************************/
 void Engine::createTable(string sTableNameIn,
                          vector<tuple<string, string, int, bool> > vColumnNamesIn,
                          vector<string> vKeys)
@@ -28,8 +30,6 @@ void Engine::createTable(string sTableNameIn,
         cout << "existing table: " << vTableList[i].getTableName()<<endl;
         if (vTableList[i].getTableName() == sTableNameIn) {
             isTableFound = true;
-//            cout << "vTableList[i].getTableName(): " << vTableList[i].getTableName() << endl;
-//            cout << "sTableNameIn: " << sTableNameIn << endl;
             break;
         }
     }
@@ -37,6 +37,7 @@ void Engine::createTable(string sTableNameIn,
     if(isTableFound) {
         cout << "ERROR: this table already exists! SO Not being added!" << endl;
     }else{
+        //If it isn't in the vTableList, create a new Table
         Table t(sTableNameIn);
         
         for (size_t i = 0; i < vColumnNamesIn.size() - 1; ++i) {
@@ -53,33 +54,33 @@ void Engine::createTable(string sTableNameIn,
             
             t.addColumn(make_tuple(i, sName, bKey, sType, length));
         }
-        
-        //t.addSpecs(specs);
+
         t.setTNumOfRecords(0);
         t.setTRecordSize(t.getRecordSize());
-        //t.setTTotalSize();
         
         for (size_t i = 0; i < vKeys.size(); ++i) {
             t.setPrimaryKey(vKeys[i]);
         }
         
         cout << "TABLE " << sTableNameIn << " created successfully" << endl;
-        
         //push table into the table list
         vTableList.push_back(t);
     }
 }
 
 /****************************************************************************
+ ***addRow()***
  Adds a row to the specified table
  ****************************************************************************/
 void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
     bool isFoundTable=false;
+    //Finding the table:
     for (size_t i = 0; i < vTableList.size(); ++i) {
         if (vTableList[i].getTableName() == sTableNameIn) {
             Table tb=vTableList[i];
             int iColumnIndex= -1;
             int numOfRows=tb.getTNumOfRecords();
+            //Getting the index of PK:
             vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
             for (size_t a = 0; a < vNames.size(); ++a) {
                 
@@ -93,6 +94,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                 for(int i=0; i<numOfRows; i++){
                     vector < std::tuple<int, std::string> > vtemp;
                     vtemp=tb.getRow(i);
+                    //checking the primary key:
                     string giventemp=get<1> (vRowIn[iColumnIndex]);
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
                         cout<<"ERROR: duplicate primary key";
@@ -102,7 +104,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     vtemp.clear();
                 }
             }
-            
+            //Adding the Row
             vTableList[i].addRow(vRowIn);
             isFoundTable = true;
             return;
@@ -113,7 +115,8 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
 }
 
 /*****************************************************************************
-   Print out the table with the given name
+ ***displayTable()***
+   Prints out the table with the given name
    ****************************************************************************/
 void Engine::displayTable(string sTableNameIn)
 {
@@ -197,6 +200,7 @@ void Engine::displayTable(string sTableNameIn)
 }
 
 /*****************************************************************************
+ ***displayTableSchemas()***
    Print out all table schemas
    ****************************************************************************/
 void Engine::displayTableSchemas()
@@ -222,20 +226,23 @@ int Engine::convertCharToInt(char* val)
 	return stoi(xStr);
 }
 
-/******************************************************************************/
+/******************************************************************************
+ ***whereClause()***
+ * Takes care of where filter in the select queries
+  ****************************************************************************/
 Table Engine::whereClause(string tCurrentTableStr, string whereFilter){
-
+    //Finding the given table:
     Table tCurrentTable;
     for(int h=0; h<vTableList.size();h++){
         if(vTableList[h].getTableName()==tCurrentTableStr){
             tCurrentTable=vTableList[h];
         }
     }
-
+    //create a new table to return
     string sTableNameOut = "w"+ tCurrentTableStr;
     Table tNewTable(sTableNameOut);
     tNewTable.setTNumOfRecords(0);
-
+    //split the filter:
     if(whereFilter!="") {
         string delimiter = "=";
         string leftSideCondition = whereFilter.substr(0, whereFilter.find(delimiter));
@@ -314,25 +321,13 @@ Table Engine::whereClause(string tCurrentTableStr, string whereFilter){
         }
 
     }
-//    //has no where filter:
-//    else{
-//        //add columns:
-//        vector<tuple<int, string, bool, string, int> > vNames =
-//                tCurrentTable.getColumnNames();
-//        for (size_t a = 0; a < vNames.size(); ++a) {
-//            if ((int) a == get<0>(vNames[a])) {
-//                tNewTable.addColumn(vNames[a]);
-//            }
-//        }
-//        //adding rows
-//        for(int i=0; i<tCurrentTable.getTNumOfRecords(); i++){
-//            tNewTable.addRow(tCurrentTable.getRow(i));
-//        }
-//        return tNewTable;
-//    }
+
 
 }
-/******************************************************************************/
+/******************************************************************************
+ ***selectClause()***
+ * Takes care of where select cluase in the select queries
+  ****************************************************************************/
 Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTablestr, bool &returnBool, string tempTable, string sumCol){
 
 
@@ -351,12 +346,12 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
         name = tempTable;
         vSTemplist.push_back(name);
     }
-
+    //create a new table to return:
     Table tNewNewTable(name);
     tNewNewTable.setTNumOfRecords(0);
     vector<int> indexes;
     int seq=0;
-    //if there is no selection - select *
+    //if there is no selection - SELECT *
     if (colNames.size() == 1 and colNames[0] == "*") {
         //adding columns
         for (size_t i = 0; i < tNewTable.getColumnNames().size(); i++) {
@@ -368,14 +363,16 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
         }
         return tNewNewTable;
 
-    //selectionS
+    //selectionS with projection
     } else {
+        //check for sum values in the select cluase:
         for (size_t x = 0; x < colNames.size(); x++) {
         	string sumPlaceholder = "SUMTEAM06COL";
             size_t found = colNames[x].find(sumPlaceholder);
             if (found!=std::string::npos) {
                 colNames[x]=sumCol;
             }
+            
             bool isColumnFound=false;
             string tableName = "";
             string columnName = "";
@@ -468,7 +465,8 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
             }
             tNewNewTable.addRow(row);
         }
-
+//        cout<<"at the end of the select"<<endl;
+//        tNewNewTable.printOutTheWholeTable();
         return tNewNewTable;
     }
 }
@@ -622,11 +620,18 @@ Table Engine::joinClause(string originalTableStr,string joinTableStr,string join
 /******************************************************************************/
 /* Group by function */
 /******************************************************************************/
-Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol)
+Table Engine::groupByClause(string tableName, string groupByCol, string sumCol)
 {
+    Table curTable;
+    for (size_t i = 0; i < vTableList.size(); ++i) {
+        if (vTableList[i].getTableName() == tableName) {
+            curTable=vTableList[i];
+            //cout<<"present"<<endl;
+        }
+    }
 	Table temp;
-    vector<tuple<int, string, bool,string, int>> vColumnNames = 
-    											currentTable.getColumnNames();
+    vector<tuple<int, string, bool,string, int>> vColumnNames =
+            curTable.getColumnNames();
 	// find group by index
 	int groupByIndex = -1;
 	cout << "#column Names " << vColumnNames.size() << endl;
@@ -642,7 +647,7 @@ Table Engine::groupByClause(Table currentTable, string groupByCol, string sumCol
 	}
 	
 	// sort values by group by index
-	temp = sortp(currentTable.getTableName(), groupByIndex);
+	temp = sortp(curTable.getTableName(), groupByIndex);
 	
 	// find index of sum column
 	Table finalGB;
@@ -674,8 +679,17 @@ cout << "sumColIndex " << sumColIndex << endl;
 /******************************************************************************/
 /* order by function */
 /******************************************************************************/
-Table Engine::orderByClause(Table currentTable, string orderByCol)
+Table Engine::orderByClause(string tableName, string orderByCol)
 {
+    Table currentTable;
+    for (size_t i = 0; i < vTableList.size(); ++i) {
+        if (vTableList[i].getTableName() == tableName) {
+            currentTable=vTableList[i];
+            //cout<<"present"<<endl;
+        }
+    }
+    cout<<"current table "<<endl;
+    //currentTable.printOutTheWholeTable();
 	Table temp("");
     vector<tuple<int, string, bool,string, int>> vColumnNames = 
     											currentTable.getColumnNames();
@@ -765,16 +779,12 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     Table groupByTable;
     if (!groupByCol.empty()) {
     	cout << "executing group by" << endl;
-        groupByTable = groupByClause(selectTable, groupByCol, sumCol);
+        groupByTable = groupByClause(curTableStr, groupByCol, sumCol);
         curTableStr = groupByTable.getTableName();
     }
     Table orderByTable;
     if (!orderByCol.empty()) {
-    	if (!groupByCol.empty()) {
-        	orderByTable = orderByClause(groupByTable, orderByCol);
-        } else {
-        	orderByTable = orderByClause(selectTable, orderByCol);
-        }
+        orderByTable = orderByClause(curTableStr, orderByCol);
         curTableStr = orderByTable.getTableName();
     }
 
@@ -802,7 +812,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     for(int j=0; j<vTableList.size();j++){
         if(vTableList[j].getTableName()==curTableStr){
             if(tempTable ==""){
-                vTableList[j].printOutTheWholeTable();
+                //vTableList[j].printOutTheWholeTable();
                 deleteATable(vTableList[j]);
                 //cout<<vTableList[j].getTableName()<<" got deleted"<<endl;
             } else{
@@ -1152,7 +1162,7 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
             for (size_t i = 0; i < vTableList.size(); ++i) {
                 if (vTableList[i].getTableName() == "tempsortf") {
 cout<<vTableList[i].getTNumOfRecords();
-                    vTableList[i].printOutTheWholeTable();
+                    //vTableList[i].printOutTheWholeTable();
                 }
             }
             //removing the temporary sorted tables
@@ -1334,7 +1344,7 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 	gBTable.addRow(rowEnd);
 	//cout << "sum of rows2 " << oldValue << ":" << sum << endl;
     
-    gBTable.printOutTheWholeTable();
+    //gBTable.printOutTheWholeTable();
     
     return gBTable;
 }
