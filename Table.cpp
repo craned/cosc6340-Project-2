@@ -200,7 +200,6 @@ void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
     out.close();
 }
 
-/*******************************************************************/
 //get a row by using index
 vector < std::tuple<int, std::string> > Table::getRow(int iIndex) {
     std::vector < std::tuple<int, std::string> > vReturn;

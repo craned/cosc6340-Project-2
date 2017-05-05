@@ -219,7 +219,7 @@ bool Parser::findCreateTable(string sLineIn)
 
                 cout << "columns " << sColumns << endl;
 
-                //Reposition the pointer//*** resume comments
+                //Reposition the pointer
                 iPosStart = iPosEnd;
                 iPosStart = sLineIn.find("(", iPosEnd) + 1;
                 iPosEnd = sLineIn.find(")", iPosStart);
@@ -251,47 +251,20 @@ bool Parser::findCreateTable(string sLineIn)
     return false;
 }
 
+// Find all subqueries, if any, based on parentheses and send them for execution
 bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 {
-	/*bool sumExists = false; 
-	size_t sumMaybe = sLineIn.find("SUM", 0); 
-	size_t sumOpenParen = sLineIn.find("(", sumMaybe); 
-	size_t sumCloseParen = sLineIn.find(")", sumMaybe); 
-	if (sumMaybe != string::npos) { 
-		sumExists = true; 
-	}//*/
-
 	size_t openParen = sLineIn.find("(", 0); 
-	/*cout << "sumMaybe " << sumMaybe << endl; 
-	cout << "openParen " << openParen << endl; 
-	if (sumMaybe < openParen) { 
-		sumMaybe += 5; 
-		cout << "sum less than openParen" << endl; 
-		openParen = sLineIn.find("(", sumMaybe+1); 
-	} //*/
 	cout << "findSelectParen " << sLineIn << endl;
-	
 	
 	if (openParen != string::npos) {
 		for (int i = 0; i < sLineIn.length(); i++) {
-		//cout << "starting" << endl;
 			char queryChar = sLineIn[i];
 			if (queryChar == '(') {
-				//if (i != sumOpenParen) {
-					//cout << "found sumOpenParen" << endl;
-					parens.push(i);
-				//}
+				parens.push(i);
 			} else if (queryChar == ')') {
-				//if (i == sumCloseParen) {
-					//cout << "sum continuing" << endl;
-					//parens.top();
-					//i++;
-					//continue;
-				//}
 				int leftParenIndex = parens.top();
 				int subQueryBeg = leftParenIndex + 1;
-				//cout << "open paren " << leftParenIndex << endl;
-				//cout << "close paren " << i << endl;
 				string query = sLineIn.substr(subQueryBeg, i - subQueryBeg);
 				//cout << "subquery " << query << endl;
 				
@@ -305,39 +278,34 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 					tempTable += sLineIn[begTempTable];
 					begTempTable++;
 				}
-												
+				
+				// parser and execute subquery								
 				bool result = findSelectNew(query, tempTable);
 				parens.pop();
 				
+				// remove subquery from query, and leave alias
 				sLineIn.replace(leftParenIndex, (i+1) - (leftParenIndex), "");
 				i = 0;
 				while (parens.size() != 0) {
 					parens.pop();
 				}
-				//cout << "query replaced" << endl;//*/
 				if (!result) {
-					//cout << "bad result" << endl;
 					return false;
 				}
 				
-				//cout << "for() end" << endl;
 				break;
 			}
 		}
 		
-		//if (parens.size() > 0) {
-			findSelectParen(sLineIn, insertSelectTable);
-		//}
-		
-		//cout << "subquery " << sLineIn << endl;
-		//return findSelectNew(sLineIn, "");
+		// recursion
+		findSelectParen(sLineIn, insertSelectTable);
 	} else {
-		//cout << "query " << sLineIn << endl;
-		
+		// final call to execute outer query
 		return findSelectNew(sLineIn, insertSelectTable);
 	}
 }
 
+// parse query and send to engine to execute
 bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 {
 	size_t iPosStart = sLineIn.find("SELECT");
@@ -362,6 +330,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 
             iPosStart = iPosEnd1 + 4 + 1/*for the space*/;	
             
+            // look and possibly find for all major parts of query
             size_t iPosSemiColon = sLineIn.find(";", iPosStart);
 			size_t iPosJoin = sLineIn.find("JOIN", iPosStart);
 			size_t iPosWhere = sLineIn.find("WHERE", iPosStart);
@@ -370,6 +339,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			size_t iPosOrderBy = sLineIn.find("ORDER BY", iPosStart);
 			size_t iPosSumCol = (colNames.find("SUMTEAM06COL"));
 			
+			// initialize all major parts of query
 			string fromTable = "";
 			string joinTable = "";
 			string joinFilter = "";
@@ -378,6 +348,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			string orderBy = "";
 			string sumCol = "";
 			
+			// get sum column if exists
 			if (iPosSumCol != string::npos) {
 				iPosSumCol += 12;
 				size_t sumSpace = colNames.find(" ", iPosSumCol);
@@ -402,7 +373,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			fromTable = Utilities::cleanSpaces(fromTable);
 			selectQ.setFromTable(fromTable);
 			
-			// don't want to check for join too early
+			// get join column if exists
 			if (iPosJoin != string::npos) {
 	            
 				iPosJoin += 4;
@@ -425,7 +396,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			}
 			
 			//cout << "joinFilter " << joinFilter << endl;
-			// don't want to check for on too early
+			// get on column if exists
 			if (iPosOn != string::npos &&
 				!joinTable.empty())
 			{
@@ -447,6 +418,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				selectQ.setJoinFilter(joinFilter);
 			}
 			
+			// get where column if exists
 			if (iPosWhere != string::npos) {
 				iPosWhere += 5;
 				
@@ -464,7 +436,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				selectQ.setWhereFilter(whereFilter);
 			}
 			
-			// group by
+			// get group by column if exists
 			if (iPosGroupBy != string::npos) {
 				//cout << "group by found " << endl;
 				iPosGroupBy += 8;
@@ -483,7 +455,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 				selectQ.setGroupBy(groupBy);
 			}
 			
-			// order by
+			// get order by column if exists
 			if (iPosOrderBy != string::npos) {
 				//cout << "order by found " << endl;
 				iPosOrderBy += 8;
@@ -498,6 +470,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			}
 			
 			selectQ.printAll();
+			// execute query parts
 			bool result = e.executeSelect(selectQ.getFromTable(),
 							createVector(selectQ.getSelectCols()),
 							selectQ.getTempTable(),
@@ -508,6 +481,7 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 	                  		selectQ.getOrderBy(),
 	                  		selectQ.getSumCol());//*/
 	        
+	        // if result is false, we need to cease execution of query, if nested
 	        if (!result) {
 	        	return false;
 	        }
@@ -522,8 +496,8 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 }
 
 /*******************************************************************************
- Function that sees if INSERT INTO is in the string and executes the command
- handles both INSERT FROM and INSERT FROM RELATION
+ Function that sees if INSERT INTO is in the string and executes the command.
+ Handles both INSERT FROM and INSERT FROM RELATION
  *******************************************************************************/
 bool Parser::findInsertInto(string sLineIn)
 {
@@ -553,6 +527,7 @@ bool Parser::findInsertInto(string sLineIn)
             iPosStart = sLineIn.find("(") + 1;
             iPosValues = sLineIn.find(")");
 
+			// get values to insert into table
             if (iPosStart != string::npos && iPosValues != string::npos)
             {
                 //Get the row attributes from the string
@@ -577,8 +552,8 @@ bool Parser::findInsertInto(string sLineIn)
                 	return false;
                 }
             }
-        }//change
-            //Execute if values from is found
+        }
+        // Execute subquery if exists, and then insert results into table
         else if ((iPosEnd1 = sLineIn.find("SELECT", iPosStart)) != string::npos)
         {
         	string selectSubQ = sLineIn.substr(iPosEnd1, string::npos);
@@ -588,36 +563,8 @@ bool Parser::findInsertInto(string sLineIn)
             tableIntoName = Utilities::cleanSpaces(tableIntoName);
             //cout << "insert into tableName " << tableName << endl;
             
-            /*iPosStart = iPosEnd1 + 6;
-            iPosEnd1 = sLineIn.find("FROM", iPosStart);
-            string colNames = sLineIn.substr(iPosStart,
-                                             iPosEnd1 - iPosStart);
-            //colNames = Utilities::cleanSpaces(colNames);
-            //cout << "from colNames " << colNames << endl;
-
-            //reposition the iterators to get the row values
-            iPosStart = iPosEnd1 + 4;//*/
-            
-            // Group By isn't required for Phase 1, but this should work when it is
-            /*if ((iPosEnd1 = sLineIn.find("ORDER BY", iPosStart)) != string::npos) {
-                string tableName = sLineIn.substr(iPosStart,
-                                             	iPosEnd1 - iPosStart);
-                                             
-                //cout << "tableName " << tableName << endl;
-                
-            	iPosStart = iPosEnd1 + 8;
-            	iPosEnd1 = sLineIn.find(";");
-            	if (iPosEnd1 != string::npos) {
-            		string groupByCol = sLineIn.substr(iPosStart,
-            								iPosEnd1 - iPosStart);
-            		cout << "group by col " << groupByCol << endl;
-            	}
-            } else //*/
-            
             string tempFromName = "insInto" + tableIntoName;
             findSelectParen(selectSubQ, tempFromName);
-            
-            //string insertInto = "INSERT INTO 
             
             //cout << tempFromName << " " << tableIntoName << endl;
             e.insertFromSelect(tempFromName, tableIntoName);
@@ -653,7 +600,7 @@ bool Parser::findDropTable(string sLineIn)
 
         //cout << "tableName " << sTableName << endl;
 
-        // call the function to display table
+        // Drop table
         e.dropTable(sTableName);
 
 		return true;
@@ -678,7 +625,7 @@ bool Parser::findShowTable(string sLineIn)
 
         //cout << "tableName " << sTableName << endl;
 
-        // call the function to display table
+        // Display table
         e.displayTable(sTableName);
 
 		return true;
@@ -727,12 +674,15 @@ bool Parser::findQuit(string sLineIn)
   }
 }
 
+// Looks for SUM( or SUM ( occurrences to replace with SUMTEAM06COL<column name>
+// Keeps parentheses parsing simpler
 string Parser::findAndReplaceSum(string sLineIn)
 {
 	size_t sum = sLineIn.find("SUM", 0);
 	int sumCount = 0;
-	//cout << "looking for sum" << endl;
-	while(sum != string::npos) { 
+	// Looking for sum
+	while(sum != string::npos) {
+		// Makes sure that GROUP BY also exists
 		size_t groupBy = sLineIn.find("GROUP BY", sum);
 		if (groupBy == string::npos) {
 			cout << "ERROR: SUM must be accompanied by GROUP BY" << endl;
@@ -761,13 +711,13 @@ string Parser::findAndReplaceSum(string sLineIn)
 			}
 		}
 		sum++;
+		
+		// Replaces SUM(<column name>) with SUMTEAM06COL<column name>
 		string col = sLineIn.substr(sum, sumClosingParen - sum);
-		//cout << "col value " << col << endl;
-		//cout << "replacing sum sumStart" << sLineIn[sumStart] << endl;
-		//cout << "replacing sum sumClosingParen" << sLineIn[sumClosingParen] << endl;
 		sLineIn = sLineIn.replace(sumStart, sumClosingParen+1 - sumStart, "SUMTEAM06COL" + col);
 		cout << "new query " << sLineIn << endl;
 
+		// Looks for the next SUM
 		sum = sLineIn.find("SUM", sum);
 	}
 	
@@ -776,6 +726,7 @@ string Parser::findAndReplaceSum(string sLineIn)
 
 /*******************************************************************************
  Function that sees if the parenthesis are balanced in a line
+ and checks the nested levels
  *******************************************************************************/
 bool Parser::checkParenthesis(string sLineIn)
 {
@@ -783,6 +734,7 @@ bool Parser::checkParenthesis(string sLineIn)
   
   for (size_t i = 0; i < sLineIn.length(); ++i)
   {
+  	// If opening parentheses are found, increase nestedLevel
     if (sLineIn[i] == '(')
     {
 		nestedLevel++;
@@ -792,11 +744,13 @@ bool Parser::checkParenthesis(string sLineIn)
 		}
       iBalance++;
     }
+  	// If closing parentheses are found, decrease nestedLevel
     else if (sLineIn[i] == ')')
     {
     	nestedLevel--;
       iBalance--;
     }
+    // If true, parentheses are not balanced
     if (iBalance < 0)
     {
       return false;
@@ -814,7 +768,8 @@ bool Parser::checkParenthesis(string sLineIn)
 }
 
 /*******************************************************************************
- Function that sees if the parenthesis are balanced in a line
+ Function that sees if the parenthesis are balanced in a line.
+ Not currently used.
  *******************************************************************************/
 size_t Parser::getMatchingClosingParen(string sLineIn, size_t start)
 {
@@ -837,57 +792,6 @@ size_t Parser::getMatchingClosingParen(string sLineIn, size_t start)
   }
 }
 
-/*******************************************************************************
- Function that does the select
- *******************************************************************************/
-void Parser::select(string sNewTableName, string sRestOfLine)
-{
-  size_t iPos = sRestOfLine.find("select");
-
-  if (iPos != string::npos)
-  {
-    size_t iParenth1 = sRestOfLine.find("(");
-    size_t iParenth2 = sRestOfLine.find(")", iParenth1 + 1);
-    string sValues = removeSpaces(
-        sRestOfLine.substr(iParenth1 + 1, iParenth2 - iParenth1));
-    string sTableNameIn = Utilities::cleanSpaces(sRestOfLine.substr(iParenth2 + 1));
-//    vector < string > vValues = makeTokens(sValues);
-
-    if (sTableNameIn == sNewTableName)
-    {
-//      if (vValues[0] == "Date")
-      {
-//        e.selection(sNewTableName, sTableNameIn + " 2", vValues[1], vValues[0],
-//            vValues[2] + vValues[3] + vValues[4] + vValues[5] + vValues[6]);
-      }
-//      else
-//      {
-//        e.selection(sNewTableName, sTableNameIn + " 2", vValues[1], vValues[0],
-//            vValues[2]);
-//      }
-
-      //delete old table
-//      e.dropTable(sTableNameIn);
-
-      //rename new table to old name
-//      e.renameTable(sTableNameIn + " 2", sNewTableName);
-    }
-    else
-    {
-//      if (vValues[0] == "Date")
-//      {
-//        e.selection(sTableNameIn, sNewTableName, vValues[1], vValues[0],
-//            vValues[2] + vValues[3] + vValues[4] + vValues[5] + vValues[6]);
-//      }
-//      else
-//      {
-//        e.selection(sTableNameIn, sNewTableName, vValues[1], vValues[0],
-//            vValues[2]);
-//      }
-
-    }
-  }
-}
 /*******************************************************************************
  Takes in a string, parses it, and creates a vector of strings to send back
  *******************************************************************************/
@@ -932,10 +836,6 @@ vector<string> Parser::createVector(string sLineIn)
 
     return vReturn;
 }
-
-
-
-
 
 /*******************************************************************************
  Takes in a string, parses it, and creates a vector of strings to send back
