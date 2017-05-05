@@ -139,7 +139,6 @@ int Parser::parse(string sLineIn)
         //cout << "Created table " << sLineIn << endl;
     } else if (findInsertInto(sLineIn)) {
         //cout << "Values Inserted" << endl;
-        e.writetofile();
     } else if (findSelectParen(sLineIn, "")) {//findSelectNew(sLineIn, "")) {
     //} else if (findSelect(sLineIn)) {
     	//selectQ = new SelectQ();
@@ -153,6 +152,7 @@ int Parser::parse(string sLineIn)
         cout << "Show table" << endl;
     } else if (findDropTable(sLineIn)) {
         cout << "Drop table" << endl;
+                e.writetofile();
     } else {
         cout << "ERROR: no match for the query could be found" << endl;
     }
@@ -173,6 +173,9 @@ bool Parser::semicolonExists(string sLineIn)
 // Give dbms read access through parser
 void Parser::read(){
 	e.read();
+}
+void Parser::write(){
+e.writetofile();
 }
 
 /*******************************************************************************

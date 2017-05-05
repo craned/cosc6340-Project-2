@@ -175,6 +175,8 @@ void parseScriptFile(string scriptFile) {
          }//*/
 
         cout << "Finished reading sql script" << endl;
+        parser->write();
+        
     } else {
         cout << "ERROR: could not open " << scriptFile << ". Was it named correctly?" << endl;
     }
