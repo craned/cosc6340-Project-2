@@ -94,24 +94,35 @@ tuple<int, string, bool, string> Table::getColumnIndex(
   return make_tuple(-1, "n/a", false, "n/a");
 }
 
-static int MAX_SPACES = 5;
-
 void Table::printOutTheWholeTable(){
     // Print the lines of the table for a pretty output
     std::cout << "\n";
+	int PADDING = 6;
 
     // Determine how far to space the column bars
     for (size_t i = 0; i < vColumnNames.size(); ++i)
     {
+		int MAX_SPACES = 5;
+    	
+    	if (get<3>(vColumnNames[i])=="string"){
+    		MAX_SPACES = get <4> (vColumnNames[i]) - PADDING;
+    		//cout << "string max spaces " << MAX_SPACES << endl;
+    	}
+    	
         //get the column values for printing
-        std::string sColName = std::get < 1 > (vColumnNames[i]);
+        string sColName = get < 1 > (vColumnNames[i]);
 		int numSpaces = MAX_SPACES - sColName.length();
 		
-    	if (get<3>(vColumnNames[i])=="string"){
+		//cout << "here columns1" << endl;
+    	if (get<3>(vColumnNames[i])=="string") {
+    		//cout << "string numspaces " << numSpaces << endl;
 			cout << sColName;
+			//cout << "here columns2" << endl;
 		}
-		for (int i = 1; i <= numSpaces; i++) {
+		for (int j = 1; j <= numSpaces; j++) {
+			//cout << j << "j";
 			cout << " ";
+			//cout << "here columns3" << endl;
 		}
 		if (get<3>(vColumnNames[i])=="int"){
 			cout << sColName;
@@ -122,22 +133,33 @@ void Table::printOutTheWholeTable(){
     std::cout << "\n";
 
     for(int i=0; i<tNumOfRecords; i++) {
-        for (size_t a = 0; a < vColumnNames.size(); ++a){
+        for (size_t a = 0; a < vColumnNames.size(); a++){
             std::vector < std::tuple<int, std::string> > row;
-            row =getRow(i);
+            row = getRow(i);
+			int MAX_SPACES = 5;
+
+			if (get<3>(vColumnNames[a])=="string"){
+				//cout << "here records1" << endl;
+				MAX_SPACES = get <4> (vColumnNames[a]) - PADDING;
+			}
             
             for(size_t z=0;z<row.size();z++) {
                 if (get<0>(row[z]) == get<0>(vColumnNames[a])) {
                 	string sColName = get<1> (row[z]);
+					
 					int numSpaces = MAX_SPACES - sColName.length();
 					
-                	if (get<3>(vColumnNames[z])=="string"){
+						//cout << "here records2" << endl;
+                	if (get<3>(vColumnNames[a])=="string"){
+						//cout << "here records3" << endl;
 						cout << sColName;
+					//	numSpaces = std::get < 4 > (vColumnNames[i]);
 					}
-					for (int i = 1; i <= numSpaces; i++) {
+					for (int j = 1; j <= numSpaces; j++) {
+						//cout << "here records4" << endl;
 						cout << " ";
 					}
-					if (get<3>(vColumnNames[z])=="int"){
+					if (get<3>(vColumnNames[a])=="int"){
 						cout << sColName;
 					}
 					cout << " ";
