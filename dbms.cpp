@@ -218,8 +218,12 @@ int main(int argc, char *argv[]) {
     std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
     std::cout.rdbuf(out.rdbuf());
 
-parser = new Parser();
-parser->read();
+	ofstream outFile ("output.txt", fstream::out);
+	outFile << "";
+	
+	parser = new Parser();
+	parser->read();
+    
     if (argc != 2) {
         cout << "usage: dbms script=<filename> OR dbms \"<SQL query>\"" << endl;
         if (!sqlQuery.empty()) {
