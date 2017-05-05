@@ -351,8 +351,20 @@ bool Parser::findSelectNew(string sLineIn, string insertSelectTempName)
 			// get sum column if exists
 			if (iPosSumCol != string::npos) {
 				iPosSumCol += 12;
-				size_t sumSpace = colNames.find(" ", iPosSumCol);
-				sumCol = colNames.substr(iPosSumCol, sumSpace - iPosSumCol);
+				size_t sumEnd = iPosSumCol;
+				while (isalnum(colNames[sumEnd])) {
+					sumEnd++;
+				}
+				sumCol = colNames.substr(iPosSumCol, sumEnd - iPosSumCol);
+				/*size_t sumSpace = colNames.find(" ", iPosSumCol);
+				size_t sumComma = colNames.find(",", iPosSumCol);
+				if (sumSpace < sumComma) {
+					sumCol = colNames.substr(iPosSumCol, sumSpace - iPosSumCol);
+					cout << "sumSpace " << colNames[sumSpace] << endl;
+				} else if (sumComma < sumSpace) {
+					sumCol = colNames.substr(iPosSumCol, sumComma - iPosSumCol);
+				}//*/
+				cout << "sumCol " << sumCol << endl;
 				selectQ.setSumCol(sumCol);
 			}
             
