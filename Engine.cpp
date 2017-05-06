@@ -331,7 +331,7 @@ Table Engine::whereClause(string tCurrentTableStr, string whereFilter){
  ***selectClause()***
  * Takes care of where select cluase in the select queries
   ****************************************************************************/
-Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTablestr, bool &returnBool, string tempTable, string sumCol){
+Table Engine::selectClause(string tNewTableStr,vector < string > colNames, string originalTablestr, bool &returnBool, string tempTable, string sumCol, string &sharedSameColumn){
 
 
     Table tNewTable;
@@ -383,11 +383,17 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
             columnName = realColVal(colNames[x]);
             //cout<<"tableName "<<tableName<<endl;
             //cout<<"columnName "<<columnName<<endl;
-            if (columnName.find(sumPlaceholder) != string::npos) {
-            	columnName = columnName.substr(sumPlaceholder.length(), string::npos);
+            string wtableName="w"+tableName;
+            if(columnName==sharedSameColumn){
+                if(!(tableName== originalTable.getTableName() or wtableName==originalTable.getTableName())){
+                    tableName="";
+                }
             }
+//            if (columnName.find(sumPlaceholder) != string::npos) {
+//            	columnName = columnName.substr(sumPlaceholder.length(), string::npos);
+//            }
 
-                string wtableName="w"+tableName;
+
                 //when there is no table name
                 if(tableName==""){
                     cout << "columnName " << columnName << endl;
@@ -475,7 +481,7 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
 }
 
 /******************************************************************************/
-Table Engine::joinClause(string originalTableStr,string joinTableStr,string joinFilter, bool &returnBool){
+Table Engine::joinClause(string originalTableStr,string joinTableStr,string joinFilter, bool &returnBool, string &sharedSameColumn){
     
     if(joinFilter!="") {
 
@@ -507,6 +513,9 @@ Table Engine::joinClause(string originalTableStr,string joinTableStr,string join
         string rightColumn = "";
         rightTable = realTableVal(rightSideCondition);
         rightColumn = realColVal(rightSideCondition);
+        if(leftColumn==rightColumn){
+            sharedSameColumn=leftColumn;
+        }
 //        cout<<"leftTable "<<leftTable<<endl;
 //        cout<<"leftColumn "<<leftColumn<<endl;
 //        cout<<"rightTable "<<rightTable<<endl;
@@ -766,10 +775,10 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             //whereTableJoin.printOutTheWholeTable();
         }
     }
-
+    string sharedColunmWithSameName="";
     Table joinedTable;
     if(!joinFilter.empty()){
-        joinedTable=joinClause(curTableStr, curJoinTablestr, joinFilter, returnBool);
+        joinedTable=joinClause(curTableStr, curJoinTablestr, joinFilter, returnBool, sharedColunmWithSameName);
         vTableList.push_back(joinedTable);
         curTableStr=joinedTable.getTableName();
         //!
@@ -778,7 +787,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     }
 
     Table selectTable;
-    selectTable = selectClause(curTableStr, colNames, sTableNameIn, returnBool, tempTable, sumCol);
+    selectTable = selectClause(curTableStr, colNames, sTableNameIn, returnBool, tempTable, sumCol, sharedColunmWithSameName);
     vTableList.push_back(selectTable);
     curTableStr=selectTable.getTableName();
     //!
