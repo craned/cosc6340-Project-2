@@ -632,6 +632,7 @@ Table Engine::groupByClause(string tableName, string groupByCol, string sumCol)
             //cout<<"present"<<endl;
         }
     }
+    //curTable.printOutTheWholeTable();
 	Table temp;
     vector<tuple<int, string, bool,string, int>> vColumnNames =
             curTable.getColumnNames();
@@ -680,6 +681,7 @@ cout << "sumColIndex " << sumColIndex << endl;
 	
 	//finalGB.printOutTheWholeTable();
 	deleteATable(temp);
+    //finalGB.printOutTheWholeTable();
 	return finalGB;
 }
 
@@ -802,19 +804,19 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
 
     if(whereTableOriginal.getTableName()!=curTableStr){
     	cout << "delete groupby table1" << endl;
-        //deleteATable(whereTableOriginal);
+        deleteATable(whereTableOriginal);
     }
     if(whereTableJoin.getTableName() != curTableStr){
     	cout << "delete groupby table2" << endl;
-        //deleteATable(whereTableJoin);
+        deleteATable(whereTableJoin);
     }
     if(joinedTable.getTableName() != curTableStr){
     	cout << "delete groupby table3" << endl;
-        //deleteATable(joinedTable);
+        deleteATable(joinedTable);
     }
     if(selectTable.getTableName() != curTableStr){
     	cout << "delete groupby table4" << endl;
-       // deleteATable(selectTable);
+       deleteATable(selectTable);
     }
     if(groupByTable.getTableName() != curTableStr){
     	cout << "delete groupby table5" << endl;
@@ -822,7 +824,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     }
     if(orderByTable.getTableName() != curTableStr){
     	cout << "delete groupby table6" << endl;
-        //deleteATable(orderByTable);
+        deleteATable(orderByTable);
     }
     
         //groupByTable.printOutTheWholeTable();
@@ -1183,7 +1185,7 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
             //printing the sorted file
             for (size_t i = 0; i < vTableList.size(); ++i) {
                 if (vTableList[i].getTableName() == "tempsortf") {
-cout<<vTableList[i].getTNumOfRecords();
+                    cout<<vTableList[i].getTNumOfRecords();
                     //vTableList[i].printOutTheWholeTable();
                 }
             }
@@ -1316,7 +1318,7 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 			    		//cout << "oldValue !empty" << endl;
 			            vector<tuple<int, string> > row;
 						// loop over all rows
-						cout << "sum tostring" << to_string(sum) << endl;
+						//cout << "sum tostring" << to_string(sum) << endl;
 						if (newSumIndex < newGroupByIndex) {
 							row.push_back(make_tuple(newSumIndex,to_string(sum)));
 							row.push_back(make_tuple(newGroupByIndex, oldValue));
