@@ -685,6 +685,11 @@ bool Parser::findQuit(string sLineIn)
     return false;
   }
 }
+ void Parser::tempDelete(){
+ e.executeQuit();
+ 
+ }
+ 
 
 // Looks for SUM( or SUM ( occurrences to replace with SUMTEAM06COL<column name>
 // Keeps parentheses parsing simpler

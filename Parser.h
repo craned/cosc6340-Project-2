@@ -75,6 +75,7 @@ public:
     void select(string sNewTableName, string sRestOfLine);
     void read();
     void write();
+    void tempDelete();
 
 };
 
