@@ -214,9 +214,9 @@ int main(int argc, char *argv[]) {
     //out.open("out2.txt", ios::out);
     //ofstream cout(OUTPUT_FILE);
     //std::cout.rdbuf(cout.rdbuf());
-    std::ofstream out("output.txt");
-    std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-    std::cout.rdbuf(out.rdbuf());
+    //std::ofstream out("output.txt");
+    //std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+    //std::cout.rdbuf(out.rdbuf());
 
 	ofstream outFile ("output.txt", fstream::out);
 	outFile << "";
@@ -236,9 +236,9 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     
-    out.open(OUTPUT_FILE, ios::out);
+    //out.open(OUTPUT_FILE, ios::out);
     
-    cout.rdbuf(out.rdbuf());
+    //cout.rdbuf(out.rdbuf());
 
    // parser = new Parser();
 
@@ -260,8 +260,8 @@ int main(int argc, char *argv[]) {
     }
     
 
-    std::cout.rdbuf(coutbuf);
-       out.close();
+  //  std::cout.rdbuf(coutbuf);
+//       out.close();
     return 0;
 }
 
