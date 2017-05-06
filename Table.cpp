@@ -101,12 +101,15 @@ void Table::printOutTheWholeTable(){
 		cout << "file not open" << endl;
 	} else {
 		cout << "file is open" << endl;
+		//outFile << "writing\n";
 	}
     // Print the lines of the table for a pretty output
     bool toFile = true;
-    toFile ? outFile << "\n" : std::cout << "\n";
+    cout << "\n";
+    outFile << "\n";
 	int PADDING = 6;
 
+//outFile << "column size " << vColumnNames.size();
     // Determine how far to space the column bars
     for (size_t i = 0; i < vColumnNames.size(); ++i)
     {
@@ -124,22 +127,28 @@ void Table::printOutTheWholeTable(){
 		//cout << "here columns1" << endl;
     	if (get<3>(vColumnNames[i])=="string") {
     		//cout << "string numspaces " << numSpaces << endl;
-			toFile ? outFile << sColName : cout << sColName;
+			cout << sColName;
+			outFile << sColName;
 			//cout << "here columns2" << endl;
 		}
 		for (int j = 1; j <= numSpaces; j++) {
 			//cout << j << "j";
-			toFile ? outFile << " " : cout << " ";
+			cout << " ";
+			outFile << " ";
 			//cout << "here columns3" << endl;
 		}
 		if (get<3>(vColumnNames[i])=="int"){
-			toFile ? outFile << sColName : cout << sColName;
+			cout << sColName;
+			outFile << sColName;
 		}
 		
-		toFile ? outFile << " " : cout << " ";
+		cout << " ";
+		outFile << " ";
     }
-    toFile ? outFile << "\n" : cout << "\n";
+    cout << "\n";
+    outFile << "\n";
 
+//cout << "# of records " << tNumOfRecords;
     for(int i=0; i<tNumOfRecords; i++) {
         for (size_t a = 0; a < vColumnNames.size(); a++){
             std::vector < std::tuple<int, std::string> > row;
@@ -160,17 +169,21 @@ void Table::printOutTheWholeTable(){
 						//cout << "here records2" << endl;
                 	if (get<3>(vColumnNames[a])=="string"){
 						//cout << "here records3" << endl;
-						toFile ? outFile << sColName : cout << sColName;
+						cout << sColName;
+						outFile << sColName;
 					//	numSpaces = std::get < 4 > (vColumnNames[i]);
 					}
 					for (int j = 1; j <= numSpaces; j++) {
 						//cout << "here records4" << endl;
-						toFile ? outFile << " " : cout << " ";
+						cout << " ";
+						outFile << " ";
 					}
 					if (get<3>(vColumnNames[a])=="int"){
-						toFile ? outFile << sColName : cout << sColName;
+						cout << sColName;
+						outFile << sColName;
 					}
-					toFile ? outFile << " " : cout << " ";
+					cout << " ";
+					outFile << " ";
 
                     break;
                 }
@@ -178,10 +191,12 @@ void Table::printOutTheWholeTable(){
             }
         }
         
-        toFile ? outFile << "\n" : cout << "\n";
+        cout << "\n";
+        outFile << "\n";
     }
     
-    toFile ? outFile << "\n" : cout << "\n";
+    cout << "\n";
+    outFile << "\n";
     
     outFile.close();
 }
