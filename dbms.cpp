@@ -129,13 +129,13 @@ void parseScriptFile(string scriptFile) {
             if (line.find("\n") != string::npos) {
                 line = line.substr(0, line.find('\n'));
             }
-            cout << line << endl;
+            //cout << line << endl;
             queries += " " + toUpper(line);
             size_t firstSemicolon = queries.find(';', 0);
             if (firstSemicolon != string::npos) {
                 firstSemicolon++;
                 string query = queries.substr(0, firstSemicolon);
-                cout << "executing " << query << endl;
+                //cout << "executing " << query << endl;
                 parser->parse(query);
                 queries = queries.substr(firstSemicolon,
                 						queries.length() - firstSemicolon);
