@@ -101,7 +101,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
                         cout<<"ERROR: duplicate primary key";
                         isFoundTable = true;
-                        break;
+                        return;
                     }
                 }
             }
