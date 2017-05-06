@@ -79,7 +79,7 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
         if (vTableList[i].getTableName() == sTableNameIn) {
             Table tb=vTableList[i];
             int iColumnIndex= -1;
-            int numOfRows=tb.getTNumOfRecords();
+            
             //Getting the index of PK:
             vector<tuple<int, string, bool, string, int> > vNames = vTableList[i].getColumnNames();
             for (size_t a = 0; a < vNames.size(); ++a) {
@@ -90,6 +90,8 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                 }
                 
             }
+            
+            int numOfRows=tb.getTNumOfRecords();
             if(iColumnIndex!=-1){
                 for(int i=0; i<numOfRows; i++){
                     vector < std::tuple<int, std::string> > vtemp;
@@ -99,9 +101,8 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
                     if(get < 1 > (vtemp[iColumnIndex])==(giventemp)){
                         cout<<"ERROR: duplicate primary key";
                         isFoundTable = true;
-                        return;
+                        break;
                     }
-                    vtemp.clear();
                 }
             }
             //Adding the Row
@@ -110,6 +111,8 @@ void Engine::addRow(string sTableNameIn, vector<tuple<int, string> > vRowIn) {
             return;
             
         }
+        if (isFoundTable)
+        	break;
     }
     if(!isFoundTable) cout<<"ERROR: this table does not exist!"<<endl;
 }
@@ -466,7 +469,7 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
             tNewNewTable.addRow(row);
         }
 //        cout<<"at the end of the select"<<endl;
-        tNewNewTable.printOutTheWholeTable();
+        //tNewNewTable.printOutTheWholeTable();
         return tNewNewTable;
     }
 }
@@ -662,16 +665,20 @@ Table Engine::groupByClause(string tableName, string groupByCol, string sumCol)
 			cout << "ERROR: " << sumCol << " does not exist2" << endl;
 			return temp;
 		}
+		
+		//vTableList.push_back(finalGB);
 
 cout << "groupByIndex " << groupByIndex << endl;
 cout << "sumColIndex " << sumColIndex << endl;
 		// sum up cumColIndex by groupByCol
+		//temp.printOutTheWholeTable();
 		finalGB = sum(temp, sumCol, sumColIndex,
 											groupByCol, groupByIndex);
 	} else {
 		return temp;
 	}
 	
+	//finalGB.printOutTheWholeTable();
 	deleteATable(temp);
 	return finalGB;
 }
@@ -781,37 +788,52 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     	cout << "executing group by" << endl;
         groupByTable = groupByClause(curTableStr, groupByCol, sumCol);
         curTableStr = groupByTable.getTableName();
+        //groupByTable.printOutTheWholeTable();
     }
     Table orderByTable;
     if (!orderByCol.empty()) {
+    	cout << "order by col " << orderByCol << endl;
         orderByTable = orderByClause(curTableStr, orderByCol);
         curTableStr = orderByTable.getTableName();
     }
 
 
+        //groupByTable.printOutTheWholeTable();
 
     if(whereTableOriginal.getTableName()!=curTableStr){
-        deleteATable(whereTableOriginal);
+    	cout << "delete groupby table1" << endl;
+        //deleteATable(whereTableOriginal);
     }
     if(whereTableJoin.getTableName() != curTableStr){
-        deleteATable(whereTableJoin);
+    	cout << "delete groupby table2" << endl;
+        //deleteATable(whereTableJoin);
     }
     if(joinedTable.getTableName() != curTableStr){
-        deleteATable(joinedTable);
+    	cout << "delete groupby table3" << endl;
+        //deleteATable(joinedTable);
     }
     if(selectTable.getTableName() != curTableStr){
-        deleteATable(selectTable);
+    	cout << "delete groupby table4" << endl;
+       // deleteATable(selectTable);
     }
     if(groupByTable.getTableName() != curTableStr){
+    	cout << "delete groupby table5" << endl;
         deleteATable(groupByTable);
     }
     if(orderByTable.getTableName() != curTableStr){
-        deleteATable(orderByTable);
+    	cout << "delete groupby table6" << endl;
+        //deleteATable(orderByTable);
     }
+    
+        //groupByTable.printOutTheWholeTable();
     //cout<<"curTableStr "<<curTableStr<<endl;
     for(int j=0; j<vTableList.size();j++){
         if(vTableList[j].getTableName()==curTableStr){
+        //cout << "found table for print out: " << curTableStr << "T" << endl;
             if(tempTable ==""){
+        //groupByTable.printOutTheWholeTable();
+       // cout << "groupby table name " << groupByTable.getTableName() << "T" << endl;
+            	//cout << "print " << curTableStr << "T" << endl;
                 vTableList[j].printOutTheWholeTable();
                 deleteATable(vTableList[j]);
                 //cout<<vTableList[j].getTableName()<<" got deleted"<<endl;
@@ -1202,7 +1224,6 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 	// get key of the column
     Table gBTable("groupByOuterTable");
     gBTable.setTNumOfRecords(0);
-    vTableList.push_back(gBTable);
     Table table;
 	bool foundTable = false;
 	for (size_t i = 0; i < vTableList.size(); ++i) {
@@ -1281,6 +1302,7 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
     
     int sum = 0;
     string oldValue = "";
+    cout << "numer of records " << curTable.getTNumOfRecords() << endl;
     for (int j = 0; j < curTable.getTNumOfRecords(); j++) {
     	vector < std::tuple<int, std::string> > curRow = curTable.getRow(j);
     	
@@ -1305,7 +1327,7 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 						cout << "pushed row" << endl;
 						gBTable.addRow(row);
 						cout << "added row" << endl;
-		    			//cout << "sum of rows1 " << oldValue << ":" << sum << endl;
+		    			cout << "sum of rows1 " << oldValue << ":" << sum << endl;
 		    		}
 		    		oldValue = curValue;
 		    		sum = 0;
@@ -1342,10 +1364,11 @@ Table Engine::sum(Table curTable, string columnName, int colIndex,
 	
 	//cout << "pushed row2" << endl;
 	gBTable.addRow(rowEnd);
-	//cout << "sum of rows2 " << oldValue << ":" << sum << endl;
+	cout << "sum of rows2 " << oldValue << ":" << sum << endl;
     
     //gBTable.printOutTheWholeTable();
     
+    vTableList.push_back(gBTable);
     return gBTable;
 }
 
