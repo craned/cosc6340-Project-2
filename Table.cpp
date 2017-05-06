@@ -105,8 +105,6 @@ void Table::printOutTheWholeTable(){
 	}
     // Print the lines of the table for a pretty output
     bool toFile = true;
-    cout << "\n";
-    outFile << "\n";
 	int PADDING = 6;
 
 //outFile << "column size " << vColumnNames.size();
