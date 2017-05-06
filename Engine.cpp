@@ -803,27 +803,27 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         //groupByTable.printOutTheWholeTable();
 
     if(whereTableOriginal.getTableName()!=curTableStr){
-    	cout << "delete groupby table1" << endl;
+    	//cout << "delete groupby table1" << endl;
         deleteATable(whereTableOriginal);
     }
     if(whereTableJoin.getTableName() != curTableStr){
-    	cout << "delete groupby table2" << endl;
+    	//cout << "delete groupby table2" << endl;
         deleteATable(whereTableJoin);
     }
     if(joinedTable.getTableName() != curTableStr){
-    	cout << "delete groupby table3" << endl;
+    	//cout << "delete groupby table3" << endl;
         deleteATable(joinedTable);
     }
     if(selectTable.getTableName() != curTableStr){
-    	cout << "delete groupby table4" << endl;
+    	//cout << "delete groupby table4" << endl;
        deleteATable(selectTable);
     }
     if(groupByTable.getTableName() != curTableStr){
-    	cout << "delete groupby table5" << endl;
+    	//cout << "delete groupby table5" << endl;
         deleteATable(groupByTable);
     }
     if(orderByTable.getTableName() != curTableStr){
-    	cout << "delete groupby table6" << endl;
+    	//cout << "delete groupby table6" << endl;
         deleteATable(orderByTable);
     }
     
@@ -1161,7 +1161,7 @@ Table Engine::sortp(string sTableNameIn,int key) {// sorting based on the coulmn
                     vrow2=tempsortmerge.getRow(p);
                     tempsorttemp.addRow(vrow2);
                                 //cout<<value1;
-                                cout<<"enter 2";
+                                //cout<<"enter 2";
                     }
                     
                     }
