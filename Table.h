@@ -53,11 +53,12 @@ public:
     void setName(string name){
     sTableName=name;
     }
-    
+    /***adding the column names to vColumnNames***/
     std::vector<std::tuple<int, std::string, bool, std::string, int> > getColumnNames()
     {
         return vColumnNames;
     }
+    /**calculating the recordsize**/
 	    void calculateRecordSize()
     {
         int count=0;
@@ -69,6 +70,7 @@ public:
         }
         tRecordSize=count;
     }
+    /**calculating the total record size**/
 	void calculateTotalRecordSize()
     {
         tTotalSize=tRecordSize*tNumOfRecords;
@@ -147,7 +149,7 @@ public:
     {
         sTableName = sNewName;
     }
-    
+   /***distinct rows***/ 
     void distinct(){
     
     const int COLUMN_WIDTH = 20;

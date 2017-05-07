@@ -93,7 +93,7 @@ tuple<int, string, bool, string> Table::getColumnIndex(
   //The column was not found
   return make_tuple(-1, "n/a", false, "n/a");
 }
-
+/*****print the whole the table*******/
 void Table::printOutTheWholeTable(){
 	ofstream outFile;
 	outFile.open("output.txt", fstream::out | fstream::app);
@@ -199,6 +199,8 @@ void Table::printOutTheWholeTable(){
     outFile.close();
 }
 
+/***********adding the row to the binary file******/
+
 void Table::addRow( std::vector<std::tuple<int, std::string> > v) {
 
     //cout << "adding Rows" << endl;
@@ -255,7 +257,7 @@ vector < std::tuple<int, std::string> > Table::getRow(int iIndex) {
 
     return vReturn;
 }
-
+/****delete the table*****/
 void Table::deleteATable(string tableName){
     string name=tableName+".tbl";
     //setTNumOfRecords(0);
@@ -265,7 +267,7 @@ void Table::deleteATable(string tableName){
     //else
         //cout << "File successfully deleted" << endl;
 }
-
+/*****writing the string to the binary file***/
 void Table::writeStringToFile(string val,int blockSize, ofstream& out)
 {
     
@@ -283,7 +285,7 @@ void Table::writeStringToFile(string val,int blockSize, ofstream& out)
     out.write(valOut, sizeof(char)*(blockSize));
     //cout<<"write string.val.length(): "<<valO<<endl ;
 }
-
+/*****writing int to binary file*****/
 void Table::writeIntToFile(int num, ofstream& out) {
 
     out.write((char*) &num, sizeof(int));
