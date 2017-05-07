@@ -42,6 +42,7 @@ string const QUIT = "QUIT;";
 
 Parser* parser;
 
+// Not used
 void parseSQLQuery(string SQL) {
     if (SQL.find_first_of("C") == 0) {
         cout << "create" << endl;
@@ -55,6 +56,7 @@ void parseSQLQuery(string SQL) {
     }
 }
 
+// Convert query to all upper case, except strings
 string toUpper(string str) {
     bool toUpper = true;
     for (size_t i = 0; i < str.length(); i++) {
@@ -74,6 +76,7 @@ string toUpper(string str) {
     return str;
 }
 
+// Take in filename for the script file and find each separate (multiline) query
 void parseScriptFile(string scriptFile) {
 	cout << endl;
     cout << scriptFile << endl;
@@ -85,12 +88,14 @@ void parseScriptFile(string scriptFile) {
     if (script.is_open()) {
         bool blockCommentActive = false;
         //cout << "open" << endl;
+        // Keep reading as long as there are lines to read
         while (getline(script, line)) {
         	//out << line;
             size_t blockCommentStartPos = line.find("/*");
             size_t blockCommentEndPos = line.find("*/");
             size_t dashDashPos = line.find("--");
             
+            // Handle comments
             if (blockCommentStartPos != string::npos && !blockCommentActive) {
                 blockCommentActive = true;
                 if (blockCommentEndPos != string::npos) {
@@ -123,6 +128,7 @@ void parseScriptFile(string scriptFile) {
                     }
                 }
             }
+            // eliminate new lines
             if (line.find("\r") != string::npos) {
                 line = line.substr(0, line.find('\r'));
             }
@@ -142,6 +148,8 @@ void parseScriptFile(string scriptFile) {
              }//*/
         }
         
+        // Keep looking for queries as long as there are more queries to execute,
+        // even if the whole file has been read
         while (queries.length() > 0) {
         	//out << line;
             size_t firstSemicolon = queries.find(";", 0);
@@ -183,6 +191,7 @@ void parseScriptFile(string scriptFile) {
     }
 }
 
+// Handles command line input, but no longer maintained, at least mostly works.
 void commandLineSQLInput(string sqlQuery) {
     //cout << sqlQuery << endl;
     while (true) {
@@ -211,6 +220,7 @@ void commandLineSQLInput(string sqlQuery) {
     }
 }
 
+// main method that initializes everything and starts the program
 int main(int argc, char *argv[]) {
     //out.open("out2.txt", ios::out);
     //ofstream cout(OUTPUT_FILE);
@@ -245,6 +255,7 @@ int main(int argc, char *argv[]) {
 
     string firstArg = argv[1];
     //cout << firstArg << endl;
+    // Run on either the given script file or the given query 
     if (firstArg.find("script") != string::npos) {
         char* scriptFile = strtok((char*)firstArg.c_str(), "=");
         scriptFile = strtok(NULL, "="); // Advance to actual script file name
