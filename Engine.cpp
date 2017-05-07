@@ -479,7 +479,9 @@ Table Engine::selectClause(string tNewTableStr,vector < string > colNames, strin
         return tNewNewTable;
     }
 }
-
+/******************************************************************************/
+/*joinClause()
+ * takes care of join
 /******************************************************************************/
 Table Engine::joinClause(string originalTableStr,string joinTableStr,string joinFilter, bool &returnBool, string &sharedSameColumn){
     
@@ -511,15 +513,13 @@ Table Engine::joinClause(string originalTableStr,string joinTableStr,string join
         //RightSide
         string rightTable = "";
         string rightColumn = "";
+        //get the real value without table name before it
         rightTable = realTableVal(rightSideCondition);
         rightColumn = realColVal(rightSideCondition);
         if(leftColumn==rightColumn){
             sharedSameColumn=leftColumn;
         }
-//        cout<<"leftTable "<<leftTable<<endl;
-//        cout<<"leftColumn "<<leftColumn<<endl;
-//        cout<<"rightTable "<<rightTable<<endl;
-//        cout<<"rightColumn "<<rightColumn<<endl;
+
         string name = "J" + originalTable.getTableName() + joinTable.getTableName();
 //        cout<<"neme of the new tabel "<<name<< endl;
         Table joinedTable(name);
@@ -531,27 +531,20 @@ Table Engine::joinClause(string originalTableStr,string joinTableStr,string join
                 originalTable.getColumnNames();
         vector<tuple<int, string, bool, string, int> > vJoinTableColumn =
                 joinTable.getColumnNames();
-        //vector<tuple<int, string, bool, string, int> > vCombinedTableColumn;
-        ////////////////////////
+
         string wLeftTable="w"+leftTable;
         string wRightTable="w"+rightTable;
 
-//        cout<<"leftTable "<<leftTable<<endl; 
-//        cout<<"originalTable.getTableName() "<<originalTable.getTableName()<<endl;
-//         cout<<"rightTable "<<rightTable<<endl;
-//         cout<<"joinTable.getTableName() "<<joinTable.getTableName()<<endl;
 
-
+        //to handle each table in both sides
         if (leftTable!=originalTable.getTableName() and wLeftTable!=originalTable.getTableName()) {
             if (rightTable!=joinTable.getTableName() and wRightTable!=joinTable.getTableName()) {
                 leftTable.swap(rightTable);
                 leftColumn.swap(rightColumn);
-                //cout<<"originalTable.getTableName(): "<<originalTable.getTableName()<<endl;
-                //cout<<"leftTable: "<<leftTable<<endl;
-                //cout<<"joinTable.getTableName(): "<<joinTable.getTableName()<<endl;
-                //cout<<"rightTable: "<<rightTable<<endl;
+
             }
         }
+        //creating column vector for the new table
         if (leftTable==originalTable.getTableName() or wLeftTable ==originalTable.getTableName() ) {
             if (rightTable==joinTable.getTableName() or wRightTable == joinTable.getTableName()) {
                 for (size_t i = 0; i < vOriginalTableColumn.size(); i++) {
@@ -598,7 +591,7 @@ Table Engine::joinClause(string originalTableStr,string joinTableStr,string join
         }
 
 
-        //////////////////////////
+        ///adding rows
         //if (indexLeft != -1 and indexRight != -1) {
         for (int l = 0; l < originalTable.getTNumOfRecords(); l++) {
             for (int r = 0; r < joinTable.getTNumOfRecords(); r++) {
@@ -629,9 +622,10 @@ Table Engine::joinClause(string originalTableStr,string joinTableStr,string join
 
 }
 
-/******************************************************************************/
-/* Group by function */
-/******************************************************************************/
+/******************************************************************************
+/* groupByClause()
+ * Takes care of group function
+ *****************************************************************************/
 Table Engine::groupByClause(string tableName, string groupByCol, string sumCol)
 {
     Table curTable;
@@ -695,7 +689,8 @@ cout << "sumColIndex " << sumColIndex << endl;
 }
 
 /******************************************************************************/
-/* order by function */
+/* orderByClause */
+/* this function takes care of order by clause*/
 /******************************************************************************/
 Table Engine::orderByClause(string tableName, string orderByCol)
 {
@@ -731,7 +726,9 @@ Table Engine::orderByClause(string tableName, string orderByCol)
 }
 
 /******************************************************************************/
-/* Main select function */
+/*** executeSelect() ***
+/* Main select function
+ * which contains where, join and select clause*/
 /******************************************************************************/
 bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
                            string tempTable,
@@ -754,6 +751,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     }
 
     ///////////
+    //at first we apply where on both tables
     bool returnBool= true;
     string curTableStr= sTableNameIn;
     string curJoinTablestr = joinTable;
@@ -763,9 +761,8 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         whereTableOriginal=whereClause(curTableStr, whereFilter);
         vTableList.push_back(whereTableOriginal);
         curTableStr=whereTableOriginal.getTableName();
-        //!
-        //cout<<"WHERE FILTER"<<endl;
-        //whereTableOriginal.printOutTheWholeTable();
+
+        // if we had the second table
         if(!joinFilter.empty()){
             whereTableJoin= whereClause(curJoinTablestr, whereFilter);
             vTableList.push_back(whereTableJoin);
@@ -775,6 +772,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
             //whereTableJoin.printOutTheWholeTable();
         }
     }
+    //applying join on both tables
     string sharedColunmWithSameName="";
     Table joinedTable;
     if(!joinFilter.empty()){
@@ -785,7 +783,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         //cout<<"JOIN TABLE"<<endl;
         //joinedTable.printOutTheWholeTable();
     }
-
+    //select:
     Table selectTable;
     selectTable = selectClause(curTableStr, colNames, sTableNameIn, returnBool, tempTable, sumCol, sharedColunmWithSameName);
     vTableList.push_back(selectTable);
@@ -793,7 +791,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     //!
     //cout<<"SELECT TABLE"<<endl;
     //selectTable.printOutTheWholeTable();
-
+    //group by:
     Table groupByTable;
     if (!groupByCol.empty()) {
     	cout << "executing group by" << endl;
@@ -801,6 +799,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         curTableStr = groupByTable.getTableName();
         //groupByTable.printOutTheWholeTable();
     }
+    //order by:
     Table orderByTable;
     if (!orderByCol.empty()) {
     	cout << "order by col " << orderByCol << endl;
@@ -809,7 +808,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
     }
 
 
-        //groupByTable.printOutTheWholeTable();
+    //removing tables
 
     if(whereTableOriginal.getTableName()!=curTableStr){
     	//cout << "delete groupby table1" << endl;
@@ -836,8 +835,7 @@ bool Engine::executeSelect(string sTableNameIn, vector < string > colNames,
         deleteATable(orderByTable);
     }
     
-        //groupByTable.printOutTheWholeTable();
-    //cout<<"curTableStr "<<curTableStr<<endl;
+    //printing out the last table:
     for(int j=0; j<vTableList.size();j++){
         if(vTableList[j].getTableName()==curTableStr){
         //cout << "found table for print out: " << curTableStr << "T" << endl;
@@ -929,7 +927,7 @@ void Engine::executeQuit(){
 
 }
 /*****************************************************************************
-   insertFromSelect
+   insertFromSelect()
    ****************************************************************************/
 void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
     //cout<<"sTableNameFrom "<<sTableNameFrom<<" sTableNameTo "<<sTableNameTo<<endl;
@@ -957,7 +955,7 @@ void Engine::insertFromSelect(string sTableNameFrom, string sTableNameTo ){
     if(!foundTable) cout<<"couldn't find the table"<<endl;
 }
 /*****************************************************************************
-insertselectValidate
+insertselectValidate()
  ****************************************************************************/
 bool Engine::insertselectValidate(Table fromTable, Table toTable){//checking whether the rows from select can be inserted in to table
     bool validateinsert = false;
