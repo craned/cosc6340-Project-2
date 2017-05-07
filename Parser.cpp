@@ -284,7 +284,7 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 				parens.pop();
 				
 				// remove subquery from query, and leave alias
-				sLineIn.replace(leftParenIndex, (i+1) - (leftParenIndex), "");
+				sLineIn.replace(leftParenIndex, (i+1) - (leftParenIndex), " ");
 				i = 0;
 				while (parens.size() != 0) {
 					parens.pop();
@@ -298,7 +298,7 @@ bool Parser::findSelectParen(string sLineIn, string insertSelectTable)
 		}
 		
 		// recursion
-		findSelectParen(sLineIn, insertSelectTable);
+		return findSelectParen(sLineIn, insertSelectTable);
 	} else {
 		// final call to execute outer query
 		return findSelectNew(sLineIn, insertSelectTable);
